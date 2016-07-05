@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<license version="1.0">
+	<product>
+		<name>XPLATFORM</name>
+		<version>92</version>
+		<function>Runtime,&#32;Widget</function>
+	</product>
+	<customer>
+		<name>부작용등안전성정보DB구축</name>
+		<coreCount>4</coreCount>
+		<ipAddress>192.168.0.21</ipAddress>
+		<targetPlatform>Windows,Linux</targetPlatform>
+	</customer>
+	<date>
+		<activation>2014-02-13</activation>
+		<term>0</term>
+	</date>
+	<key>WCZGPPAXRJE2E5PA86W3RF75N1YDYVS37</key>
+</license>

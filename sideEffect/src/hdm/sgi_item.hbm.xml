@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="sgi_se_item" name="safety.renewal.sgi.item.SimpleItem1"
+     select-before-update="true"
+     >
+<id name="id" column="id" >
+  <generator class="sequence">
+				<param name="sequence">SGI_SE_ITEM_PK</param>
+			</generator> 
+</id>
+
+<property name="manuf_name">
+ <column name="MANUF_NAME"/>
+</property>
+
+<property name="item_name">
+ <column name="item_NAME"/>
+</property>
+
+ 
+<property name="meddev_item_seq" >
+ 	<column name="meddev_item_seq" />
+</property>
+
+<!-- 품목코드 -->
+<property name="mea_class_no" >
+ 	<column name="mea_class_no" />
+</property>
+
+<!-- 품목허가번호(수허,제허) -->
+<property name="cob_flag_code" >
+ 	<column name="cob_flag_code" />
+</property>
+<many-to-one name="cobFlagType" class="safety.renewal.sgi.item.SimpleItemCodeType1" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="cob_flag_code"></column>
+</many-to-one>
+<property name="meddev_item_no" >
+ 	<column name="meddev_item_no" />
+</property>
+
+<!-- 제조원 -->
+<property name="manuf_import_name" >
+ 	<column name="manuf_import_name" />
+</property>
+
+<!-- 사용여부 -->
+<property name="isInUse" type="int">
+	<column name="default_in_use_id"></column>
+</property>
+
+<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+</many-to-one>
+
+<!-- 업체코드 -->
+<property name="company_id" type="int">
+	<column name="company_id"></column>
+</property>
+<many-to-one name="company" class="safety.renewal.company.SimpleCompany1" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="company_id"></column>
+</many-to-one>
+
+<!-- 품목코드 -->
+<property name="item_category_number" type="int">
+	<column name="item_category_number"></column>
+</property>
+<many-to-one name="mea_item" class="safety.renewal.sgi.category.SimpleItemCategory" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="item_category_number"></column>
+</many-to-one>
+
+<!-- 형명 -->
+ <set name="item_type"   table="JUNC_ITEM_TYPE"
+	     lazy="false" fetch="select"
+	     order-by="id" 
+	    >
+	    <key>
+	        <column  name="item_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore"
+	        
+	         class="safety.renewal.sgi.item.SimpleItemType" >
+	        <column name="type_id"></column>
+	        </many-to-many>
+	</set>
+
+<!-- 제품Lot -->
+<!--  <set name="item_lot"   table="JUNC_ITEM_LOT_NO"
+	     lazy="false" fetch="select"
+	     cascade="delete, delete-orphan, persist"
+	    >
+	    <key>
+	        <column  name="item_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore"
+	         class="safety.renewal.sgi.item.SimpleItemLot" >
+	        <column name="lot_id"></column>
+	        </many-to-many>
+	</set> -->
+
+<!-- 이력사항 -->
+<set name="itemHistory"   table="JUNC_SGI_ITEM_HISTORY"
+	     lazy="false" fetch="select"
+	     order-by="history_id"
+	    >
+	    <key>
+	        <column  name="item_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore" column="history_id"
+	        
+	         class="safety.renewal.sgi.item.SimpleItemHistory1" />
+	</set>
+	
+<!-- 수입량 -->	
+<list name="itemImport" table="ITEM_IMPORT" lazy="true" fetch="select">  
+     <key column="item_id"></key>  
+     <index column="id"></index>  
+     <one-to-many not-found="ignore" class="risk.item.importoutput.SimpleItemImport" />
+</list>  
+
+<!-- 생산량	 -->
+<list name="itemOutput" table="ITEM_OUTPUT" lazy="true" fetch="select" >
+	 <key column="item_id"></key>  
+     <index column="id"></index>  
+	<one-to-many not-found="ignore" class="risk.item.importoutput.SimpleItemOutput" />
+</list>
+
+</class>
+</hibernate-mapping>

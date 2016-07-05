@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="ORDERED_MEA_CLASS_NO2"  name="foreign.Mea_class_no_view2" 
+    > 
+    	<composite-id name="compositeKey"  
+	    class="foreign.MeaClassNoCompositeKey" 
+	    >
+		 <key-property name="mea_class_no" />
+		 <key-property name="grade"/>
+	</composite-id>
+	
+	<property name="mea_class_no" insert="false" update="false">
+	 <column name="mea_class_no" />
+	</property>
+	
+	<many-to-one name="gradeObj" lazy="false" not-found="ignore"
+	    class="foreign.SimpleForeignGrade" insert="false" update="false">
+	    <column name="grade"></column>
+	</many-to-one>
+	  
+	<property name="grade"  insert="false" update="false">
+	 <column name="grade"/>
+	</property>
+	
+	<property name="higher_class_no" >
+	 <column name="HIGHER_CLASS_NO"/>
+	</property>
+	<property name="higher_class_grade" >
+	 <column name="HIGHER_CLASS_GRADE"/>
+	</property>
+	<property name="class_level">
+	 <column name="CLASS_LEVEL"/>
+	</property>
+	<property name="class_kor_name">
+	 <column name="CLASS_KOR_NAME"/>
+	</property>
+	<property name="class_eng_name">
+	 <column name="CLASS_ENG_NAME"/>
+	</property>
+	<property name="class_cont">
+	 <column name="CLASS_CONT"/>
+	</property>
+	<property name="item_grp_code">
+	 <column name="ITEM_GRP_CODE"/>
+	</property>
+	<property name="regist_id">
+	 <column name="REGIST_ID"/>
+	</property>
+	
+	<property name="update_id">
+	 <column name="UPDATE_ID"/>
+	</property>
+	<property name="trace_manage_target_yn">
+	 <column name="TRACE_MANAGE_TARGET_YN"/>
+	</property>
+	<!-- regist_ts -->
+	<property name="regist_ts" >
+	 <column name="regist_ts"/>
+	</property>
+	<property name="use_yn" >
+	 <column name="USE_YN"/>
+	</property>
+	
+	<!-- 분류 ( 대분류, 중분류, 소분류) -->
+	<many-to-one name="meaClassNoLevel" update="false" insert="false" 
+	    fetch="join" outer-join="true"
+	    lazy="false" class="properties.SimpleMeaClassNoLevel">
+	    <column name="CLASS_LEVEL"></column>
+	</many-to-one>
+	
+	<!-- 코드 구분 (신코드, 구코드, 자료없음, etc.) -->
+	<property name="code_age_id">
+	    <column name="code_age"></column>
+	</property>
+	<many-to-one name="code_age" class="properties.item.SimpleItemCodeType"
+	    lazy="false" not-found="ignore" insert="false" update="false">
+	    <column name="code_age"></column>
+	</many-to-one>
+
+	<!-- 추적관리대상여부 -->
+	<many-to-one name="traceability" class="properties.item.SimpleTraceability"
+	    lazy="false" not-found="ignore">
+	    <column name="TRACEABILITY"></column>
+	</many-to-one>
+	
+	<!--  사용여부 -->
+	<many-to-one name="isInUse" class="properties.SimpleIsInUse"
+	    lazy="false" not-found="ignore">
+	    <column name="IS_IN_USE"></column>
+	</many-to-one>
+	
+	<!-- 이력현황 -->
+	<!--  -->
+	<set name="history" cascade="persist, delete-orphan" 
+	    fetch="select" order-by="history_id"
+	    lazy="false" table="JUNC_ITEM_HISTORY">
+	 	<key >
+			<column name="mea_class_no"></column>		
+			<column name="grade"></column>
+	 	</key>
+		<many-to-many not-found="ignore" class="properties.item.SimpleItemHistory"
+		    column="history_id"
+		    >
+		</many-to-many>	    
+	</set>	
+	
+</class> 
+ </hibernate-mapping>

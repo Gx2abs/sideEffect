@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="risk" classname="report" inheritanceid="" position="absolute 0 0 930 700" titletext="부작용 등 안전성정보  DB관리 시스템" onload="risk_onload" hotkey="S">
+    <Layouts>
+      <Layout>
+        <Div id="Div_condition" taborder="0" position2="absolute l:16 w:864 t:18 h:110" positiontype="position2" text="Div00">
+          <Layouts>
+            <Layout width="864" height="110">
+              <Static id="Static00" text="조회기간" position2="absolute l:241 w:91 t:72 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_fm_y" taborder="44" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:297 w:85 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+              <Static id="static_year" text="년" onclick="Div00_Static02_onclick" position2="absolute l:391 w:21 t:73 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_fm_m" taborder="45" displaynulltext="01" type="spin" dateformat="MM" editformat="MM" position2="absolute l:412 w:64 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+              <Static id="Static02" text="월 ~ " position2="absolute l:485 w:53 t:73 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_y" taborder="46" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:520 w:85 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+              <Static id="static_year00" text="년" onclick="Div00_Static02_onclick" position2="absolute l:614 w:21 t:73 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_m" taborder="47" displaynulltext="12" type="spin" dateformat="MM" editformat="MM" position2="absolute l:636 w:64 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+              <Static id="Static03" text="월 " position2="absolute l:708 w:28 t:73 h:22" positiontype="position2"/>
+              <Button id="btn_search" taborder="48" text="검색" onclick="Tab_item_tab_list_Div_condition_btn_search_onclick" position2="absolute l:746 w:47 t:12 h:31" positiontype="position2" style="color:mediumblue;font:굴림체,8,bold;"/>
+              <Button id="btn_excel" taborder="49" text="E" onclick="btn_excel_onclick" position2="absolute l:802 w:21 t:21 h:17" positiontype="position2"/>
+              <Button id="btn_print" taborder="50" text="P" onclick="btn_print_onclick" position2="absolute l:826 w:21 t:21 h:17" positiontype="position2"/>
+              <Static id="Static01" text="조회구분" position2="absolute l:13 w:68 t:73 h:22" positiontype="position2"/>
+              <ListBox id="ListBox01" taborder="51" position2="absolute l:68 w:105 t:-39 h:22" positiontype="position2"/>
+              <Combo id="Combo_reportType" taborder="52" innerdataset="@ds_ReportType" codecolumn="ID" datacolumn="NAME" position2="absolute l:67 w:156 t:67 h:22" positiontype="position2" style="font:굴림체,9,bold;"/>
+              <Static id="Static04" text="품목그룹" onclick="Div_condition_Static04_onclick" position2="absolute l:243 w:56 t:22 h:22" positiontype="position2"/>
+              <Combo id="Combo00" taborder="53" text="Combo00" position2="absolute l:298 w:254 t:21 h:20" positiontype="position2" codecolumn="codecolumn" datacolumn="datacolumn">
+                <Dataset id="innerdataset">
+                  <ColumnInfo>
+                    <Column id="codecolumn" size="256"/>
+                    <Column id="datacolumn" size="256"/>
+                  </ColumnInfo>
+                  <Rows>
+                    <Row>
+                      <Col id="codecolumn">주사기</Col>
+                      <Col id="datacolumn">주사기</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">인공유방</Col>
+                      <Col id="datacolumn">인공유방</Col>
+                    </Row>
+                    <Row>
+                      <Col id="codecolumn">기본그룹</Col>
+                      <Col id="datacolumn">기본그룹</Col>
+                    </Row>
+                  </Rows>
+                </Dataset>
+              </Combo>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Grid id="Grid00" taborder="1" useinputpanel="false" position2="absolute l:19 w:373 t:168 h:241" positiontype="position2" binddataset="Dataset01" cellclickbound="cell" scrollbars="none" selecttype="cell">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="90"/>
+                <Column size="70"/>
+                <Column size="70"/>
+                <Column size="70"/>
+                <Column size="70"/>
+              </Columns>
+              <Rows>
+                <Row size="30" band="head"/>
+                <Row size="42"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="구분"/>
+                <Cell col="1" text="1.경미"/>
+                <Cell col="2" text="2.중증"/>
+                <Cell col="3" text="3.심각"/>
+                <Cell col="4" text="4.사망"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:구분"/>
+                <Cell col="1" text="bind:경미"/>
+                <Cell col="2" text="bind:중증"/>
+                <Cell col="3" text="bind:심각"/>
+                <Cell col="4" text="bind:사망"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static_code_title" text="* 위험 매트릭스(Risk Matrix)" position2="absolute l:22 w:204 t:147 h:14" positiontype="position2" style="align:left middle;"/>
+        <Grid id="Grid01" taborder="2" useinputpanel="false" position2="absolute l:409 w:467 t:169 h:247" positiontype="position2" binddataset="Dataset00">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="79"/>
+                <Column size="88"/>
+                <Column size="70"/>
+                <Column size="223"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="구분"/>
+                <Cell col="1" text="분류"/>
+                <Cell col="2" text="범위"/>
+                <Cell col="3" text="비고"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:구분" suppress="1"/>
+                <Cell col="1" text="bind:분류"/>
+                <Cell col="2" text="bind:범위"/>
+                <Cell col="3" style="align:left;" text="bind:비고"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static_code_title00" text="* 점수범위" position2="absolute l:455 w:204 t:147 h:14" positiontype="position2" style="align:left middle;"/>
+        <Grid id="Grid02" taborder="3" useinputpanel="false" position2="absolute l:13 w:859 t:432 h:222" positiontype="position2" binddataset="Dataset02">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="43"/>
+                <Column size="129"/>
+                <Column size="280"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="No"/>
+                <Cell col="1" text="품목분류번호"/>
+                <Cell col="2" text="품목명"/>
+                <Cell col="3" text="등급"/>
+                <Cell col="4" text="보고건수"/>
+                <Cell col="5" text="의료기기"/>
+                <Cell col="6" text="환자문제"/>
+                <Cell col="7" text="구성요소"/>
+              </Band>
+              <Band id="body">
+                <Cell text="bind:No"/>
+                <Cell col="1" text="bind:품목분류번호"/>
+                <Cell col="2" text="bind:품목명"/>
+                <Cell col="3" text="bind:등급"/>
+                <Cell col="4" text="bind:보고건수"/>
+                <Cell col="5" text="bind:의료기기"/>
+                <Cell col="6" text="bind:환자문제"/>
+                <Cell col="7" text="bind:구성요소"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+      <Dataset id="ds_rmenu" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="id" type="STRING" size="10"/>
+          <Column id="name" type="STRING" size="20"/>
+          <Column id="level" type="INT" size="1"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="id">D</Col>
+            <Col id="name"> 내림차순</Col>
+            <Col id="level">0</Col>
+          </Row>
+          <Row>
+            <Col id="id">A</Col>
+            <Col id="name"> 오름차순</Col>
+            <Col id="level">0</Col>
+          </Row>
+          <Row>
+            <Col id="id">N</Col>
+            <Col id="name"> 초기화</Col>
+            <Col id="level">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_ReportType" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="string" size="900"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="NAME">최초보고</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="NAME">최종보고</Col>
+          </Row>
+          <Row>
+            <Col id="ID">3</Col>
+            <Col id="NAME">식약처보고</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_category" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ITEM_CATEGORY_ID" type="INT" size="10"/>
+          <Column id="MEA_CLASS_NO" type="STRING" size="255"/>
+          <Column id="MEA_GRADE" type="STRING" size="10"/>
+          <Column id="GET_SUM" type="INT" size="10"/>
+          <Column id="GET_SUM_M" type="INT" size="10"/>
+          <Column id="GET_SUM_P" type="INT" size="10"/>
+          <Column id="GET_SUM_C" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_list_size" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SIZE" type="STRING" size="10"/>
+          <Column id="ID" type="INT" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="SIZE">10</Col>
+            <Col id="ID">10</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">50</Col>
+            <Col id="ID">50</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">100</Col>
+            <Col id="ID">100</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">500</Col>
+            <Col id="ID">500</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">전체</Col>
+            <Col id="ID">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_matrix_list" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="NUM" type="int" size="10"/>
+          <Column id="ITEM_ID" type="INT" size="256"/>
+          <Column id="ITEM" type="STRING" size="255"/>
+          <Column id="ENTPNAME" type="STRING" size="500"/>
+          <Column id="FDACODE" type="STRING" size="10"/>
+          <Column id="FDASOURCE" type="STRING" size="500"/>
+          <Column id="REPORTDATE" type="STRING" size="255"/>
+          <Column id="VARCNT" type="INT" size="10"/>
+          <Column id="TOTALCNT" type="INT" size="10"/>
+          <Column id="POSSIBILITY" type="STRING" size="255"/>
+          <Column id="FRACTION" type="FLOAT" size="10"/>
+          <Column id="RISK" type="STRING" size="255"/>
+          <Column id="RISKNUM" type="INT" size="10"/>
+          <Column id="IMPORT" type="FLOAT" size="20"/>
+          <Column id="OUTPUT" type="FLOAT" size="20"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_version" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" keystring="S:-ID+CLASS_GB+CLASS_CODE">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="GROUP_ID" type="INT" size="10"/>
+          <Column id="REVISION_NAME" type="STRING" size="256"/>
+          <Column id="START_DATE" type="STRING" size="256"/>
+          <Column id="CLASS_GB" type="STRING" size="20"/>
+          <Column id="CLASS_CODE" type="INT" size="10"/>
+          <Column id="CLASS_NAME" type="STRING" size="256"/>
+          <Column id="LIMIT_FM" type="FLOAT" size="10"/>
+          <Column id="LIMIT_TO" type="FLOAT" size="10"/>
+          <Column id="NOTE" type="STRING" size="500"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">아주낮음</Col>
+            <Col id="LIMIT_FM">0</Col>
+            <Col id="LIMIT_TO">0.01</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">낮음</Col>
+            <Col id="LIMIT_FM">0.01</Col>
+            <Col id="LIMIT_TO">0.1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">보통</Col>
+            <Col id="LIMIT_FM">0.1</Col>
+            <Col id="LIMIT_TO">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">높음</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">5</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">허용불가 위험성</Col>
+            <Col id="LIMIT_FM">12</Col>
+            <Col id="LIMIT_TO">20</Col>
+            <Col id="NOTE">즉시 개선으로 원인 파악 등 자료 제출 요구 또는 필요시 검사 명령</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">중대한 위험성</Col>
+            <Col id="LIMIT_FM">8</Col>
+            <Col id="LIMIT_TO">10</Col>
+            <Col id="NOTE">지속 조치로서 차 년도 수거, 검사, 업체 감시 등 반영하고 주시적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">상당한 위험성</Col>
+            <Col id="LIMIT_FM">4</Col>
+            <Col id="LIMIT_TO">6</Col>
+            <Col id="NOTE">안전 정보 제공 및 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">경미한 위험성</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">3</Col>
+            <Col id="NOTE">현재 안전대책 유지</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">아주낮음</Col>
+            <Col id="LIMIT_FM">0</Col>
+            <Col id="LIMIT_TO">0.01</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">낮음</Col>
+            <Col id="LIMIT_FM">0.01</Col>
+            <Col id="LIMIT_TO">0.1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">보통</Col>
+            <Col id="LIMIT_FM">0.1</Col>
+            <Col id="LIMIT_TO">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">높음</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">5</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">5</Col>
+            <Col id="CLASS_NAME">아주높음</Col>
+            <Col id="LIMIT_FM">5</Col>
+            <Col id="LIMIT_TO">100</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">허용불가 위험성</Col>
+            <Col id="LIMIT_FM">12</Col>
+            <Col id="LIMIT_TO">20</Col>
+            <Col id="NOTE">즉시 개선으로 원인 파악 등 자료 제출 요구 또는 필요시 검사 명령</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">중대한 위험성</Col>
+            <Col id="LIMIT_FM">8</Col>
+            <Col id="LIMIT_TO">10</Col>
+            <Col id="NOTE">지속 조치로서 차 년도 수거, 검사, 업체 감시 등 반영하고 주시적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">상당한 위험성</Col>
+            <Col id="LIMIT_FM">4</Col>
+            <Col id="LIMIT_TO">6</Col>
+            <Col id="NOTE">안전 정보 제공 및 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">경미한 위험성</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">3</Col>
+            <Col id="NOTE">현재 안전대책 유지</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_matrix" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="NUM" type="INT" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+          <Column id="1" type="INT" size="256"/>
+          <Column id="2" type="INT" size="256"/>
+          <Column id="3" type="INT" size="256"/>
+          <Column id="4" type="INT" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="NUM">1</Col>
+            <Col id="1"/>
+            <Col id="NAME">아주낮음</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">2</Col>
+            <Col id="1"/>
+            <Col id="NAME">낮음</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">3</Col>
+            <Col id="1"/>
+            <Col id="NAME">보통</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">4</Col>
+            <Col id="1"/>
+            <Col id="NAME">높음</Col>
+            <Col id="3"/>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">5</Col>
+            <Col id="1"/>
+            <Col id="NAME">아주높음</Col>
+            <Col id="2">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_category_more" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ITEM_CATEGORY_ID" type="INT" size="10"/>
+          <Column id="MEA_CLASS_NO" type="STRING" size="255"/>
+          <Column id="MEA_GRADE" type="STRING" size="10"/>
+          <Column id="GET_SUM" type="INT" size="10"/>
+          <Column id="GET_SUM_M" type="INT" size="10"/>
+          <Column id="GET_SUM_P" type="INT" size="10"/>
+          <Column id="GET_SUM_C" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_selectData" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="FMDATE" type="STRING" size="256"/>
+          <Column id="TODATE" type="STRING" size="256"/>
+          <Column id="REPORTTYPE" type="STRING" size="256"/>
+          <Column id="CATEGORY_SEQ" type="INT" size="256"/>
+          <Column id="CODE_GB" type="STRING" size="256"/>
+          <Column id="VERSION_SEQ" type="INT" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_result" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" keystring="S:+NUM">
+        <ColumnInfo>
+          <Column id="NUM" type="INT" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+          <Column id="ID" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_item_view" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="품목명" type="STRING" size="500"/>
+          <Column id="품목분류번호" type="STRING" size="256"/>
+          <Column id="조회기간" type="STRING" size="256"/>
+          <Column id="부작용코드종류" type="STRING" size="256"/>
+          <Column id="부작용코드건수" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <Dataset id="Dataset00" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" keystring="S:+구분">
+        <ColumnInfo>
+          <Column id="구분" type="STRING" size="256"/>
+          <Column id="분류" type="STRING" size="256"/>
+          <Column id="범위" type="STRING" size="256"/>
+          <Column id="비고" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="구분">발생가능성</Col>
+            <Col id="분류">아주 낮음</Col>
+            <Col id="범위">0~0.01</Col>
+          </Row>
+          <Row>
+            <Col id="구분">발생가능성</Col>
+            <Col id="분류">낮음</Col>
+            <Col id="범위">0.01~0.1</Col>
+          </Row>
+          <Row>
+            <Col id="구분">발생가능성</Col>
+            <Col id="분류">보통</Col>
+            <Col id="범위">0.1~1</Col>
+          </Row>
+          <Row>
+            <Col id="구분">발생가능성</Col>
+            <Col id="분류">높음</Col>
+            <Col id="범위">1~5</Col>
+          </Row>
+          <Row>
+            <Col id="구분">발생가능성</Col>
+            <Col id="분류">아주 높음</Col>
+            <Col id="범위">5~100</Col>
+          </Row>
+          <Row>
+            <Col id="구분">위험도점수</Col>
+            <Col id="분류">경미한 위험</Col>
+            <Col id="범위">1~3</Col>
+            <Col id="비고">현재 안전 대책 유지</Col>
+          </Row>
+          <Row>
+            <Col id="구분">위험도점수</Col>
+            <Col id="분류">상당한 위험성</Col>
+            <Col id="범위">4~6</Col>
+            <Col id="비고">안전 정보 제공 및 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="구분">위험도점수</Col>
+            <Col id="분류">중대한 위험성</Col>
+            <Col id="범위">8~10</Col>
+            <Col id="비고">지속 조치로서 차년도 수거.검사, 업체 감시 등 반영하고 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="구분">위험도점수</Col>
+            <Col id="분류">허용불가 위험성</Col>
+            <Col id="범위">12~20</Col>
+            <Col id="비고">즉시 개선으로 원인 파악 등 자료 체출 요구 또는 필요시 검사 명령</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="Dataset01" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="구분" type="STRING" size="256"/>
+          <Column id="경미" type="STRING" size="256"/>
+          <Column id="중증" type="STRING" size="256"/>
+          <Column id="심각" type="STRING" size="256"/>
+          <Column id="사망" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="구분">1.아주낮음</Col>
+            <Col id="경미">0</Col>
+            <Col id="중증">42</Col>
+            <Col id="심각">0</Col>
+            <Col id="사망">0</Col>
+          </Row>
+          <Row>
+            <Col id="구분">2.낮음</Col>
+            <Col id="경미">150</Col>
+            <Col id="중증">232</Col>
+            <Col id="심각">0</Col>
+            <Col id="사망">0</Col>
+          </Row>
+          <Row>
+            <Col id="구분">3.보통</Col>
+            <Col id="경미">65</Col>
+            <Col id="중증">10</Col>
+            <Col id="심각">5</Col>
+            <Col id="사망">3</Col>
+          </Row>
+          <Row>
+            <Col id="구분">4.높음</Col>
+            <Col id="경미">0</Col>
+            <Col id="중증">0</Col>
+            <Col id="심각">0</Col>
+            <Col id="사망">0</Col>
+          </Row>
+          <Row>
+            <Col id="구분">5.아주높음</Col>
+            <Col id="경미">4</Col>
+            <Col id="중증">0</Col>
+            <Col id="심각">0</Col>
+            <Col id="사망">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="Dataset02" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="No" type="INT" size="256"/>
+          <Column id="품목분류번호" type="STRING" size="256"/>
+          <Column id="품목명" type="STRING" size="256"/>
+          <Column id="등급" type="INT" size="256"/>
+          <Column id="보고건수" type="INT" size="256"/>
+          <Column id="의료기기" type="INT" size="256"/>
+          <Column id="환자문제" type="INT" size="256"/>
+          <Column id="구성요소" type="INT" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="No">1</Col>
+            <Col id="품목분류번호">B04050.01</Col>
+            <Col id="품목명">실리콘막인공유방</Col>
+            <Col id="등급">4</Col>
+            <Col id="보고건수">127</Col>
+            <Col id="의료기기">63</Col>
+            <Col id="환자문제">27</Col>
+            <Col id="구성요소">37</Col>
+          </Row>
+          <Row>
+            <Col id="No">2</Col>
+            <Col id="품목분류번호">B04050.02</Col>
+            <Col id="품목명">실리콘겔인공유방</Col>
+            <Col id="등급">4</Col>
+            <Col id="보고건수">20</Col>
+            <Col id="의료기기">5</Col>
+            <Col id="환자문제">15</Col>
+            <Col id="구성요소">0</Col>
+          </Row>
+          <Row>
+            <Col id="No">3</Col>
+            <Col id="품목분류번호">B04050</Col>
+            <Col id="품목명">인공유방</Col>
+            <Col id="등급">4</Col>
+            <Col id="보고건수">3</Col>
+            <Col id="의료기기">3</Col>
+            <Col id="환자문제">0</Col>
+            <Col id="구성요소">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript4.0"><![CDATA[]]></Script>
+  </Form>
+</FDL>

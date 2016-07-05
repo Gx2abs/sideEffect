@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="system.log.SimpleSystemLog" table="SGI_SE_SYSTEM_LOG">
+	    <id name="id">
+	        <column name="id"></column>
+	        <generator class="sequence">
+	            <param name="sequence">SEQ_SYSTEM_LOG_PK</param>
+	        </generator>
+	    </id>
+	    <property name="logTime">
+	        <column name="log_time"></column>
+	    </property>
+	    <property name="requestURL">
+	        <column name="request_url"></column>
+	    </property>
+	    <property name="userId">
+	        <column name="user_id"></column>
+	    </property>
+	    <property name="queryString">
+	        <column name="query_string"></column>
+	    </property>
+	    <many-to-one name="member" class="member.SimpleMember" 
+	        insert="false" update="false" lazy="false" not-found="ignore">
+	        <column name="user_id" ></column>
+	    </many-to-one>
+	    
+	</class>
+</hibernate-mapping>

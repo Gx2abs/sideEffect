@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="junc_safety_reporter_types" name="safety.JuncSafetyReporterTypes"> 
+<id name="id" column="ID" >
+ <generator class="sequence"> 
+	  	<param name="sequence">JUNC_SAFETY_REPORTER_TYPES_ID_SEQ</param> 
+  </generator>
+</id>
+ 
+<property name="reporter_type" >
+ <column name="reporter_type"/>
+</property>
+<property name="safety_report" >
+ <column name="safety_report"/>
+</property>
+
+<property name="type" >
+ <column name="type"/>
+</property>
+
+</class> 
+</hibernate-mapping>

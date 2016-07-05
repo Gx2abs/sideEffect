@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="SGI_ITEM_LEVEL" name="safety.renewal.sgi.category.SimpleItemCategoryLevel">
+<id name="id" type="long">
+ <column name="id" />
+</id>
+
+<property name="propertyValue" type="string">
+ <column name="property_value" />
+</property>
+</class>
+</hibernate-mapping>

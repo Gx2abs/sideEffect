@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="web_html" classname="web_html" inheritanceid="" position="absolute 0 0 1021 493" titletext="New Form" onload="web_html_onload">
+    <Layouts>
+      <Layout>
+        <Button id="Button00" taborder="0" text="IE불러오기/폴더선택열기" position="absolute 35 32 184 95" onclick="Button00_onclick"/>
+        <ActiveX id="ActiveX00" position="absolute 228 24 1008 405" progid="shell.explorer.2" windowed="true" popupstyle="true"/>
+        <Button id="Button01" taborder="1" text="인쇄미리보기" position="absolute 31 103 183 150" onclick="Button01_onclick"/>
+        <Button id="Button02" taborder="2" text="페이지설정" position="absolute 31 159 183 206" onclick="Button02_onclick"/>
+        <Button id="Button03" taborder="3" text="인쇄하기(대화상자 표시)&quot; " position="absolute 31 215 183 262" onclick="Button03_onclick"/>
+        <Button id="Button04" taborder="4" text="인쇄 바로 하기" position="absolute 31 279 183 326" onclick="Button04_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript4.0"><![CDATA[
+function Button00_onclick(obj:Button,  e:ClickEventInfo)
+{
+	ActiveX00.ExecWB(true, true);
+}
+
+function web_html_onload(obj:Form, e:LoadEventInfo)
+{
+	ActiveX00.Navigate2("about:blank");	
+}
+
+function Button01_onclick(obj:Button,  e:ClickEventInfo)
+{
+	ActiveX00.ExecWB(7,true);
+}
+
+function Button02_onclick(obj:Button,  e:ClickEventInfo)
+{
+	ActiveX00.ExecWB(8,true);
+}
+
+function Button03_onclick(obj:Button,  e:ClickEventInfo)
+{
+	ActiveX00.ExecWB(6,true);
+}
+
+function Button04_onclick(obj:Button,  e:ClickEventInfo)
+{
+	ActiveX00.ExecWB(6,false);
+}
+]]></Script>
+  </Form>
+</FDL>

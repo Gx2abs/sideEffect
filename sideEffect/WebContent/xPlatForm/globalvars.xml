@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GlobalVariables>
+  <Variable id="gVpopName"/>
+  <Variable id="gVfmDate"/>
+  <Variable id="gVtoDate"/>
+  <Variable id="gVReportType"/>
+  <Variable id="gVcodeArr"/>
+  <Variable id="gvSc_0"/>
+  <Variable id="gvSv_0"/>
+  <Variable id="gvLogicalOperator_0"/>
+  <Variable id="gvPrivilegeId"/>
+  <Variable id="gVcodeName"/>
+  <Variable id="gVitemSeq"/>
+  <Variable id="gVReporterTypes"/>
+</GlobalVariables>

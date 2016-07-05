@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="ITEM_CATEGORY_GROUP_HISTORY" name="risk.category.SimpleItemCategoryGroupHistory" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">ITEM_CATEGORY_GROUP_HISTORY_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="activeFrom">
+		 	<column name="active_from"/>
+		</property>
+		
+		<property name="historyType">
+		 	<column name="history_type"/>
+		</property>
+		
+		<property name="historyDescription">
+		 	<column name="history_description"/>
+		</property>
+		
+		<property name="manager">
+		 	<column name="manager"/>
+		</property>
+		
+		<property name="lastModified">
+		 	<column name="last_modified"/>
+		</property>
+		
+	</class> 
+</hibernate-mapping>

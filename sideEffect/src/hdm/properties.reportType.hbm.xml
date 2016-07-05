@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="country_reported_in"  name="properties.report.type.SimpleReportType"
+	select-before-update="true"> 
+<id name="id" type="long">
+ <column name="id" />
+  <generator class="sequence">
+				<param name="sequence">REPORT_TYPE_ID_SEQ</param>
+			</generator> 
+</id>
+
+	<property name="isInUse" type="int">
+		<column name="default_in_use_id"></column>
+	</property>
+	<property name="propertyValue">
+		<column name="property_value"></column>
+	</property>
+
+	<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+	</many-to-one>
+	<set name="reportTypeHistory"   table="JUNC_REPORT_TYPE_HISTORY"
+	     lazy="false" fetch="select"  cascade="delete, delete-orphan" order-by="id"
+	    >
+	    <key   >
+	        <column  name="report_type_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore" column="history_id"
+	        
+	         class="properties.report.type.SimpleReportTypeHistory" />
+	</set>
+</class>
+</hibernate-mapping>

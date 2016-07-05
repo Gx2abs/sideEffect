@@ -1,0 +1,2343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Script type="xscript4.0"><![CDATA[/*******************************************************************
+*
+* XPLATFORM -> HTML 변환 후 MLReport에 전달하여 출력하기 위한 공통 함수 제공
+*
+* 사용법
+*   0. MLReport 설치 후, MLReport OCX 추가. id를 "objMLReport"로 지정하고 visible=false처리
+*        <ActiveX id="objMLReport" visible="false" position="absolute 26 8 110 22" progid="{77AB1CE3-41B3-49B5-8836-1FBC07FE452D}"/>
+*   1. 변환을 원하는 폼에 xjs include : FRMWRK0.xfdl에서 include 처리함
+*        include "lib::COMHTML.xjs";		// From Resize
+*   2. 변환 대상이 아닌 컴포넌트에 "printyn" user property 추가
+*        printyn="no", visible="false" 인 경우 변환 대상에서 제외됨
+*   3. 변환을 위해 제공한 함수 호출. gf_print_mlreport 함수에 this 라는 출력 대상 폼을 전달
+*        gf_print_mlreport( this );
+*
+* 주의사항
+*   * gf_print_mlreport 함수 이외의 모든 함수는 직접 호출 대상이 아닌
+*      변환을 위한 작업 함수로 호출 금지
+*      요구사항 변경이나, 성능 개선 등의 이유로 변경 가능한 함수들임
+*
+* 제약사항
+*		* gradation background color 지원 불가함 단색만 지정 가능
+*		* 투명이미지 사용 불가. HTML 변환과는 무관하나 MLReport에서 지원 불가능
+*		* div나 tab에 연결될 목적으로 만든 form에서 top 좌표가 음수 값인 경우 그대로 변환되므로 visible=false처리 또는 printyn="no" 처리
+*		* 컴포넌트 배치 시 눈에 보이지 않는 div나 static 의 겹치는 부분이 그대로 변환되므로 가급적 보기 좋게 배치하면서 개발
+*		* usercomponent 사용 불가
+*		* listbox 사용 시 스크롤에 대한 요건이 없음으로 그대로 표시
+*		* textarea 사용 시 스크롤에 대한 요건이 없음으로 그대로 표시
+*       * static 사용 시 font 크기에 따른 줄바 꿈이 일어날 수 있으므로 오른쪽 여백을 여유있게 지정
+*		* grid 다중 포맷 지원 불가
+*		* grid 컬럼 정보 동적 변경 기능 지원 불가
+*		* grid summary 컬럼 테스트 되지 않음
+*		* grid header row height 지정 시 실제 표시되어야 할 사이즈를 design time에 지정 필요 (UXStudio에서 미리 지정해야 함)
+*		* grid body row가 여러 줄인 경우 동일한 height 지정 ( 성능향상을위해 일괄처리하기 위함으로 다르게 지정할 경우 겹칠 수 있음 )
+*		* grid 작업 시 disyplaytype, wordwrap 지정 필요 ( 사이즈 계산에 영향을 주므로 보이는 그대로 변환 될수 있게 디자인 필요함 )
+*		* 페이징 처리 시 잘림 현상 없이 헤더를 반복해서 주고자 하는 경우 grid를 이용하여야함 ( mlreport에서 table에만 옵션을 줄수 있음 )
+*		*
+*
+* 변환 방식 설명
+*   * gf_print_mlreport 함수는 fn_make_html 함수를 이용하여 html 문서를 생성하고 mlreport에 생성된 문서를 넘기는 역할 담당
+*   * fn_make_html 함수에서는
+*       1) 폼의 컴포넌트 정보들을 수집하여 데이터셋에 저장하고 변경해야할 좌표 계산
+*          ( div나 tab을 만나는 경우 재귀호출 방식으로 데이터셋을 계속 추가함 )
+*       2) HTML 태그 생성에 필요한 정보를 담고 있는 데이터셋을 이용하여 HTML 태그를 생성
+*          ( div나 tab을 만나는 경우 재귀호출 방식으로 HTML 태그를 생성함 )
+*
+*******************************************************************/
+
+var v_i_mainform = null;               //인쇄대상 form 저장
+var v_i_comp_top = -1;                 //top좌표 계산을 위한 작업용 변수
+var v_i_page_width = 740;              //인쇄페이지 width
+var v_i_default_top_margin = 10;       //최소 top margine
+var v_i_default_bottom_margin = 5;     //최소 bottom margine : div,tab 페이지도 적용됨
+var v_i_default_row_height = 25;       //최소 row height
+var v_i_default_btn_height = 25;       //최소 버튼 height
+var v_i_default_btn_width = 82;        //최소 버튼 width
+var v_i_default_tabbtn_height = 25;    //최소 탭버튼 height
+var v_i_default_tabbtn_width = 150;    //최소 탭버튼 width
+var v_i_default_vspace = 10;           //세로여백
+var v_i_default_hspace = 3;            //가로여백
+var v_i_font_px = 0;                   //폰트 크기
+var v_i_dslist = "";                   //변환시 사용되는 데이타셋 목록
+
+//var v_i_image_url = "http://127.0.0.1:8088/xxxx/xui/";
+                                       //이미지저장경로
+var v_i_image_url = "http://127.0.0.1:8080/xp/xxxx/";
+//var v_i_image_url = "http://172.10.11.97:8080/xp/nice/";
+//var v_i_image_url = "http://192.168.0.193:8080/xp/nice/";
+
+var objDate;
+var buf = new Buffer();
+
+
+/*
+인쇄메인함수.
+인쇄버튼 클릭시 호출한다.
+XPLATFORM화면을 HTML 문서로 생성하여 저장하고 MLReport 출력 함수를 호출한다.
+*/
+function gf_print_mlreport( objForm )
+{
+	if ( undefined <> objForm && null <> objForm )
+	{
+		//------------------------------------
+		//html 변환 함수 호출
+		//------------------------------------
+		fn_make_html(objForm);
+
+		//------------------------------------
+		//html 변환결과문서로딩
+		//------------------------------------
+		var VirtualFile00 = new VirtualFile();
+		var bSuccess;
+		bSuccess = VirtualFile00.open("print.html", VirtualFile.openRead | VirtualFile.openText );
+
+		if( bSuccess )
+			dialog("PreView","statisticsItem::Sample2.xfdl",this.getOwnerFrame(),"","",-1,-1);
+	}
+	else{
+		alert("변환할 내용이 없습니다.");
+	}
+
+}
+
+/*
+html 생성 메인 함수
+form 정보를 읽어 데이터셋에 저장 한 후, 데이터셋 정보를 이용하여 html 태그를 생성하고 저장한다.
+*/
+function fn_make_html( objForm )
+{
+
+objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::start');
+
+	var ds_comp = null;
+	v_i_mainform = objForm;
+
+	//-----------------------------------------------------------------------
+	// xchart 및 imageviewer 변환을 위한 ImageViewer 생성
+	//-----------------------------------------------------------------------
+	// Create Object
+	var objImageViewer = new ImageViewer();
+	objImageViewer.init("ImageViewer", 0, 0, 10, 10);
+	// Add Object to Parent Form
+	this.addChild("__htmlimageviewer", objImageViewer);
+	objImageViewer.printyn="no";
+	// Show Object
+	objImageViewer.show();
+
+	//-----------------------------------------------------------------------
+	// grid 변환을 위한 Grid 생성
+	//-----------------------------------------------------------------------
+	// Create Object
+	var objGridforWidth = new Grid();
+	objGridforWidth.init("objGridforWidth", 0, 0, 900, 30);
+	objGridforWidth.visible = true;
+	// Add Object to Parent Form
+	this.addChild("__gridforwidth", objGridforWidth);
+	objGridforWidth.printyn="no";
+	// Show Object
+	objGridforWidth.show();
+
+	//-----------------------------------------------------------------------
+	// form 정보를 담고 있는 데이터셋 초기화
+	//-----------------------------------------------------------------------
+	var v_arr_dslist = null;
+	if ( "" != v_i_dslist )
+	{
+		v_arr_dslist = v_i_dslist.split(",");
+		for ( var icnt = 1; icnt < v_arr_dslist.length; icnt++ )
+		{
+			v_i_mainform.removeChild(v_arr_dslist[icnt-1]);
+		}
+		v_i_dslist = "";
+	}
+
+	//-----------------------------------------------------------------------
+	// form 정보 생성
+	//-----------------------------------------------------------------------
+	fn_check_comp( objForm,"this",objForm.name );
+
+objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::fn_check_comp complete...');
+
+	//-----------------------------------------------------------------------
+	// html 파일 생성 및 저장
+	//-----------------------------------------------------------------------
+	buf.clear();
+	buf.appendUTF8( '' );
+	buf.appendUTF8( '<HTML>\n' );
+	buf.appendUTF8( '<PAPER orientation="Portrait" n_up="1" size="A4">\n' );
+	buf.appendUTF8( '<HEAD>\n' );
+	buf.appendUTF8( '<META http-equiv="Content-Type" content="text/html; charset=utf-8">\n' );
+					fn_generateHEAD();
+	buf.appendUTF8( '</HEAD>\n\n' );
+	buf.appendUTF8( '<BODY id="body" width="'+(v_i_page_width)+'" align="center">\n' );
+	buf.appendUTF8( '<page ' );
+	buf.appendUTF8( 	'marginbottom="25mm" marginleft="25mm" marginright="25mm" margintop="30mm" ' );
+	buf.appendUTF8( 	'borderwidth="0" bordercolor="#004080" bordermargin="0mm" ' );
+	buf.appendUTF8( 	'Optimizewidth="resize" OptimizeHeight="turn">\n' );
+	buf.appendUTF8( '<HEADER margin="10">\n' );
+	buf.appendUTF8( '<!--HEADER...-->\n' );
+	buf.appendUTF8( '</HEADER>\n' );
+	buf.appendUTF8( '<FOOTER margin="10">\n' );
+	buf.appendUTF8( '<!--FOOTER...' );
+	buf.appendUTF8( '<center><pagenum>/<totalpage></center>-->\n' );
+	buf.appendUTF8( '</FOOTER>\n' );
+	buf.appendUTF8( '<center>\n' );
+				fn_generateBODY( "ds_comp_"+objForm.name, objForm );
+	buf.appendUTF8( '\n</center>\n' );
+	buf.appendUTF8( '\n</BODY>\n\n' );
+	buf.appendUTF8( '</HTML>\n' );
+	fn_save_html(  );
+	buf.clear();
+
+	//-----------------------------------------------------------------------
+	// xchart 및 imageviewer 변환을 위한 ImageViewer 제거
+	//-----------------------------------------------------------------------
+	// Remove Object form Parent Form
+	v_i_mainform.removeChild("__htmlimageviewer");
+	// Destroy Object
+	objImageViewer.destroy();
+	objImageViewer = null;
+
+	//-----------------------------------------------------------------------
+	// grid 변환을 위한 Grid 제거
+	//-----------------------------------------------------------------------
+	// Remove Object form Parent Form
+	v_i_mainform.removeChild("__gridforwidth");
+	// Destroy Object
+	objGridforWidth.destroy();
+	objGridforWidth = null;
+
+objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::end');
+
+}
+
+/*
+component 정보 저장 함수
+form의 component 정보를 읽어 height, top 을 계산하여 저장한다.
+*/
+function fn_check_comp( objOwnerForm,strFormPath,strFormName )
+{
+	//if (objOwnerForm = "Grid"){
+	//	strFormPath = this;
+	//	strFormName = "this_Tab_item_0_tab_list";
+	//}
+	
+	//alert("objOwnerForm "+ objOwnerForm)
+	//alert("strFormPath "+ strFormPath)
+	//alert("strFormName "+ strFormName)
+	//-----------------------------------------------------------------------
+	//컴포넌트 정보를 포함하는 데이터셋 생성 및 준비
+	//-----------------------------------------------------------------------
+	var ds_comp = null;
+	alert(strFormName);
+	var strdsname = "ds_comp_"+strFormName;
+//trace(strdsname);
+	if ( v_i_mainform.isValidObject( strdsname ) )
+	{
+		ds_comp = eval( strdsname );
+		ds_comp.deleteAll();
+	}
+	else
+	{
+		ds_comp = new Dataset;
+		ds_comp.name = strdsname;
+		this.addChild( strdsname, ds_comp );
+		v_i_dslist += strdsname + ",";
+		// component 기본정보 컬럼 생성
+		ds_comp.addColumn( "compno", "int" );
+		ds_comp.addColumn( "compid", "string" );
+		ds_comp.addColumn( "comppath", "string" );
+		ds_comp.addColumn( "comptype", "string" );
+		ds_comp.addColumn( "comptoporder", "int" );
+		ds_comp.addColumn( "compbasetop", "int" );
+		// component 좌표 정보 컬럼 생성
+		ds_comp.addColumn( "comptop", "int" );
+		ds_comp.addColumn( "compleft", "int" );
+		ds_comp.addColumn( "compbottom", "int" );
+		ds_comp.addColumn( "compright", "int" );
+		ds_comp.addColumn( "compwidth", "int" );
+		ds_comp.addColumn( "compheight", "int" );
+		// component 좌표 보정 정보 컬럼 생성
+		ds_comp.addColumn( "comporgtop", "int" );
+		ds_comp.addColumn( "comporgleft", "int" );
+		ds_comp.addColumn( "comporgbottom", "int" );
+		ds_comp.addColumn( "comporgright", "int" );
+		ds_comp.addColumn( "comporgwidth", "int" );
+		ds_comp.addColumn( "comporgheight", "int" );
+		// 하위 component를 갖는 div,tab component를 위한 정보 컬럼 생성
+		ds_comp.addColumn( "compsubdsname", "string" );
+		ds_comp.addColumn( "comptabdsname", "string" );
+		ds_comp.addColumn( "comptabheight", "string" );
+
+		ds_comp.addColumn( "compimgpath", "int" );
+
+	}
+
+
+	//-----------------------------------------------------------------------
+	//해당 폼이 포함하고 있는 컴포넌트 정보를 읽어서 데이터셋에 저장
+	//-----------------------------------------------------------------------
+	var objcomponents = objOwnerForm.components;
+	//alert("objcomponents "+ objcomponents)
+	var irownum = -1;
+	var strcomptype = "";
+	var icompheight = -1;
+	var strSubFormName = "";
+	var strtotheight = 0;
+	var strtabdsname = "";//comptabdsname
+	for ( var icnt = 0; icnt < objcomponents.length; icnt++ )
+	{
+		//if ( objcomponents[icnt].visible && "no" <> objcomponents[icnt].printyn && 0 <= objcomponents[icnt].position.y )
+		if ( objcomponents[icnt].visible && "no" <> objcomponents[icnt].printyn )
+		{
+			//
+			irownum = ds_comp.findRowExpr( "comptop>"+objcomponents[icnt].position.y );
+			if ( 0 > irownum )
+			{
+				irownum = ds_comp.rowcount;
+			}
+			else
+			{
+				irownum = irownum;
+			}
+			strcomptype = objcomponents[icnt].toString().toLowerCase();
+			strcomptype = strcomptype.replace( "[object ","" ).replace( "]","" ); 
+			
+			ds_comp.insertRow( irownum );
+
+			ds_comp.setColumn( irownum,"compno",icnt );
+			ds_comp.setColumn( irownum,"compid",objcomponents[icnt].name );
+			ds_comp.setColumn( irownum,"comppath",strFormPath );
+			ds_comp.setColumn( irownum,"comptype",strcomptype );
+			ds_comp.setColumn( irownum,"compbasetop",0 );
+
+			ds_comp.setColumn( irownum,"comporgtop",objcomponents[icnt].position.y );
+			ds_comp.setColumn( irownum,"comporgleft",objcomponents[icnt].position.x );
+			ds_comp.setColumn( irownum,"comporgbottom",objcomponents[icnt].position.bottom );
+			ds_comp.setColumn( irownum,"comporgright",objcomponents[icnt].position.right );
+			ds_comp.setColumn( irownum,"comporgheight",objcomponents[icnt].position.height );
+			ds_comp.setColumn( irownum,"comporgwidth",objcomponents[icnt].position.width );
+
+			ds_comp.setColumn( irownum,"comptabheight","0" );
+			ds_comp.setColumn( irownum,"compsubdsname","none" );
+
+			//실제표시높이계산
+			if ( "grid" == strcomptype )
+			{
+				//icompheight = objcomponents[icnt].getRealRowFullSize("head");
+				//trace( "icompheight:01:" + icompheight );
+				//for ( var jcnt = 0; jcnt < (objcomponents[icnt].rowcount); jcnt++ )
+				//{
+				//	icompheight += objcomponents[icnt].getRealRowSize(jcnt)+0;
+				//}
+				//trace( "icompheight:02:" + icompheight );
+				//icompheight = objcomponents[icnt].getRealRowFullSize()+(objcomponents[icnt].rowcount*2)+2;
+				icompheight = objcomponents[icnt].getRealRowFullSize();
+				//trace( "icompheight:03:" + icompheight );
+				if ( icompheight < objcomponents[icnt].position.height )
+				{
+					icompheight = objcomponents[icnt].position.height+0;
+				}
+				else
+				{
+					icompheight = icompheight + 3;
+				}
+				//trace( "icompheight:04:" + icompheight );
+			}
+			else if ( "tab" == strcomptype )
+			{
+				//call this method
+				icompheight = 0;
+				strtotheight = "";
+				strtabdsname = "";//comptabdsname
+				
+				alert("탭이다  : " + objcomponents[icnt].tabpages.length);
+				
+				for ( var jcnt = 0; jcnt < objcomponents[icnt].tabpages.length; jcnt++ )
+				{
+					objcomponents[icnt].tabindex = jcnt;
+					alert("탭이다ㄴ : " + objcomponents[icnt].tabindex);
+					icompheight += v_i_default_tabbtn_height;
+					strSubFormName = strFormPath.replace(".","_")+"_"+objcomponents[icnt].name+"_"+jcnt+"_"+objcomponents[icnt].tabpages[jcnt].name;
+					fn_check_comp( objcomponents[icnt].tabpages[jcnt],
+									strFormPath + "." + objcomponents[icnt].name + "." + objcomponents[icnt].tabpages[jcnt].name,
+									strSubFormName );
+					//trace( "tab:"+jcnt+":"+objcomponents[icnt].tabpages[jcnt].myheight+":"+objcomponents[icnt].position.height );
+					icompheight += toNumber(objcomponents[icnt].tabpages[jcnt].myheight);
+					strtotheight += ","+objcomponents[icnt].tabpages[jcnt].myheight;
+					strtabdsname += "ds_comp_"+strSubFormName + ",";//comptabdsname
+				}
+				ds_comp.setColumn( irownum,"compsubdsname",strtabdsname );
+				ds_comp.setColumn( irownum,"comptabheight",strtotheight.substr(1) );
+				icompheight += 5;
+				objcomponents[icnt].tabindex = 0;
+			}
+			else if ( "div" == strcomptype )
+			{
+				icompheight = 0;
+				strSubFormName = strFormPath.replace(".","_")+"_"+objcomponents[icnt].name;
+				//call this method
+				fn_check_comp( objcomponents[icnt],
+								strFormPath + "." + objcomponents[icnt].name,
+								strSubFormName );
+				//trace( objcomponents[icnt].myheight+":"+objcomponents[icnt].position.height );
+				icompheight = objcomponents[icnt].myheight;
+
+				ds_comp.setColumn( irownum,"compsubdsname","ds_comp_"+strSubFormName );
+			}
+			else
+			{
+				icompheight = objcomponents[icnt].position.height;
+			}
+
+			ds_comp.setColumn( irownum,"comptop",objcomponents[icnt].position.y );
+			ds_comp.setColumn( irownum,"compleft",objcomponents[icnt].position.x );
+			//ds_comp.setColumn( irownum,"compbottom",( objcomponents[icnt].position.bottom ) );
+			ds_comp.setColumn( irownum,"compbottom",( objcomponents[icnt].position.y + icompheight ) );
+			ds_comp.setColumn( irownum,"compright",objcomponents[icnt].position.right );
+			ds_comp.setColumn( irownum,"compheight",icompheight );
+			ds_comp.setColumn( irownum,"compwidth",objcomponents[icnt].position.width );
+
+			ds_comp.setColumn( irownum,"compimgpath","" );
+
+		}
+	}
+
+
+	//-----------------------------------------------------------------------
+	//TOP 좌표 계산을 위한 기준(level) 설정
+	//-----------------------------------------------------------------------
+	var icomptoporder = 0;
+	ds_comp.setColumn( 0,"comptoporder",icomptoporder );
+	for ( var icnt = 1; icnt < ds_comp.rowcount; icnt++ )
+	{
+		icomptoporder = ds_comp.getColumn( icnt-1,"comptoporder");
+		if ( ds_comp.getColumn( icnt,"comptop" )
+				< ds_comp.getCaseMax('comptoporder=='+icomptoporder,'comporgbottom' ) )
+		{
+			ds_comp.setColumn( icnt,"comptoporder",ds_comp.getColumn( icnt-1,"comptoporder" ) );
+		}
+		else
+		{
+			ds_comp.setColumn( icnt,"comptoporder",ds_comp.getColumn( icnt-1,"comptoporder" ) + 1 );
+		}
+	}
+
+
+	//-----------------------------------------------------------------------
+	//계산되어 저장된 높이 정보를 이용하여 TOP 좌표 갱신
+	//-----------------------------------------------------------------------
+	var iplusvalue = 0;
+	var imaxlevel = ds_comp.getColumn( ds_comp.rowcount-1,"comptoporder" );
+	var itmprow = -1;
+	var itmprow2 = -1;
+	var itmpheight2 = -1;
+	var ibasetop = 0;
+	ds_comp.filter("comptoporder == '0'");
+	if ( 'this' == strFormPath )
+	{	//상단 여백 조정
+		if ( v_i_default_top_margin < ds_comp.getMin("comptop") )
+		{ibasetop = ds_comp.getMin("comptop")-v_i_default_top_margin;}
+	}
+	else
+	{ibasetop = 0;}
+	ds_comp.filter("");
+
+	for ( var icnt = 0; icnt <= imaxlevel; icnt++ )
+	{
+		itmprow = -1;
+		ds_comp.filter("comptoporder == '"+icnt+"'");
+//trace("icnt--------------------------:"+icnt+":"+ds_comp.rowcount+":건:"+ds_comp.name);
+		ds_comp.keystring.current = "S:+comptoporder+comptop";
+		for ( var jcnt = 0; jcnt < ds_comp.rowcount; jcnt++ )
+		{
+			ds_comp.setColumn( jcnt,"comptop", ( ds_comp.getColumn( jcnt,"comptop" ) + iplusvalue - ibasetop ) );
+			ds_comp.setColumn( jcnt,"compbottom",( ds_comp.getColumn( jcnt,"comptop" ) + ds_comp.getColumn( jcnt,"compheight" ) ) );
+		//trace( ds_comp.getColumn( jcnt,"compid" ) +":"+ ds_comp.getColumn( jcnt,"comptop" ) +":"+ ds_comp.getColumn( jcnt,"compheight" ) +":"+ ds_comp.getColumn( jcnt,"comporgheight" ) +":"+ ds_comp.getColumn( jcnt,"compbottom" ) );
+		}
+		for ( var jcnt = 0; jcnt < ds_comp.rowcount; jcnt++ )
+		{
+			//grid,div,tab인 경우 같은 top 중 길이가 가장 긴 것을 기준으로
+			//높이가 늘어난 만큼 그 아래에 위치한 모든 컴포넌트 top을 높인다.
+			itmprow2 = 0;
+			itmpheight2 = 0;
+			if ( "grid" == ds_comp.getColumn( jcnt,"comptype" )
+				|| "div" == ds_comp.getColumn( jcnt,"comptype" )
+				|| "tab" == ds_comp.getColumn( jcnt,"comptype" )
+				)
+			{
+				itmprow2 = jcnt;
+				itmpheight2 = ds_comp.getColumn( jcnt,"compheight" );
+				if ( 1 < ds_comp.getCaseCount( "comptop=="+ds_comp.getColumn( jcnt,"comptop" ) ) )
+				{
+					for ( var kcnt = jcnt+1; kcnt < ds_comp.rowcount; kcnt++ )
+					{
+						if ( ds_comp.getColumn( jcnt,"comptop" ) == ds_comp.getColumn( kcnt,"comptop" )
+							&& itmpheight2 < ds_comp.getColumn( kcnt,"compheight" ) )
+						{
+							itmprow2 = kcnt;
+							itmpheight2 = ds_comp.getColumn( kcnt,"compheight" );
+						}
+					}
+					jcnt = jcnt + ds_comp.getCaseCount( "comptop=="+ds_comp.getColumn( jcnt,"comptop" ) ) -1;
+				}
+				for ( var kcnt = jcnt+1; kcnt < ds_comp.rowcount; kcnt++ )
+				{
+					if ( ds_comp.getColumn( jcnt,"comptop" ) < ds_comp.getColumn( kcnt,"comptop" ) )
+					{
+						ds_comp.setColumn( kcnt,"comptop", ( ds_comp.getColumn( kcnt,"comptop" ) + ds_comp.getColumn( itmprow2,"compheight" ) - ds_comp.getColumn( itmprow2,"comporgheight" ) ) );
+						ds_comp.setColumn( kcnt,"compbottom",( ds_comp.getColumn( kcnt,"comptop" ) + ds_comp.getColumn( kcnt,"compheight" ) ) );
+					//trace( ds_comp.getColumn( kcnt,"compid" ) +":"+ ds_comp.getColumn( kcnt,"comptop" ) +":"+ ds_comp.getColumn( kcnt,"compheight" ) +":"+ ds_comp.getColumn( kcnt,"comporgheight" ) +":"+ ds_comp.getColumn( kcnt,"compbottom" ) );
+					}
+				}
+			}
+		}
+//trace("iplusvalue1:"+iplusvalue);
+		iplusvalue = iplusvalue + ( ds_comp.getCaseMax( "comptoporder == '"+icnt+"'","compbottom" ) );
+		iplusvalue = iplusvalue - ( ds_comp.getCaseMax( "comptoporder == '"+icnt+"'","comporgbottom" ) );
+//trace("iplusvalue2:"+iplusvalue);
+		iplusvalue = iplusvalue + ( ds_comp.getCaseMin( "comptoporder == '"+icnt+"'","comporgtop" ) );
+		iplusvalue = iplusvalue - ( ds_comp.getCaseMin( "comptoporder == '"+icnt+"'","comptop" ) );
+//trace("iplusvalue3:"+iplusvalue);
+
+		//ds_comp.filter("");
+	}//for ( var icnt = 0; icnt <= imaxlevel; icnt++ )
+
+	ds_comp.filter("");
+
+//if ( "ds_comp_this_div_work" == strdsname )
+//{
+//trace( ds_comp.saveXML() );
+//}
+
+
+	//-----------------------------------------------------------------------
+	//늘어난 height에 맞게 parent.height 조정
+	//-----------------------------------------------------------------------
+	var strfromtype = objOwnerForm.toString().toLowerCase().replace( "[object ","" ).replace( "]","" );
+	if ( "tabpage" == strfromtype )
+	{
+		objOwnerForm.myheight = objOwnerForm.parent.position.height;
+		if ( objOwnerForm.parent.position.height < ds_comp.getMax( "compbottom" ) )
+		{
+			objOwnerForm.myheight = ( ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin );
+			objOwnerForm.myheight += v_i_default_tabbtn_height;
+		}
+		else if ( objOwnerForm.parent.position.height < ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin )
+		{
+			objOwnerForm.myheight = ( ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin );
+			objOwnerForm.myheight += v_i_default_tabbtn_height;
+		}
+		else if ( objOwnerForm.parent.position.height >= ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin )
+		{
+			objOwnerForm.myheight = ( ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin*2 );
+			objOwnerForm.myheight += v_i_default_tabbtn_height;
+		}
+	}
+	else if ( "div" == strfromtype )
+	{
+		objOwnerForm.myheight = objOwnerForm.position.height;
+		if ( objOwnerForm.position.height < ds_comp.getMax( "compbottom" ) )
+		{
+			objOwnerForm.myheight = ( ds_comp.getMax( "compbottom" ) + v_i_default_bottom_margin );
+		}
+	}
+
+//trace("fn_check_comp:::"+ds_comp.name+"::"+ds_comp.rowcount);
+//trace( ds_comp.saveXML() );
+
+}
+
+
+
+/*
+HTML 태그 생성 함수 - table 줄바꿈 시작
+*/
+function fn_makerowtab_s(  )
+{
+
+//trace("stype_s:"+stype);
+	{
+		buf.appendUTF8( '\n' );
+		buf.appendUTF8( '	<tr>\n' );
+		buf.appendUTF8( '		<td>\n' );
+	}
+
+}
+/*
+HTML 태그 생성 함수 - table 줄바꿈 종료
+*/
+function fn_makerowtab_e(  )
+{
+
+//trace("stype_e:"+stype);
+	{
+		buf.appendUTF8( '		</td>\n' );
+		buf.appendUTF8( '	</tr>\n' );
+		buf.appendUTF8( '\n' );
+	}
+
+}
+
+/*
+HTML 태그 생성 함수 - HEAD 부분 생성
+*/
+function fn_generateHEAD()
+{
+	buf.appendUTF8( '' );
+	buf.appendUTF8( '\n' );
+}
+
+/*
+HTML 태그 생성 함수 - BODY 부분 생성
+component별 태그 생성 함수를 호출한다.
+*/
+function fn_generateBODY( dsfrmcompname, objForm )
+{
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트 수 확인
+	//-----------------------------------------------------------------------
+	var dsfrmcomp = eval(dsfrmcompname);
+	if ( 0 >= dsfrmcomp.rowcount )
+	{
+		return "";
+	}
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트 순서 정렬 - top>left 순으로 정렬
+	//-----------------------------------------------------------------------
+	//dsfrmcomp.keystring.current = "S:+comptoporder+compno";
+	dsfrmcomp.keystring.current = "S:+comptoporder+comptop+compleft";
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트별 태그 생성 함수 호출
+	//-----------------------------------------------------------------------
+	for ( var icnt = 0; icnt < dsfrmcomp.rowcount; icnt++ )
+	{
+
+		dsfrmcomp.rowposition = icnt;
+		eval( "fn_generate" + dsfrmcomp.getColumn( icnt,"comptype" )
+					+ "( " + dsfrmcomp.name + ", "
+					+ dsfrmcomp.getColumn( icnt,"comppath" ) + "."+dsfrmcomp.getColumn( icnt,"compid" ) + " );" );
+
+//objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::fn_generate...'+dsfrmcomp.name);
+
+	} //for dsfrmcomp loop
+
+//trace( dsfrmcomp.saveXML() );
+
+}
+
+/*
+HTML 태그 생성 함수 - static component 변환
+*/
+function fn_generatestatic( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_static_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         ' left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         ' top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         ' width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         ' height:'+(objcomp.position.height)+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_background_color_obj( objcomp.currentstyle.background );
+	fn_convert_style_font( objcomp );
+
+	if ( null <> objcomp.currentstyle.background.image && '' <> objcomp.currentstyle.background.image )
+	{
+	//-----------------------------------------------------------------------
+	// background image 변환
+	//-----------------------------------------------------------------------
+		buf.appendUTF8( '"' );
+		buf.appendUTF8( ' >\n' );
+//trace(objcomp.name+":objcomp.currentstyle.padding:"+objcomp.currentstyle.padding+":");
+		fn_convert_style_background_image( objcomp );
+		buf.appendUTF8( '\n<div' );
+		buf.appendUTF8( ' style="' );
+		buf.appendUTF8(         ' position:absolute;' );//relative//inherit//absolute
+		buf.appendUTF8( 		' left:0;' );
+		buf.appendUTF8( 		' top:0;' );
+		//buf.appendUTF8( 		' width:'+(objcomp.position.width-__htmlimageviewer.imagewidth)+';' );
+		buf.appendUTF8( 		' width:'+(objcomp.position.width)+';' );
+		buf.appendUTF8( 		' height:'+(objcomp.position.height)+';' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+		fn_convert_style_align( objcomp );
+		buf.appendUTF8( ' "' );
+		buf.appendUTF8( ' >\n' );
+		buf.appendUTF8( '' + objcomp.text );
+		buf.appendUTF8( '\n</div>\n' );
+	}
+	else
+	{
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+		fn_convert_style_align( objcomp );
+		buf.appendUTF8( '"' );
+		buf.appendUTF8( ' >\n' );
+		buf.appendUTF8( 		'\n' );
+		buf.appendUTF8( '' + objcomp.text );
+	}
+	buf.appendUTF8( '\n</div>\n' );
+
+
+
+}
+/*
+HTML 태그 생성 함수 - edit component 변환
+*/
+function fn_generateedit( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_edit_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_background_color_obj( objcomp.currentstyle.background );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(         '"' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	if ( 0 < objcomp.text.length )//edit 컴포넌트를 디자인 용도로 쓰고 있음 ㅠㅠ
+	{
+	buf.appendUTF8( '' + objcomp.text );
+	}
+	else
+	{
+	buf.appendUTF8( '&nbsp;' );
+	}
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - maskedit component 변환
+*/
+function fn_generatemaskedit( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_maskedit_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_background_color_obj( objcomp.currentstyle.background );
+	fn_convert_style_font( objcomp );376
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(         '"' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	if ( 0 < objcomp.text.length )//edit 컴포넌트를 디자인 용도로 쓰고 있음 ㅠㅠ
+	{
+	buf.appendUTF8( '' + objcomp.text );
+	}
+	else
+	{
+	buf.appendUTF8( '&nbsp;' );
+	}
+	// buf.appendUTF8( '	<input ' );
+	// buf.appendUTF8( 		' class="maskedit" ' );
+	// buf.appendUTF8( 		' style="' );
+	// buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	// buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	// buf.appendUTF8( 		' " ' );
+	// buf.appendUTF8( 		' type="text" ' );
+	// buf.appendUTF8( 		' readonly="readonly" ' );
+	// buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	// buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	// buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - calendar component 변환
+*/
+function fn_generatecalendar( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_calendar_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_background_color_obj( objcomp.currentstyle.background );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(         '"' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '' + objcomp.text );
+	// buf.appendUTF8( '	<input ' );
+	// buf.appendUTF8( 		' style="' );
+	// buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	// buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	// buf.appendUTF8( 		' " ' );
+	// buf.appendUTF8( 		' type="text" ' );
+	// buf.appendUTF8( 		' readonly="readonly" ' );
+	// buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	// buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	// buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - combo component 변환
+*/
+function fn_generatecombo( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_combo_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(         '"' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '' + objcomp.text );
+	// buf.appendUTF8( '	<input ' );
+	// buf.appendUTF8( 		' class="combo" ' );
+	// buf.appendUTF8( 		' style="' );
+	// buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	// buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	// buf.appendUTF8( 		' " ' );
+	// buf.appendUTF8( 		' type="text" ' );
+	// buf.appendUTF8( 		' readonly="readonly" ' );
+	// buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	// buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	// buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - spin component 변환
+*/
+function fn_generatespin( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_spin_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8( 		'" ' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '' + objcomp.text );
+	// buf.appendUTF8( '	<input ' );
+	// buf.appendUTF8( 		' class="spin" ' );
+	// buf.appendUTF8( 		' style="' );
+	// buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	// buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	// fn_convert_style_border( objcomp );
+	// fn_convert_style_font( objcomp );
+	// fn_convert_style_align( objcomp );
+	// buf.appendUTF8( 		' " ' );
+	// buf.appendUTF8( 		' type="text" ' );
+	// buf.appendUTF8( 		' readonly="readonly" ' );
+	// buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	// buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	// buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - checkboc component 변환
+*/
+function fn_generatecheckbox( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_checkbox_' + objcomp.name + '" ' );
+	buf.appendUTF8(      ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:' + objcomp.position.x + ';' );
+	buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	buf.appendUTF8(         'width:' + objcomp.position.width + ';' );
+	buf.appendUTF8(         'height:' + objcomp.position.height + ';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(         '"' );
+	buf.appendUTF8( ' >\n' );
+	//-----------------------------------------------------------------------
+	// checkbox 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '	<input ' );
+	buf.appendUTF8( 		' class="checkboxbutton" ' );
+	buf.appendUTF8( 		' style="' );
+	buf.appendUTF8(         'height:' + ( objcomp.position.height - 2 ) + ';' );
+	buf.appendUTF8( 		' " ' );
+	buf.appendUTF8( 		' type="checkbox" ' );
+	buf.appendUTF8( 		' readonly="readonly" ' );
+	buf.appendUTF8( 		' name="chkbtn_' + objcomp.name + '" ' );
+	if ( objcomp.value )
+	{
+	buf.appendUTF8( 		' checked ' );
+	}
+	buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( '	<input ' );
+	buf.appendUTF8( 		' class="checkboxtext" ' );
+	buf.appendUTF8( 		' style="' );
+	buf.appendUTF8(         'height:' + ( objcomp.position.height - 2 ) + ';' );
+	buf.appendUTF8(         'vertical-align:middle;' );
+	buf.appendUTF8( 		' " ' );
+	buf.appendUTF8( 		' type="text" ' );
+	buf.appendUTF8( 		' readonly="readonly" ' );
+	buf.appendUTF8( 		' name="chktxt_' + objcomp.name + '" ' );
+	buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - radio component 변환
+*/
+function fn_generateradio( ds_comp,objcomp )
+{
+
+	var dsinner = null;
+	dsinner = objcomp.innerdataset;
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_radio_' + objcomp.name + '" ' );
+	buf.appendUTF8(      ' style="' );
+	//buf.appendUTF8(         'border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:' + objcomp.position.x + ';' );
+	buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	buf.appendUTF8(         'width:' + objcomp.position.width + ';' );
+	buf.appendUTF8(         'height:' + objcomp.position.height + ';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8( '"' );
+	buf.appendUTF8( ' >\n' );
+
+	//-----------------------------------------------------------------------
+	// radiobutton 변환
+	//-----------------------------------------------------------------------
+	for ( var icnt = 0; icnt < dsinner.rowcount; icnt++ )
+	{
+		buf.appendUTF8( '	<input ' );
+		buf.appendUTF8( 		' class="radio" ' );
+		buf.appendUTF8( 		' style="' );
+		//buf.appendUTF8(         'height:' + ( objcomp.position.height - 2 ) + ' );' );//화면그대로표시하기위해 지정하지 않음
+		buf.appendUTF8( 		' " ' );
+		buf.appendUTF8( 		' type="radio" ' );
+		buf.appendUTF8( 		' readonly="readonly" ' );
+		buf.appendUTF8( 		' name="radio_' + objcomp.name + '" ' );
+		buf.appendUTF8( 		' value="' + dsinner.getColumn( icnt,objcomp.codecolumn ) + '" ' );
+		if ( objcomp.value == dsinner.getColumn( icnt,objcomp.codecolumn ) )
+		{
+		buf.appendUTF8( 		' checked ' );
+		}
+		buf.appendUTF8( 		'/>' );
+		buf.appendUTF8( 		'' + dsinner.getColumn( icnt,objcomp.datacolumn ) );
+		if ( icnt == objcomp.columncount-1 )
+		{
+			buf.appendUTF8( '<br>' );
+		}
+		buf.appendUTF8( 		'\n' );
+	}
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - listbox component 변환
+*/
+function fn_generatelistbox( ds_comp,objcomp )
+{
+
+	var dsinner = null;
+	dsinner = objcomp.innerdataset;
+	dsinner = '';
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	//buf.appendUTF8( '<div id="divcomp_listbox_' + objcomp.name + '" ' );
+	//buf.appendUTF8( ' style="border-style:none;' );
+	//buf.appendUTF8(         'border-width:0px;' );
+	//buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	//buf.appendUTF8(         'left:' + objcomp.position.x + ';' );
+	//buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	//buf.appendUTF8(         'width:' + ds_comp.getColumn( ds_comp.rowposition,"compwidth" ) + ';' );
+	//buf.appendUTF8(         'height:auto;"' );
+	//buf.appendUTF8( ' >\n' );
+
+	buf.appendUTF8( '<table ' );
+	buf.appendUTF8( ' id="tablistbox'+objcomp.name+'"' );
+	buf.appendUTF8( ' class="listbox"' );
+	buf.appendUTF8( ' style="' );
+	buf.appendUTF8(         'table-layout:fixed;' );
+	buf.appendUTF8(         'border-collapse:collapse; ' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:' + objcomp.position.x + ';' );
+	buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	buf.appendUTF8(         'width:' + ds_comp.getColumn( ds_comp.rowposition,"compwidth" ) + ';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8(        '"' );
+	buf.appendUTF8( ' cellspacing="0" cellpadding="0">\n' );
+	//-----------------------------------------------------------------------
+	// listbox 변환
+	//-----------------------------------------------------------------------
+	for ( var icnt = 0; icnt < dsinner.rowcount; icnt++ )
+	{
+		strtext = dsinner.getColumn( icnt,objcomp.datacolumn );
+		if ( "" == strtext.trim() )
+		{
+			strtext = '';
+		}
+		buf.appendUTF8( '	<tr>\n' );
+		buf.appendUTF8( '		<td ' );
+		buf.appendUTF8(				'class="listboxitem" ' );
+		buf.appendUTF8(				'style="' );
+		buf.appendUTF8(				'border:none;' );
+		buf.appendUTF8(				'min-height:24;' );
+		buf.appendUTF8(				'height:auto;' );
+		buf.appendUTF8( 				'" ' );
+		buf.appendUTF8(				'>' + strtext );
+		buf.appendUTF8( 			'</td>\n' );
+		buf.appendUTF8( '	</tr>\n' );
+	}
+	buf.appendUTF8( '</table>\n' );
+
+	//buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - textarea component 변환
+*/
+function fn_generatetextarea( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_textarea_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="border-style:none;' );
+	buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';"' );
+	buf.appendUTF8( ' >\n' );
+	buf.appendUTF8( '	<textarea ' );
+	buf.appendUTF8( 		' class="textarea" ' );
+	buf.appendUTF8( 		' readonly="readonly" ' );
+	buf.appendUTF8( 		' style="' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8( 		' " ' );
+	buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	buf.appendUTF8( 		'>' );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( 		' ' + objcomp.text + ' ' );
+	buf.appendUTF8( 		'</textarea>' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+}
+/*
+HTML 태그 생성 함수 - button component 변환
+*/
+function fn_generatebutton( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '	<input ' );
+	buf.appendUTF8( 		' class="button" ' );
+	buf.appendUTF8( 		' style="' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	//-----------------------------------------------------------------------
+	// text 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( 		' " ' );
+	buf.appendUTF8( 		' type="button" ' );
+	buf.appendUTF8( 		' name="' + objcomp.name + '" ' );
+	buf.appendUTF8( 		' value="' + objcomp.text + '" ' );
+	buf.appendUTF8( 		'/>' );
+	buf.appendUTF8( 		'\n' );
+
+}
+/*
+HTML 태그 생성 함수 - imageviewer component 변환
+*/
+function fn_generateimageviewer( ds_comp,objcomp )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_imgviewer_'+objcomp.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	fn_convert_style_font( objcomp );
+	fn_convert_style_align( objcomp );
+	buf.appendUTF8( '"' );
+	buf.appendUTF8( ' >\n' );
+
+	//-----------------------------------------------------------------------
+	// image 저장. 내 문서 폴더
+	//-----------------------------------------------------------------------
+	var to_day = new Date();
+	var strFileName = "test_" + ds_comp.getColumn( ds_comp.rowposition,"comppath" )
+					+ objcomp.name + "_" + to_day.getTime() + ".png";
+	var bSucc = objcomp.saveToImage(strFileName,"PNG");
+	//buf.appendUTF8( '' + strFileName + '_' + bSucc;
+	buf.appendUTF8( '' + '<img ' );
+	buf.appendUTF8( 		'class="imageviewer" ' );
+	buf.appendUTF8( 		'src="' + strFileName + '" ' );
+	buf.appendUTF8( 		'alt="' + objcomp.tooltiptext + '" />' );
+	buf.appendUTF8( 		'\n' );
+	buf.appendUTF8( '</div>\n' );
+
+	ds_comp.setColumn( ds_comp.rowposition,"compimgpath","strFileName" );
+
+}
+/*
+HTML 태그 생성 함수 - grid component 변환
+*/
+function fn_generategrid( ds_comp,objGrid )
+{
+//objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::grid s');
+
+	var strtext = '';
+	var icolrow = 0;
+	var icolwidth = 0;
+	var irowheight = 0;
+	var iheadrowcount = 0;
+	var strvalue = "";
+	var strcellclass = "gridbodycell";
+	var ibordersize = 0;
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_grid_'+objGrid.name+'" ' );
+	buf.appendUTF8( ' name="divtable" ' );
+	buf.appendUTF8( ' style="' );//solid//none
+	//buf.appendUTF8(         'border-style:solid;' );//solid//none
+	//buf.appendUTF8(         'border-width:1px;' );
+	//buf.appendUTF8(         'border-color:orange;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'left:'+ds_comp.getColumn( ds_comp.rowposition,"compleft" )+';' );
+	buf.appendUTF8(         'width:'+(ds_comp.getColumn( ds_comp.rowposition,"compwidth" )+1)+';' );
+	buf.appendUTF8(         'min-height:' + ds_comp.getColumn( ds_comp.rowposition,"comporgheight" ) + ';' );
+	buf.appendUTF8(         'height:' + ( ds_comp.getColumn( ds_comp.rowposition,"compheight" )-1) + ';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objGrid,ds_comp.getColumn( ds_comp.rowposition,"comptype" ) );
+	fn_convert_style_background_color_obj( objGrid.body.currentstyle.background );
+	buf.appendUTF8( ' ">\n' );
+
+	//-----------------------------------------------------------------------
+	// grid->table 변환
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<table ' );
+	buf.appendUTF8( ' id="bodytab_'+objGrid.name+'"' );
+	buf.appendUTF8( ' style="' );
+	buf.appendUTF8(         'org-height1:' + ds_comp.getColumn( ds_comp.rowposition,"compheight" ) + ';' );
+	buf.appendUTF8(         'org-height2:' + objGrid.getRealRowFullSize() + ';' );
+	//buf.appendUTF8(         'top:0;' );
+	//buf.appendUTF8(         'left:0;' );
+	buf.appendUTF8(         'width:' + ds_comp.getColumn( ds_comp.rowposition,"compwidth" ) + ';' );
+	//-----------------------------------------------------------------------
+	// table style - background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_background_color_obj( objGrid.currentstyle.background );
+	if ( null <> objGrid.body.currentstyle.cellfont && '' <> objGrid.body.currentstyle.cellfont )
+	{
+	fn_convert_style_font_obj
+					(
+						objGrid.body.currentstyle.cellfont,
+						objGrid.body.currentstyle.cellalign,
+						objGrid.body.currentstyle.cellcolor
+					);
+	}
+	else
+	{
+		fn_convert_style_font( objGrid );
+	}
+	buf.appendUTF8(         'table-layout:fixed;' );//fixed//auto
+	buf.appendUTF8(         'border-collapse:collapse;' );
+	buf.appendUTF8(        '"' );
+	buf.appendUTF8( ' cellspacing="0" cellpadding="0" \n' );
+	//-----------------------------------------------------------------------
+	// 페이징 처리 시 반복 출력되야 할 헤더 지정
+	//-----------------------------------------------------------------------
+	if ( 0 >= objGrid.head.getCellCount() ){iheadrowcount = 0;}
+	else{iheadrowcount = (objGrid.head.getCell(objGrid.head.getCellCount()-1).row + 1);}
+	buf.appendUTF8( ' celloptimize="vertical" hcellrepeat="0" vcellrepeat="'+iheadrowcount+'" \n' );
+	buf.appendUTF8( '>\n' );//cellmove="next"
+
+
+	//-----------------------------------------------------------------------
+	// 헤더 컬럼 정보 수집 - 헤더 row가 둘 이상인 경우 가장 많은 컬럼에 대한 정보 조회
+	//-----------------------------------------------------------------------
+	var itargetrow = 0;
+	var imaxcolcnt = 0;
+	for ( var icnt = 0; icnt < objGrid.head.getCellCount(); icnt++ )
+	{
+		if ( imaxcolcnt < objGrid.head.getCell(icnt).col )
+		{
+			imaxcolcnt = objGrid.head.getCell(icnt).col;
+			itargetrow = objGrid.head.getCell(icnt).row;
+		}
+	}
+
+	//-----------------------------------------------------------------------
+	// 헤더 컬럼 정보 생성 - 작업용 grid에 컬럼수가 가장 많은 row의 정보를 적용
+	//      실제 컬럼 사이즈 정보를 얻기 위함
+	//-----------------------------------------------------------------------
+	var strformat = '';
+	var strformat2 = '';
+	var strformat3 = '';
+	for ( var icnt = 0; icnt < objGrid.getFormatColCount(); icnt++ )
+	{
+	strformat2 += '    <Column size="' + objGrid.getFormatColProperty(icnt,"size") + '" />';
+	strformat3 += '    <Cell col="' + icnt + '" text="' + icnt + '" />';
+	}
+	strformat += '<Formats>';
+	strformat += '<Format id="default">';
+	strformat += '  <Columns>';
+	strformat += strformat2;
+	strformat += '  </Columns>';
+	strformat += '  <Rows>';
+	strformat += '    <Row size="30" band="head" />';
+	strformat += '  </Rows>';
+	strformat += '  <Band id="head">';
+	strformat += strformat3;
+	strformat += '  </Band>';
+	strformat += '</Format>';
+	strformat += '</Formats>';
+	__gridforwidth.formats = strformat;
+	__gridforwidth.position.width = ds_comp.getColumn( ds_comp.rowposition,"compwidth" );
+	__gridforwidth.position.height = 30;
+	__gridforwidth.autofittype = "col";
+
+
+
+	//-----------------------------------------------------------------------
+	// 해더 영역 생성
+	//-----------------------------------------------------------------------
+
+	icolrow = 0;
+	strtext = '';
+	irowheight = 0;
+	icolwidth = 0;
+
+	buf.appendUTF8( '	<tr>\n' );
+	//헤더 정보가 존재하지 않는 그리드이 경우 &nbsp; 를 이용한 td 태그가 있어야 ml report에서 오류가 발생하지 않음
+	if ( 0 >= objGrid.head.getCellCount() )
+	{
+	buf.appendUTF8( '	<td>&nbsp;</td>\n' );
+	}
+	//헤더컬럼 수 만큼 td 태그를 생성. 헤더가 여러 줄인 경우 row 값 증가시 tr 태그 추가
+	for ( var icnt = 0; icnt < objGrid.head.getCellCount(); icnt++ )
+	{
+
+		//strtext 변수에 cell text 값 입력. merge된 cell인 경우 colspan/rowspan 처리
+		strtext = objGrid.getCellText( -1,icnt );
+		if ( 0 < objGrid.head.getCell(icnt).subcell )
+		{
+			if ( 1 < objGrid.head.getCell(icnt).colspan )
+			{
+				strtext = '';
+				for ( var kcnt = 0; kcnt < objGrid.head.getCell(icnt).colspan; kcnt++ )
+				{
+					strtext += objGrid.getSubCellText(-1,icnt,kcnt).trim() + '  ';
+				}
+				strtext = strtext.trim();
+			}
+			if ( 1 < objGrid.head.getCell(icnt).rowspan )
+			{
+				strtext = '';
+				for ( var kcnt = 0; kcnt < objGrid.head.getCell(icnt).rowspan; kcnt++ )
+				{
+					strtext += objGrid.getSubCellText(-1,icnt,kcnt).trim() + '<br>';
+				}
+				strtext = strtext.trim();
+			}
+		}
+		//header cell의 row가 증가한 경우 tr 태그를 추가하여 줄바꿈
+		if ( icolrow < objGrid.head.getCell(icnt).row )
+		{
+			buf.appendUTF8( '	</tr>\n' );
+			buf.appendUTF8( '	<tr>\n' );
+		}
+		//merge된 cell인 경우 colspan 또는 rowspan 처리
+		buf.appendUTF8( '		<td ' );
+		if ( 1 < objGrid.head.getCell(icnt).colspan )
+		{
+		buf.appendUTF8( ' colspan="' + objGrid.head.getCell(icnt).colspan + '" ' );
+		}
+		if ( 1 < objGrid.head.getCell(icnt).rowspan )
+		{
+		buf.appendUTF8( ' rowspan="' + objGrid.head.getCell(icnt).rowspan + '" ' );
+		}
+		//column width/height 지정
+		//header의 경우 getFormatRowSize 를 사용하므로 UXStudio를 통해 지정한 값대로 변환
+		buf.appendUTF8(				'style="' );
+		if ( itargetrow == objGrid.head.getCell(icnt).row )
+		{
+		icolwidth = __gridforwidth.getRealColSize(objGrid.head.getCell(icnt).col);
+		buf.appendUTF8(				'width:' + icolwidth + ';' );
+		}
+		buf.appendUTF8(				'org-width:' + objGrid.getRealColSize(icnt) + ';' );
+		buf.appendUTF8(				'height:' + objGrid.getFormatRowSize(objGrid.head.getCell(icnt).row) + ';' );
+		//buf.appendUTF8(				'overflow:visible;' );//overflow:hidden;
+		//buf.appendUTF8(				'word-break:break-all;' );
+		buf.appendUTF8(				'text-overflow:clip;overflow:hidden;' );
+		buf.appendUTF8(				'white-space:nowrap;\n' );
+		//header cell background color 변환
+		if ( null <> objGrid.head.currentstyle.background
+			&& '' <> objGrid.head.currentstyle.background
+			&& '@gradation' != objGrid.head.currentstyle.background.color.toString() )
+		{
+			if ( '#' == objGrid.head.currentstyle.background.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' background-color:'+objGrid.head.currentstyle.background.color.toString().substr(0,7)+';\n' );
+			buf.appendUTF8( ' bgcolor:'+objGrid.head.currentstyle.background.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' background-color:'+objGrid.head.currentstyle.background.color+';\n' );
+			buf.appendUTF8( ' bgcolor:'+objGrid.head.currentstyle.background.color+';\n' );
+			}
+		}
+		//header border 변환
+		icolrow = objGrid.head.getCell(icnt).row;
+		if ( 0 < icolrow )
+		{
+		fn_convert_style_border_obj( '',objGrid.head.currentstyle.cellline,objGrid.head.currentstyle.cellline );
+		}
+		else
+		{
+			if ( 0 == icolrow && null <> objGrid.head.currentstyle.border.top && "" <> objGrid.head.currentstyle.border.top )
+			{
+				buf.appendUTF8(				'border-top-style:'+objGrid.head.currentstyle.border.top.style+'; ' );
+				buf.appendUTF8(				'border-top-width:'+objGrid.head.currentstyle.border.top.width+'px; ' );
+				buf.appendUTF8(				'border-top-color:'+objGrid.head.currentstyle.border.top.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-right-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-right-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-right-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-bottom-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-bottom-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-bottom-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-left-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-left-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-left-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+			}
+			else if ( 0 == icolrow && null <> objGrid.head.currentstyle.border && "" <> objGrid.head.currentstyle.border )
+			{
+				buf.appendUTF8(				'border-top-style:'+objGrid.head.currentstyle.border.style+'; ' );
+				buf.appendUTF8(				'border-top-width:'+objGrid.head.currentstyle.border.width+'px; ' );
+				buf.appendUTF8(				'border-top-color:'+objGrid.head.currentstyle.border.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-right-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-right-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-right-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-bottom-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-bottom-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-bottom-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+				buf.appendUTF8(				'border-left-style:'+objGrid.head.currentstyle.cellline.style+'; ' );
+				buf.appendUTF8(				'border-left-width:'+objGrid.head.currentstyle.cellline.width+'px; ' );
+				buf.appendUTF8(				'border-left-color:'+objGrid.head.currentstyle.cellline.color.toString().substr(0,7)+'; ' );
+			}
+		}
+		//header font 변환
+		fn_convert_style_font_obj
+		(
+			objGrid.head.currentstyle.cellfont,
+			objGrid.head.currentstyle.cellalign,
+			objGrid.head.currentstyle.cellcolor
+		);
+		buf.appendUTF8( 				'" ' );
+		buf.appendUTF8(				'>' );
+		//text 변환
+		buf.appendUTF8(				strtext );
+		buf.appendUTF8( 			'</td>\n' );
+	}
+	buf.appendUTF8( '	</tr>\n' );
+
+
+	//-----------------------------------------------------------------------
+	// 바디 영역 생성
+	//-----------------------------------------------------------------------
+
+	icolrow = 0;
+	strtext = '';
+	strvalue = '';
+	irowheight = 0;
+	//body만 존재하는 경우 iheadrowcount == 0 이며, head가 존재하는 경우 두 변수의 값은 같아야 함
+	var ibodyrownum = objGrid.getFormatRowCount()-iheadrowcount;
+	if (ibodyrownum<>iheadrowcount&&0<iheadrowcount){
+	//alert('row가 다름:'+objGrid.name+":"+ibodyrownum+":"+iheadrowcount);
+	}
+	//dataset rowcount loop
+	for ( var icnt = 0; icnt < objGrid.rowcount; icnt++ )
+	{
+		buf.appendUTF8( '	<tr>\n' );
+		irowheight = objGrid.getRealRowSize(icnt);
+
+		//grid column count loop
+		//컬럼 수 만큼 td 태그를 생성. design row가 여러 줄인 경우 row 값 증가시 tr 태그 추가
+		for ( var jcnt = 0; jcnt < objGrid.body.getCellCount(); jcnt++ )
+		{
+			//strtext 변수에 cell text 값 입력. merge된 cell인 경우 colspan/rowspan 처리
+			strtext = objGrid.getCellText( icnt,jcnt );
+			if ( 0 < objGrid.body.getCell(jcnt).subcell )
+			{
+				if ( 1 < objGrid.body.getCell(jcnt).colspan )
+				{
+					strtext = '';
+					for ( var kcnt = 0; kcnt < objGrid.body.getCell(jcnt).colspan; kcnt++ )
+					{
+						strtext += objGrid.getSubCellText(icnt,jcnt,kcnt).trim() + '  ';
+					}
+					strtext = strtext.trim();
+				}
+				if ( 1 < objGrid.body.getCell(jcnt).rowspan )
+				{
+					strtext = '';
+					for ( var kcnt = 0; kcnt < objGrid.body.getCell(jcnt).rowspan; kcnt++ )
+					{
+						strtext += objGrid.getSubCellText(icnt,jcnt,kcnt).trim() + '<br>';
+					}
+					strtext = strtext.trim();
+				}
+			}
+
+			//body cell의 row가 증가한 경우 tr 태그를 추가하여 줄바꿈
+			if ( icolrow < objGrid.body.getCell(jcnt).row )
+			{
+				buf.appendUTF8( '	</tr>\n' );
+				buf.appendUTF8( '	<tr>\n' );
+			}
+			//merge된 cell인 경우 colspan 또는 rowspan 처리
+			buf.appendUTF8( '		<td ' );
+			if ( 1 < objGrid.body.getCell(jcnt).colspan )
+			{
+			buf.appendUTF8( ' colspan="' + objGrid.body.getCell(jcnt).colspan + '" ' );
+			}
+			if ( 1 < objGrid.body.getCell(jcnt).rowspan )
+			{
+			buf.appendUTF8( ' rowspan="' + objGrid.body.getCell(jcnt).rowspan + '" ' );
+			}
+
+			//body cell style 처리. 성능 향상을 위해 border style은 고정
+			buf.appendUTF8(				'style="' );
+			buf.appendUTF8(				'height:' + irowheight + ';' );
+			//buf.appendUTF8(				'overflow:visible;' );
+			//buf.appendUTF8(				'word-break:break-all;' );
+			buf.appendUTF8(				'text-overflow:clip;' );
+			buf.appendUTF8(				'overflow:hidden;' );
+			buf.appendUTF8(				'white-space:nowrap;' );
+			buf.appendUTF8(				' border-style:solid;' );
+			buf.appendUTF8(				' border-width:1px;' );
+			buf.appendUTF8(				' border-color:#d9d9d9;\n' );
+			buf.appendUTF8( 				'" ' );
+			buf.appendUTF8(				'>' );
+			//text 변환
+			buf.appendUTF8(				strtext);
+			buf.appendUTF8( 			'</td>\n' );
+			icolrow = objGrid.body.getCell(jcnt).row;
+		}
+	buf.appendUTF8( '	</tr>\n' );
+	}
+
+	buf.appendUTF8( '</table>\n' );
+	buf.appendUTF8( '</div>\n' );
+
+//objDate = new Date();
+//trace(objDate.getFullYear() +':'+ objDate.getMonth() +':'+ objDate.getDate() +':'+ objDate.getHours() +':'+ objDate.getMinutes() +':'+ objDate.getSeconds()+':::grid e');
+
+}
+/*
+HTML 태그 생성 함수 - div component 변환
+*/
+function fn_generatediv( ds_comp,objDiv )
+{
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_div_'+objDiv.name+'" ' );
+	buf.appendUTF8( ' style="' );
+	//buf.appendUTF8( 		'border-style:none;' );//solid//none
+	//buf.appendUTF8(         'border-width:0px;' );
+	//buf.appendUTF8(         'border-color:red;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:' + ds_comp.getColumn( ds_comp.rowposition,"compleft" ) + ';' );
+	buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	buf.appendUTF8(         'width:' + ds_comp.getColumn( ds_comp.rowposition,"compwidth" ) + ';' );
+	buf.appendUTF8(         'height:' + ds_comp.getColumn( ds_comp.rowposition,"compheight" ) + ';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objDiv );
+	fn_convert_style_font( objDiv );
+	fn_convert_style_align( objDiv );
+	buf.appendUTF8( '"' );
+	buf.appendUTF8( ' >\n' );
+
+	//-----------------------------------------------------------------------
+	// contents 변환 - fn_generateBODY 함수 재귀호출
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '\n' );
+	buf.appendUTF8( '\n' );
+	fn_generateBODY( ds_comp.getColumn( ds_comp.rowposition,"compsubdsname" ),objDiv );
+	buf.appendUTF8( '\n' );
+	buf.appendUTF8( '\n' );
+
+	buf.appendUTF8( '</div>\n' );
+
+
+
+}
+/*
+HTML 태그 생성 함수 - tab component 변환
+*/
+function fn_generatetab( ds_comp,objTab )
+{
+
+/*
+*/
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<div id="divcomp_tab_'+objTab.name+'" ' );
+	buf.appendUTF8( ' style="border-style:none;' );//solid//none
+	buf.appendUTF8(         'border-width:0px;' );
+	buf.appendUTF8(         'border-color:yellow;' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:' + ds_comp.getColumn( ds_comp.rowposition,"compleft" ) + ';' );
+	buf.appendUTF8(         'top:' + ds_comp.getColumn( ds_comp.rowposition,"comptop" ) + ';' );
+	buf.appendUTF8(         'width:' + ds_comp.getColumn( ds_comp.rowposition,"compwidth" ) + ';' );
+	buf.appendUTF8(         'height:' + ds_comp.getColumn( ds_comp.rowposition,"compheight" ) + ';"' );
+	buf.appendUTF8( ' >\n' );
+
+
+	//-----------------------------------------------------------------------
+	// tabpage count 만큼 loop 처리. 세로로 풀어서 표시
+	//-----------------------------------------------------------------------
+	var itabtop = 0;
+	for ( var kcnt = 0; kcnt < objTab.tabpages.length; kcnt++ )
+	{
+		objTab.tabindex = kcnt;
+
+		//-----------------------------------------------------------------------
+		//tabbutton
+		//-----------------------------------------------------------------------
+		buf.appendUTF8( '<div id="tabbutton_' + objTab.name + "_" + objTab.tabpages[kcnt].name + '" ' );
+		buf.appendUTF8( ' style="border-style:none;' );
+		buf.appendUTF8(         'border-width:0px;' );
+		buf.appendUTF8(         'border-color:lemon;' );
+		buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+		buf.appendUTF8(         'left:' + ( 0 ) + ';' );
+		buf.appendUTF8(         'top:' + itabtop + ';' );
+		buf.appendUTF8(         'width:' + v_i_default_tabbtn_width + ';' );
+		buf.appendUTF8(         'height:' + v_i_default_tabbtn_height + ';' );
+		buf.appendUTF8(         '"' );
+		buf.appendUTF8( ' >\n' );
+		buf.appendUTF8( '	<input ' );
+		buf.appendUTF8( 		' style="' );
+		buf.appendUTF8(         'width:'+ ( v_i_default_tabbtn_width-2 ) +';' );
+		buf.appendUTF8(         'height:'+ v_i_default_tabbtn_height +';' );
+		buf.appendUTF8( '	font-family:Verdana,Geneva,sans-serif;' );
+		buf.appendUTF8( '	font-size:12px;' );
+		buf.appendUTF8( '	text-align:center;' );
+		buf.appendUTF8( '	border-style:solid;' );
+		buf.appendUTF8( '	border-color:#979797;' );
+		buf.appendUTF8( '	border-width:1px;' );
+		buf.appendUTF8( '	color:black;' );
+		buf.appendUTF8( '	background-color:#e3e4e5;' );
+		buf.appendUTF8( 		' " ' );
+		buf.appendUTF8( 		' type="button" ' );
+		buf.appendUTF8( 		' name="' + objTab.tabpages[kcnt].name + '" ' );
+		buf.appendUTF8( 		' value="' + objTab.tabpages[kcnt].text + '" ' );
+		buf.appendUTF8( 		'>' );
+		buf.appendUTF8( 		'\n' );
+		buf.appendUTF8( '</div>\n' );
+		itabtop += v_i_default_tabbtn_height;
+
+		//-----------------------------------------------------------------------
+		//tabpages
+		//-----------------------------------------------------------------------
+		//trace("itabtop:"+itabtop);
+		buf.appendUTF8( '<div id="tabpage_' + objTab.name + "_" + objTab.tabpages[kcnt].name + '" ' );
+		buf.appendUTF8( ' class="tabpage" ' );
+		buf.appendUTF8( ' style="' );
+		buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+		buf.appendUTF8(         'left:' + ( 0 ) + ';' );
+		buf.appendUTF8(         'top:' + itabtop + ';' );
+		buf.appendUTF8(         'width:' + objTab.position.width + ';' );
+		buf.appendUTF8(         'height:' + ds_comp.getColumn( ds_comp.rowposition,"comptabheight" ).split(",")[kcnt] + ';' );
+		fn_convert_style_border( objTab );
+		buf.appendUTF8(         '"' );
+		buf.appendUTF8( ' >\n' );
+		buf.appendUTF8( '\n' );
+		buf.appendUTF8( '\n' );
+
+		//-----------------------------------------------------------------------
+		// contents 변환 - fn_generateBODYtab 함수 재귀호출
+		//-----------------------------------------------------------------------
+		//tabpage가 두개 이상일때 fn_generateBODY 함수 두 번이상 호출 불가함 그래서 fn_generateBODYtab 함수를 새로 만듬
+		fn_generateBODYtab( ds_comp.getColumn( ds_comp.rowposition,"compsubdsname" ).split(",")[kcnt] );
+		buf.appendUTF8( '\n' );
+
+		buf.appendUTF8( '\n' );
+		buf.appendUTF8( '</div>\n' );
+		itabtop += toNumber(ds_comp.getColumn( ds_comp.rowposition,"comptabheight" ).split(",")[kcnt]);
+
+	}
+
+	buf.appendUTF8( '</div>\n' );
+	objTab.tabindex = 0;
+
+}
+/*
+HTML 태그 생성 함수 - xchart component 변환
+*/
+function fn_generatechartfx( ds_comp,objcomp )
+{
+	//-----------------------------------------------------------------------
+	// 차트 이미지 저장
+	//-----------------------------------------------------------------------
+	objcomp.saveToImage("ml_chart_"+ds_comp.getColumn( ds_comp.rowposition,"comppath")+"_"+objcomp.name+".png","PNG");
+	//"ml_chart_"+ds_comp.getColumn( ds_comp.rowposition,"comppath")+"_"+objcomp.name+".png","PNG"
+
+	//-----------------------------------------------------------------------
+	// 좌표 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( '<img ' );
+	buf.appendUTF8(			'id="img_xchart_'+objcomp.name+'" ' );
+	buf.appendUTF8( 		'class="imageviewer" ' );
+	buf.appendUTF8(		' style="' );
+	buf.appendUTF8(         'position:absolute;' );//relative//inherit//absolute
+	buf.appendUTF8(         'left:'+objcomp.position.x+';' );
+	buf.appendUTF8(         'top:'+ds_comp.getColumn( ds_comp.rowposition,"comptop" )+';' );
+	buf.appendUTF8(         'width:'+objcomp.position.width+';' );
+	buf.appendUTF8(         'height:'+objcomp.position.height+';' );
+	//-----------------------------------------------------------------------
+	// border, background color, font 변환
+	//-----------------------------------------------------------------------
+	fn_convert_style_border( objcomp );
+	buf.appendUTF8( 		'" ' );
+	//-----------------------------------------------------------------------
+	// chart image 지정
+	//-----------------------------------------------------------------------
+	buf.appendUTF8( 		'src="' + "ml_chart_"+ds_comp.getColumn( ds_comp.rowposition,"comppath")+"_"+objcomp.name+".png" + '" ' );
+	buf.appendUTF8( 		'alt="' + objcomp.tooltiptext + '"' );
+	buf.appendUTF8( 		' />\n' );
+
+	ds_comp.setColumn( ds_comp.rowposition,"compimgpath","ml_chart_"+ds_comp.getColumn( ds_comp.rowposition,"comppath")+"_"+objcomp.name+".png" );
+
+}
+/*
+HTML 태그 생성 함수 - BODY 부분 생성
+component별 태그 생성 함수를 호출한다. (탭페이지용)
+*/
+function fn_generateBODYtab( dsfrmcompname,objForm )
+{
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트 수 확인
+	//-----------------------------------------------------------------------
+	var dsfrmcomp = eval(dsfrmcompname);
+	//alert("rowcount " + dsfrmcomp.rowcount);
+	if ( 0 >= dsfrmcomp.rowcount )
+	{
+		return "";
+	}
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트 순서 정렬 - top>left 순으로 정렬
+	//-----------------------------------------------------------------------
+	//dsfrmcomp.keystring.current = "S:+comptoporder+compno";
+	dsfrmcomp.keystring.current = "S:+comptoporder+comptop+compleft";
+
+	//-----------------------------------------------------------------------
+	// 컴포넌트별 태그 생성 함수 호출
+	//-----------------------------------------------------------------------
+	for ( var icnt = 0; icnt < dsfrmcomp.rowcount; icnt++ )
+	{
+
+		dsfrmcomp.rowposition = icnt;
+		eval( "fn_generate" + dsfrmcomp.getColumn( icnt,"comptype" )
+					+ "( " + dsfrmcomp.name + ", "
+					+ dsfrmcomp.getColumn( icnt,"comppath" ) + "."+dsfrmcomp.getColumn( icnt,"compid" ) + " );" );
+
+	} //for dsfrmcomp loop
+
+//trace( dsfrmcomp.saveXML() );
+
+}
+
+
+/*
+HTML 태그 생성 함수 - border style tag
+component의 border style 정보를 생성한다. (top,right,bottom,left구분)
+*/
+function fn_convert_style_border( objcomp,strtype )
+{
+
+//trace(strtype+":"+objcomp.name)
+// if ( "grid"==strtype )
+// {
+	// trace(objcomp.name+":b:"+strresult);
+	// trace("border:"+objcomp.currentstyle.border);
+	// trace("top:"+objcomp.currentstyle.border.top);
+	// trace("right:"+objcomp.currentstyle.border.right);
+	// trace("bottom:"+objcomp.currentstyle.border.bottom);
+	// trace("left:"+objcomp.currentstyle.border.left);
+// }
+
+	//현재 component의 border 정보가 없는 경우
+	if ( null == objcomp.currentstyle.border || '' == (objcomp.currentstyle.border+'') )
+	{
+		buf.appendUTF8( ' border-style:none;\n' );
+		buf.appendUTF8( ' border-width:0px;\n' );
+		buf.appendUTF8( ' border-color:#ffffff;\n' );
+	}
+	else
+	{
+	//현재 component의 border 정보가 존재하는 경우
+
+		//top border 변환 - top을 별도로 지정하지 않은 경우 border를 top,right,bottom,left로 지정함
+		if ( null == objcomp.currentstyle.border.top || '' == (objcomp.currentstyle.border.top+'') )
+		{
+			buf.appendUTF8( ' border-top-style:'+objcomp.currentstyle.border.style+';\n' );
+			buf.appendUTF8( ' border-top-width:'+objcomp.currentstyle.border.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-top-color:'+objcomp.currentstyle.border.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-top-color:'+objcomp.currentstyle.border.color+';\n' );
+			}
+		}
+		else
+		{
+			buf.appendUTF8( ' border-top-style:'+objcomp.currentstyle.border.top.style+';\n' );
+			buf.appendUTF8( ' border-top-width:'+objcomp.currentstyle.border.top.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.top.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-top-color:'+objcomp.currentstyle.border.top.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-top-color:'+objcomp.currentstyle.border.top.color+';\n' );
+			}
+		}
+
+		//right border 변환 - right을 별도로 지정하지 않은 경우 border를 top,right,bottom,left로 지정함
+		if ( null == objcomp.currentstyle.border.right || '' == (objcomp.currentstyle.border.right+'') )
+		{
+			buf.appendUTF8( ' border-right-style:'+objcomp.currentstyle.border.style+';\n' );
+			buf.appendUTF8( ' border-right-width:'+objcomp.currentstyle.border.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-right-color:'+objcomp.currentstyle.border.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-right-color:'+objcomp.currentstyle.border.color+';\n' );
+			}
+		}
+		else
+		{
+			buf.appendUTF8( ' border-right-style:'+objcomp.currentstyle.border.right.style+';\n' );
+			buf.appendUTF8( ' border-right-width:'+objcomp.currentstyle.border.right.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.right.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-right-color:'+objcomp.currentstyle.border.right.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-right-color:'+objcomp.currentstyle.border.right.color+';\n' );
+			}
+		}
+
+		//bottom border 변환 - bottom을 별도로 지정하지 않은 경우 border를 top,right,bottom,left로 지정함
+		if ( null == objcomp.currentstyle.border.bottom || '' == (objcomp.currentstyle.border.bottom+'') )
+		{
+			buf.appendUTF8( ' border-bottom-style:'+objcomp.currentstyle.border.style+';\n' );
+			buf.appendUTF8( ' border-bottom-width:'+objcomp.currentstyle.border.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-bottom-color:'+objcomp.currentstyle.border.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-bottom-color:'+objcomp.currentstyle.border.color+';\n' );
+			}
+		}
+		else
+		{
+			buf.appendUTF8( ' border-bottom-style:'+objcomp.currentstyle.border.bottom.style+';\n' );
+			buf.appendUTF8( ' border-bottom-width:'+objcomp.currentstyle.border.bottom.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.bottom.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-bottom-color:'+objcomp.currentstyle.border.bottom.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-bottom-color:'+objcomp.currentstyle.border.bottom.color+';\n' );
+			}
+		}
+
+		//left border 변환 - left를 별도로 지정하지 않은 경우 border를 top,right,bottom,left로 지정함
+		if ( null == objcomp.currentstyle.border.left || '' == (objcomp.currentstyle.border.left+'') )
+		{
+			buf.appendUTF8( ' border-left-style:'+objcomp.currentstyle.border.style+';\n' );
+			buf.appendUTF8( ' border-left-width:'+objcomp.currentstyle.border.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-left-color:'+objcomp.currentstyle.border.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-left-color:'+objcomp.currentstyle.border.color+';\n' );
+			}
+		}
+		else
+		{
+			buf.appendUTF8( ' border-left-style:'+objcomp.currentstyle.border.left.style+';\n' );
+			buf.appendUTF8( ' border-left-width:'+objcomp.currentstyle.border.left.width+'px;\n' );
+			if ( '#' == objcomp.currentstyle.border.left.color.toString().substr(0,1) )
+			{
+			buf.appendUTF8( ' border-left-color:'+objcomp.currentstyle.border.left.color.toString().substr(0,7)+';\n' );
+			}
+			else
+			{
+			buf.appendUTF8( ' border-left-color:'+objcomp.currentstyle.border.left.color+';\n' );
+			}
+		}
+
+	}
+
+}
+/*
+HTML 태그 생성 함수 - border style tag
+component의 border style 정보를 생성한다. (top,right,bottom,left동일)
+*/
+function fn_convert_style_border_obj( strtgprop,objcompprop,objparentpro )
+{
+
+	//buf.appendUTF8( '\n' );
+	//현재 component의 border 정보가 없는 경우 부모 component의 border 정보 변환
+	if ( null == objcompprop || '' == (objcompprop+'') )
+	{
+		buf.appendUTF8( ' border' + strtgprop + '-style:' + objparentpro.style + ';' );
+		buf.appendUTF8( ' border' + strtgprop + '-width:'+objparentpro.width+'px;' );
+		if ( '#' == objparentpro.color.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' border' + strtgprop + '-color:'+objparentpro.color.toString().substr(0,7)+';' );
+		}
+		else
+		{
+		buf.appendUTF8( ' border' + strtgprop + '-color:'+objparentpro.color+';' );
+		}
+	}
+	else
+	{
+		buf.appendUTF8( ' border' + strtgprop + '-style:'+objcompprop.style+';' );
+		buf.appendUTF8( ' border' + strtgprop + '-width:'+objcompprop.width+'px;' );
+		if ( '#' == objcompprop.color.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' border' + strtgprop + '-color:'+objcompprop.color.toString().substr(0,7)+';' );
+		}
+		else
+		{
+		buf.appendUTF8( ' border' + strtgprop + '-color:'+objcompprop.color+';' );
+		}
+	}
+
+}
+/*
+HTML 태그 생성 함수 - font style tag
+component의 font style 정보를 생성한다.
+*/
+function fn_convert_style_font( objcomp )
+{
+
+	//align : halign, valign 지정
+	if ( null <> objcomp.currentstyle.align && '' <> objcomp.currentstyle.align )
+	{
+	buf.appendUTF8( ' text-align:'+objcomp.currentstyle.align.halign+';\n' );
+	buf.appendUTF8( ' vertical-align:'+objcomp.currentstyle.align.valign+';\n' );
+	}
+
+	//size : xplatform font size를 webbrowser font size로 변환하므로 오차 존재함
+	if ( null <> objcomp.currentstyle.font && '' <> objcomp.currentstyle.font )
+	{
+		if ( 9 > objcomp.currentstyle.font.size )
+		{
+			//v_i_font_px = (objcomp.currentstyle.font.size+2);
+			v_i_font_px = (objcomp.currentstyle.font.size+3);
+		}
+		else if ( 9 <= objcomp.currentstyle.font.size && 10 >= objcomp.currentstyle.font.size )
+		{
+			v_i_font_px = (objcomp.currentstyle.font.size+2);
+		}
+		else if ( 11 <= objcomp.currentstyle.font.size && 12 >= objcomp.currentstyle.font.size )
+		{
+			v_i_font_px = (objcomp.currentstyle.font.size+4);
+		}
+		else
+		{
+			v_i_font_px = (objcomp.currentstyle.font.size+4);
+		}
+
+		buf.appendUTF8( ' font-family:'+objcomp.currentstyle.font.face+',sans-serif;\n' );
+		buf.appendUTF8( ' font-size:'+(v_i_font_px)+'px;\n' );
+		buf.appendUTF8( ' font-weight:'+objcomp.currentstyle.font.type+';\n' );
+	}
+	else
+	{
+		buf.appendUTF8( '' );
+		buf.appendUTF8( '' );
+		buf.appendUTF8( '' );
+		v_i_font_px = 0;
+	}
+
+	//color : font color 변환
+	if ( null <> objcomp.currentstyle.color && '' <> objcomp.currentstyle.color )
+	{
+		if ( '#' == objcomp.currentstyle.color.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' color:'+objcomp.currentstyle.color.toString().substr(0,7)+';\n' );
+		}
+		else
+		{
+		buf.appendUTF8( ' color:'+objcomp.currentstyle.color+';\n' );
+		}
+	}
+	else
+	{
+		buf.appendUTF8( '' );
+	}
+
+}
+/*
+HTML 태그 생성 함수 - font style tag
+component의 font style 정보를 생성한다.
+*/
+function fn_convert_style_font_obj( objcompfont,objcompalign,objcompcolor )
+{
+
+	//align : halign, valign 지정
+	if ( null <> objcompalign && '' <> objcompalign )
+	{
+	buf.appendUTF8( ' align:'+objcompalign.halign+';\n' );
+	buf.appendUTF8( ' text-align:'+objcompalign.halign+';\n' );
+	buf.appendUTF8( ' vertical-align:'+objcompalign.valign+';\n' );
+	}
+
+	//size : xplatform font size를 webbrowser font size로 변환하므로 오차 존재함
+	if ( null <> objcompfont && '' <> objcompfont )
+	{
+		if ( 9 > objcompfont.size )
+		{
+			//v_i_font_px = (objcompfont.size+2);
+			v_i_font_px = (objcompfont.size+3);
+		}
+		else if ( 9 <= objcompfont.size && 10 >= objcompfont.size )
+		{
+			v_i_font_px = (objcompfont.size+2);
+		}
+		else if ( 11 <= objcompfont.size && 12 >= objcompfont.size )
+		{
+			v_i_font_px = (objcompfont.size+4);
+		}
+		else
+		{
+			v_i_font_px = (objcompfont.size+4);
+		}
+
+		buf.appendUTF8( ' font-family:'+objcompfont.face+',sans-serif;\n' );
+		buf.appendUTF8( ' font-size:'+(v_i_font_px)+'px;\n' );
+		buf.appendUTF8( ' font-weight:'+objcompfont.type+';\n' );
+	}
+	else
+	{
+		buf.appendUTF8( '' );
+		buf.appendUTF8( '' );
+		buf.appendUTF8( '' );
+
+		v_i_font_px = 0;
+	}
+
+	//color : font color 변환
+	var strfont_color = '';
+	if ( null <> objcompcolor && '' <> objcompcolor )
+	{
+		if ( '#' == objcompcolor.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' color:'+objcompcolor.toString().substr(0,7)+';\n' );
+		}
+		else
+		{
+		buf.appendUTF8( ' color:'+objcompcolor+' );\n' );
+		}
+	}
+	else
+	{
+		buf.appendUTF8( '' );
+	}
+
+}
+/*
+HTML 태그 생성 함수 - background color style tag
+component의 background color style 정보를 생성한다.
+*/
+function fn_convert_style_background_color( objcomp )
+{
+
+	//background-color
+	buf.appendUTF8( '' );
+	if ( null <> objcomp.currentstyle.background && '' <> objcomp.currentstyle.background
+		&& '@gradation' != objcomp.currentstyle.background.color.toString() )
+	{
+		if ( '#' == objcomp.currentstyle.background.color.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' background-color:'+objcomp.currentstyle.background.color.toString().substr(0,7)+';\n' );
+		}
+		else
+		{
+		buf.appendUTF8( ' background-color:'+objcomp.currentstyle.background.color+';\n' );
+		}
+
+	}
+
+}
+/*
+HTML 태그 생성 함수 - background color style tag
+component의 background color style 정보를 생성한다.
+*/
+function fn_convert_style_background_color_obj( objcompprop )
+{
+
+	//background-color
+	buf.appendUTF8( '' );
+	if ( null <> objcompprop && '' <> objcompprop
+		&& '@gradation' != objcompprop.color.toString() )
+	{
+		if ( '#' == objcompprop.color.toString().substr(0,1) )
+		{
+		buf.appendUTF8( ' background-color:'+objcompprop.color.toString().substr(0,7)+';\n' );
+		}
+		else
+		{
+		buf.appendUTF8( ' background-color:'+objcompprop.color+';\n' );
+		}
+
+	}
+
+}
+/*
+HTML 태그 생성 함수 - background image style tag
+component의 background image style 정보를 생성한다.
+*/
+function fn_convert_style_background_image( objcomp )
+{
+
+	//background-imagere
+	var strbkimagename = '';
+	var strtemp = '';
+	if ( null <> objcomp.currentstyle.background.image && '' <> objcomp.currentstyle.background.image )
+	{
+		//background image 존재하는 경우 __htmlimageviewer에 지정하여 image size 정보 조회
+		__htmlimageviewer.position.width = objcomp.position.width;
+		__htmlimageviewer.position.height = objcomp.position.height;
+		__htmlimageviewer.image = objcomp.currentstyle.background.image;
+		__htmlimageviewer.style.background.color = objcomp.currentstyle.background.color;
+		__htmlimageviewer.position.width = __htmlimageviewer.imagewidth;
+		__htmlimageviewer.position.height = __htmlimageviewer.imageheight;
+//trace( objcomp.currentstyle.background.image + "::" + objcomp.currentstyle.background + "::" + objcomp.currentstyle );
+
+		//strbkimagename 변수에 이미지 경로 지정
+		strbkimagename = objcomp.currentstyle.background.image + "";
+		if ( 0 <= strbkimagename.indexOf("http:") || 0 <= strbkimagename.indexOf("https:") )
+		{
+			strbkimagename = strbkimagename;
+		}
+		else if ( 0 <= strbkimagename.indexOf("theme") )
+		{
+			if ( 0 <= strbkimagename.indexOf("images") )
+			{
+			strbkimagename = strbkimagename.substring(strbkimagename.indexOf("images"),strbkimagename.indexOf("')"));
+			}
+			else if ( 0 <= strbkimagename.indexOf("img") )
+			{
+			strbkimagename = strbkimagename.substring(strbkimagename.indexOf("img"),strbkimagename.indexOf("')"));
+			}
+		}
+		else if ( 0 <= strbkimagename.indexOf("::") )
+		{
+			strtemp = strbkimagename.split("::");
+			strbkimagename = strtemp[0].replace("URL('","")+"/"+strtemp[1].replace("')","");
+		}
+		strbkimagename = strbkimagename.replace('\\','/');
+
+		//backgrounnd용 image 태그 생성 - align을 padding으로 조절
+		buf.appendUTF8( '\n<div ' );
+		buf.appendUTF8( '\n' );
+		buf.appendUTF8( 		'style=" position:absolute; ' );
+		if ( null <> objcomp.currentstyle.background.position && '' <> objcomp.currentstyle.background.position )
+		{
+//trace(strbkimagename+"::"+objcomp.currentstyle.background.position);
+			if ( "0 50" == objcomp.currentstyle.background.position )
+			{
+		buf.appendUTF8( 				'left:0; ' );
+		buf.appendUTF8( 				'top:0; ' );
+		buf.appendUTF8( 				'padding-top:' + ( (objcomp.position.height-__htmlimageviewer.imageheight)/2 ) + '; ' );
+			}
+			else
+			{
+		buf.appendUTF8( 				'left:0; ' );
+		buf.appendUTF8( 				'top:0; ' );
+			}
+		}
+		else {
+		buf.appendUTF8( 				'left:0; ' );
+		buf.appendUTF8( 				'top:0; ' );
+		}
+		buf.appendUTF8( 				'" ' );
+		buf.appendUTF8( '\n>' );
+
+		buf.appendUTF8( '					' + '<img ' );
+		//image 경로 지정
+		buf.appendUTF8( 		'src="' + v_i_image_url+strbkimagename + '" ' );
+		buf.appendUTF8( 		'alt="' + objcomp.name + ':background-image' + '" ' );
+		buf.appendUTF8( 'align="middle" ' );
+		if ( "stretch" == objcomp.currentstyle.background.repeat )
+		{
+		buf.appendUTF8( 'width="' + objcomp.position.width + '" ' );
+		buf.appendUTF8( 'height="' + objcomp.position.height + '" ' );
+		}
+		else
+		{
+		buf.appendUTF8( 'width="' + __htmlimageviewer.imagewidth + '" ' );
+		buf.appendUTF8( 'height="' + __htmlimageviewer.imageheight + '" ' );
+		}
+
+		buf.appendUTF8( ' />' );
+		buf.appendUTF8( '\n' );
+		buf.appendUTF8( '\n</div>\n' );
+	}
+
+}
+/*
+HTML 태그 생성 함수 - text align style tag
+component의 text align style 정보를 생성한다.
+*/
+function fn_convert_style_align( objcomp )
+{
+
+	var ipaddingtop = 0;
+	var ipaddingleft = 0;
+	var ipaddingright = 0;
+	var ipaddingbottom = 0;
+
+	//div 태그에 지정하는 text valign을 위한 padding 처리
+	//padding 값이 존재하는 경우 기본 값으로 지정
+	if ( null == objcomp.currentstyle.padding || "" == (objcomp.currentstyle.padding+"") )
+	{
+		objcomp.style.padding = "0 0 0 0";
+	}
+	if ( "" == (objcomp.currentstyle.padding.top+"") )
+	{ipaddingtop = 0;}
+	else{ipaddingtop = toNumber(objcomp.currentstyle.padding.top);}
+	if ( "" == (objcomp.currentstyle.padding.left+"") )
+	{ipaddingleft = 0;}
+	else{ipaddingleft = toNumber(objcomp.currentstyle.padding.left);}
+	//if ( "" == (objcomp.currentstyle.padding.right+"") )
+	//{ipaddingright = 0;}
+	//else{ipaddingright = toNumber(objcomp.currentstyle.padding.right);}
+	//if ( "" == (objcomp.currentstyle.padding.bottom+"") )
+	//{ipaddingbottom = 0;}
+	//else{ipaddingbottom = toNumber(objcomp.currentstyle.padding.bottom);}
+
+	buf.appendUTF8( ' vertical-align:middle;\n' );
+	buf.appendUTF8( ' margin-top:auto;\n' );
+	buf.appendUTF8( ' margin-bottom:auto;\n' );
+	//font size에 따른 padding 값 계산 : 약간의 오차 존재
+	if ( (v_i_font_px-3)*objcomp.text.length > objcomp.position.width*2.5 )
+	{
+	buf.appendUTF8( ' padding-top:'+(ipaddingtop+(objcomp.position.height-v_i_font_px*4)/2)+'px;\n' );
+	}
+	else if ( (v_i_font_px-3)*objcomp.text.length > objcomp.position.width )
+	{
+	buf.appendUTF8( ' padding-top:'+(ipaddingtop+(objcomp.position.height-v_i_font_px*2)/2)+'px;\n' );
+	}
+	else if ( 0 < v_i_font_px && null <> objcomp.currentstyle.align
+			&& "middle" == objcomp.currentstyle.align.valign )
+	{
+	buf.appendUTF8( ' padding-top:'+(ipaddingtop+(objcomp.position.height-v_i_font_px)/2)+'px;\n' );
+	}
+	else
+	{
+	buf.appendUTF8( ' padding-top:'+ipaddingtop+'px;\n' );
+	}
+	buf.appendUTF8( ' padding-left:'+ipaddingleft+';\n' );
+
+}
+
+/*
+HTML 문서 저장 함수
+내 문서 폴더에 test.html 파일로 저장한다.
+*/
+function fn_save_html(  )
+{
+	var vfile = new VirtualFile( "test.html"
+	                 , VirtualFile.openWrite | VirtualFile.openText );
+	var rtn = vfile.write( buf.getUTF8(0), "utf-8");
+	vfile.close();
+	//alert("저장:"+rtn);
+
+}
+]]></Script>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="sgi_se_tmp_med_dev_malfunc" name="system.batch.SimpleTmpMedicalDeviceMalfunctionCode" > 
+<id name="id">
+ <column name="id"/>
+ 	<generator class="sequence">
+		<param name="sequence">seq_tmp_meddev_malfnc</param>
+	</generator> 
+</id>
+<property name="depthLevel">
+ <column name="depth_level"/>
+</property>
+<property name="fdaCode">
+ <column name="fda_code"/>
+</property>
+<property name="fdaSourceDefinition">
+ <column name="fda_source_definition"/>
+</property>
+<property name="fdaSourceDefinitionKor">
+ <column name="fda_source_definition_kor"/>
+</property>
+<property name="fdaSourcePtKor">
+ <column name="fda_source_pt_kor"/>
+</property>
+<property name="name">
+ <column name="name"/>
+</property>
+<property name="ncitDefinition">
+ <column name="ncit_definition"/>
+</property>
+<property name="ncitDefinitionKor">
+ <column name="ncit_definition_kor"/>
+</property>
+<property name="nciCode">
+ <column name="nci_code"/>
+</property>
+<property name="parentId">
+ <column name="parent_id"/>
+</property>
+
+<property name="activeFrom" type="timestamp">
+ <column name="active_from" />
+</property>
+<property name="lastModified" type="timestamp" >
+ <column name="last_modified" />
+</property>
+ <property name="isInUse"  >
+  <column name="default_in_use_id"></column>
+ </property>
+<property name="batchGroupId" type="long">
+    <column name="batch_group_id"></column>
+</property>
+<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+	</many-to-one>
+	
+</class> 
+ </hibernate-mapping>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="ITEM_CATEGORY_GROUP" name="risk.category.SimpleItemCategoryGroup" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">ITEM_CATEGORY_GROUP_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="propertyValue">
+		 	<column name="property_value"/>
+		</property>
+		
+		<property name="type">
+		 	<column name="type"/>
+		</property>
+		
+		<many-to-one name="typeStatus" class="risk.category.SimpleItemCategoryGroupType" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    	<column name="type"></column>
+		</many-to-one>
+		
+		<property name="lastModified">
+		 	<column name="last_modified"/>
+		</property>
+		
+		<property name="isInUse">
+		 	<column name="default_in_use_id"/>
+		</property>
+		
+		<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    	<column name="default_in_use_id"></column>
+		</many-to-one>
+		
+		<property name="isFromExcel">
+		 	<column name="is_from_excel"/>
+		</property>
+		
+		<set name="itemCategoryGroupHistory"   table="JUNC_ITEM_CATEGORY_GROUP_HISTORY"
+		lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+		order-by="history_id">
+		    <key>
+		        <column  name="group_id" ></column>
+		    </key>
+		    <many-to-many not-found="ignore" column="history_id"
+		        class="risk.category.SimpleItemCategoryGroupHistory" />
+		</set>
+		
+		<bag name="itemCategoryGroup"   table="JUNC_ITEM_CATEGORY_GROUP"
+		lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+		order-by="category_id">
+		    <key>
+		        <column  name="group_id" ></column>
+		    </key>
+		    <many-to-many not-found="ignore" column="category_id"
+		        class="safety.renewal.sgi.category.SimpleItemCategory" />
+		</bag>
+		
+	</class> 
+</hibernate-mapping>

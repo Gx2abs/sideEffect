@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="batch_job" name="system.batch.SimpleBatchJob" > 
+		<id name="id">
+			<column name="id"/>
+		 	<generator class="sequence">
+				<param name="sequence">seq_batch_history_pk</param>
+			</generator> 
+		</id>
+	 	<property name="batchGroupId" type="long">
+	 	    <column name="batch_group_id"></column>
+	 	</property>
+	 	<property name="jobStatusId" type="long">
+	 	    <column name="job_status"></column>
+	 	</property>
+	
+	</class> 
+ </hibernate-mapping>

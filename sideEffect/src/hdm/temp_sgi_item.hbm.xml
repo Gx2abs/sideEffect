@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="sgi_se_tmp_item" name="safety.renewal.sgi.item.SimpleTempItem1"
+     select-before-update="false"
+     >
+<id name="id" column="id" >
+  <generator class="sequence">
+				<param name="sequence">SGI_SE_ITEM_PK</param>
+			</generator> 
+</id>
+
+<property name="manuf_name">
+ <column name="MANUF_NAME"/>
+</property>
+
+<property name="item_name">
+ <column name="item_NAME"/>
+</property>
+
+<!-- batch 작업 번호 -->
+<property name="batchGroupId">
+	<column name="batch_group_id"></column>
+</property>
+ 
+<property name="meddev_item_seq" not-null="false">
+ 	<column name="meddev_item_seq" default="0" />
+</property>
+
+<!-- 품목코드 -->
+<property name="mea_class_no" >
+ 	<column name="mea_class_no" />
+</property>
+
+<!-- 품목허가번호(수허,제허) -->
+<property name="cob_flag_code" >
+ 	<column name="cob_flag_code" />
+</property>
+<many-to-one name="cobFlagType" class="safety.renewal.sgi.item.SimpleItemCodeType1" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="cob_flag_code"></column>
+</many-to-one>
+<property name="meddev_item_no" >
+ 	<column name="meddev_item_no" />
+</property>
+
+<!-- 제조원 -->
+<property name="manuf_import_name" >
+ 	<column name="manuf_import_name" />
+</property>
+
+<!-- 사용여부 -->
+<property name="isInUse" type="int">
+	<column name="default_in_use_id"></column>
+</property>
+
+<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+</many-to-one>
+
+<!-- 업체코드 -->
+<property name="company_id" type="int">
+	<column name="company_id"></column>
+</property>
+<many-to-one name="company" class="safety.renewal.company.SimpleCompany1" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="company_id"></column>
+</many-to-one>
+
+<!-- 품목코드 -->
+<property name="item_category_number" type="int" update="false">
+	<column name="item_category_number"></column>
+</property>
+<many-to-one name="mea_item" class="safety.renewal.sgi.category.SimpleItemCategory" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="item_category_number"></column>
+</many-to-one>
+
+</class>
+</hibernate-mapping>

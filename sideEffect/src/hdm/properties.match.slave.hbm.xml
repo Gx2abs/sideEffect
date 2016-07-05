@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="match_slave" name="properties.match.SimpleMatchSlave"  
+     
+     select-before-update="true"
+     >
+<id name="id" type="long"   >
+ <column name="id"   />
+ <generator class="sequence">
+     <param name="sequence">seq_match_slave_pk</param>
+ </generator>
+</id>
+ 
+ <property name="masterId" not-null="false">
+     <column name="master_id"></column>
+ </property>
+ 
+ <property name="slaveCode"  not-null="false">
+     <column name="slave_code"></column>
+ </property>
+ 
+ <property name="slave_category_id"  not-null="false">
+     <column name="slave_category_id"></column>
+ </property>
+ 
+ <property name="slaveGrade"  not-null="false">
+     <column name="slave_grade"></column>
+ </property>
+	<many-to-one name="slaveObject" class="safety.renewal.sgi.category.SimpleItemCategory"
+	    fetch="select" 
+	    insert="false" update="false" lazy="false" not-found="ignore" not-null="false"
+	    >
+	    <column name="slave_category_id"></column>
+	</many-to-one>
+</class>
+</hibernate-mapping>

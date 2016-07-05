@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="sgi_se_batch_job_group" name="system.batch.SimpleBatchJobGroup" > 
+		<id name="id">
+			<column name="id"/>
+		 	<generator class="sequence">
+				<param name="sequence">seq_batch_group_pk</param>
+			</generator> 
+		</id>
+		<property name="serviceId"  type="long">
+		    <column name="service_id"></column>
+		</property>
+		<property name="isActive"  type="long">
+		    <column name="is_active"></column>
+		</property>
+		<property name="activeFrom" type="timestamp">
+		    <column name="active_from"></column>
+		</property>
+		<property name="logicalSourcePath" type="string">
+		    <column name="logical_source_path"></column>
+		</property>
+		<property name="physicalSourcePath" type="string">
+		    <column name="physical_source_path"></column>
+		</property>
+		
+		<property name="numberOfSuccess" type="long">
+		    <column name="number_of_success"></column>
+		</property>
+		<property name="numberOfFailure" type="long">
+		    <column name="number_of_failure"></column>
+		</property>
+		<!-- batch job status -->
+		<property name="jobStatus" type="long">
+		    <column name="job_status"></column>
+		</property>
+		
+		<many-to-one name="jobStatusObject" insert="false" update="false" not-found="ignore"
+		    fetch="select" class="system.batch.SimpleBatchJobStatus" >
+		    <column name="job_status"></column>
+		</many-to-one>
+		
+		<!-- Move job status -->
+		<property name="moveJobStatus" type="long" >
+		    <column name="move_job_status" default="0"></column>
+		</property>
+		
+		<many-to-one name="moveJobStatusObject" insert="false" update="false" not-found="ignore"
+		    fetch="select" class="system.batch.SimpleMoveJobStatus" >
+		    <column name="move_job_status"></column>
+		</many-to-one>
+		
+		<property name="tableTypeId" type="long">
+		    <column name="table_type"></column>
+		</property>
+		
+		<many-to-one name="tableType" insert="false" update="false" not-found="ignore"
+		    fetch="select" class="system.batch.SimpleBatchJobTableType" lazy="false">
+		    <column name="table_type"></column>
+		</many-to-one>
+	
+	</class> 
+ </hibernate-mapping>

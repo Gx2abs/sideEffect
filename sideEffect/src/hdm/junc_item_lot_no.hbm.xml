@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="JUNC_ITEM_LOT_NO" name="safety.renewal.sgi.item.SimpleJuncItemLot"
+      dynamic-insert="true" 
+     dynamic-update="true" 
+     mutable="true">
+<id name="id">
+ <column name="id"/>
+   <generator class="sequence">
+				<param name="sequence">JUNC_ITEM_LOT_NO_PK</param>
+			</generator> 
+</id>
+<property name="item_id">
+ <column name="item_id"/>
+</property>
+<property name="lot_id">
+ <column name="lot_id"/>
+</property>
+
+</class> 
+ </hibernate-mapping>

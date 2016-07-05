@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="MEMBERS" name="member.SimpleMember"
+     select-before-update="true"
+     >
+	<id name="id" type="long">
+	 <column name="id" />
+	  <generator class="sequence">
+	      <param name="sequence">SEQ_PK_MEMBER</param>
+	  </generator> 
+	</id>
+	<property name="accountName" >
+	 <column name="account_name" />
+	</property>
+	<property name="organisation" >
+	 <column name="organisation" />
+	</property>
+   
+	<property name="manager"  >
+	    <column name="manager"></column>
+	</property>
+	<property name="phoneNumber"  >
+	    <column name="phone_number"></column>
+	</property>
+	<property name="wholeEmail"  >
+	    <column name="whole_email"></column>
+	</property>
+	<property name="emailDomain"  >
+	    <column name="email_domain"></column>
+	</property>
+	<property name="emailUserName"  >
+	    <column name="email_user_name"></column>
+	</property>
+	<property name="privilegeId"  >
+	    <column name="member_privilege"></column>
+	</property>
+	<property name="firstCreated"  >
+	    <column name="first_created"></column>
+	</property>
+	<property name="lastModified"  >
+	    <column name="last_modified"></column>
+	</property>
+	<property name="memberPassword">
+	    <column name="member_password"/>
+	</property>
+</class>
+</hibernate-mapping>

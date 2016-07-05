@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="SIDE_EFFECT_REPORT_TYPE_DATE" name="sideeffect.SimpleSideEffectReportTypeDate"> 
+<id name="id" column="id" >
+ <generator class="sequence"> 
+	  	<param name="sequence">side_effect_report_type_date_seq</param> 
+  </generator>
+</id>
+ 
+<property name="report_id" >
+ <column name="report_id"/>
+</property>
+<property name="junc_id" >
+ <column name="junc_id"/>
+</property>
+<property name="report_date" >
+ <column name="report_date"/>
+</property>
+
+<property name="report_type_id" >
+ <column name="report_type_id"/>
+</property>
+
+<property name="report_year" >
+ <column name="report_year"/>
+</property>
+
+<property name="report_month" >
+ <column name="report_month"/>
+</property>
+
+
+<many-to-one 
+    class="statistics.property.SimpleReportDate"
+    name="reportYM"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    property-ref="reportDateLink"
+    >
+    <column name="report_year"/>
+    <column name="report_month"/>
+</many-to-one>
+
+<!-- 
+<properties name="sideEffectReportDateLink" insert="false" update="false" unique="false" >
+    <property 
+        name="report_id" column="report_id" generated="never"
+        insert="false" unique="false" update="false"
+        >
+    </property>
+</properties>
+ -->
+
+</class> 
+</hibernate-mapping>

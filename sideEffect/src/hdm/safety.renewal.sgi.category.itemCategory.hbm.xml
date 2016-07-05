@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="sgi_se_item_category"  name="safety.renewal.sgi.category.SimpleItemCategory">
+    <id name="id">
+        <column name="id"></column>
+        <generator class="sequence">
+            <param name="sequence">seq_pk_sgi_item_category</param>
+        </generator>
+    </id> 
+    <!-- <property name="grade"  type="string">
+	 <column name="grade"/>
+	</property> -->
+	<property name="grade"  type="string" insert="false" update="false">
+	 <column name="grade"/>
+	</property>
+	<property name="parentId"  type="long">
+	 <column name="parent_id"/>
+	</property>
+	
+	<many-to-one name="parent" insert="false" lazy="false" update="false"
+	    class="safety.renewal.sgi.category.SimpleItemCategory" fetch="select"
+	    not-found="ignore"  
+	    >
+	    <column name="parent_id"></column>
+	</many-to-one>
+	
+	 
+	<!-- <property name="higher_class_no" >
+	 <column name="higher_class_no"/>
+	</property>
+	<property name="higher_class_grade" >
+	 <column name="higher_class_grade"/>
+	</property> -->
+	<property name="class_level" insert="false" update="false">
+	 <column name="class_level"/>
+	</property>
+	<!-- <property name="class_level">
+	 <column name="class_level"/>
+	</property> -->
+	
+	<property name="mea_class_no">
+	 <column name="mea_class_no"/>
+	</property>
+	<property name="class_kor_name">
+	 <column name="class_kor_name"/>
+	</property>
+	<property name="class_eng_name">
+	 <column name="class_eng_name"/>
+	</property>
+	<property name="class_cont">
+	 <column name="class_cont"/>
+	</property>
+	<!--  
+	<property name="item_grp_code">
+	 <column name="ITEM_GRP_CODE"/>
+	</property>
+	
+	<property name="regist_id">
+	 <column name="REGIST_ID"/>
+	</property>
+	
+	<property name="update_id">
+	 <column name="UPDATE_ID"/>
+	</property>
+	<property name="trace_manage_target_yn">
+	 <column name="TRACE_MANAGE_TARGET_YN"/>
+	</property>
+	<property name="update_ts" >
+	 <column name="update_ts"/>
+	</property>
+	<property name="use_yn" >
+	 <column name="USE_YN"/>
+	</property>
+	-->
+	<!-- regist_ts -->
+	<property name="update_ts" >
+	 <column name="update_ts"/>
+	</property>
+	<property name="regist_ts" >
+	 <column name="regist_ts"/>
+	</property>
+	
+	<property name="codeAge" insert="false" update="false">
+	 <column name="code_age"/>
+	</property>
+	
+	<!-- 고유식별코드(UDI code) --> 
+	<property name="udi_code" >
+	 <column name="udi_code"/>
+	</property>
+	
+	<!-- 코드 구분 (신코드, 구코드, 자료없음, etc.) -->
+	<!-- <many-to-one name="code_age" class="properties.item.SimpleItemCodeType" -->
+	<many-to-one name="code_age" class="safety.renewal.sgi.category.SimpleItemCategoryCodeType"
+	    lazy="false" not-found="ignore">
+	    <column name="code_age"></column>
+	</many-to-one>
+
+	<!-- 추적관리대상여부 -->
+	 <!-- <many-to-one name="traceability" class="properties.item.SimpleTraceability" -->
+	 <many-to-one name="traceability" class="safety.renewal.sgi.category.SimpleItemCategoryTraceability"
+	    lazy="false" not-found="ignore">
+	    <column name="traceability"></column>
+	</many-to-one>
+	
+	<!--  사용여부 -->
+	<many-to-one name="isInUse" class="properties.SimpleIsInUse"
+	    lazy="false" not-found="ignore">
+	    <column name="is_in_use"></column>
+	</many-to-one>
+		
+
+	<!-- 이력현황 -->
+	<set name="history" 
+		fetch="select" 
+	    lazy="false" table="SGI_JNC_CATEGORY_HISTORY">
+	 	<key >
+			<column name="category_id"></column>		
+		</key>
+		<many-to-many not-found="ignore" class="safety.renewal.sgi.category.SimpleItemCategoryHistory"
+		    column="history_id"
+		    >
+		</many-to-many>	    
+	</set>	
+
+	<!-- 분류 -->
+	<many-to-one name="meaClassNoLevel" class="safety.renewal.sgi.category.SimpleItemCategoryLevel"
+	    lazy="false" not-found="ignore">
+	    <column name="class_level"></column>
+	</many-to-one>
+	
+	<!-- 등급 -->
+	<many-to-one name="categoryGrade" class="safety.renewal.sgi.category.SimpleItemCategoryGrade"
+	    lazy="false" not-found="ignore">
+	    <column name="grade"></column>
+	</many-to-one>
+	
+	<many-to-one 
+    class="risk.category.SimpleJuncItemCategoryGroup"
+    name="juncItemCategoryGroup"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="id"/>
+	</many-to-one>
+
+</class> 
+ 
+ </hibernate-mapping>

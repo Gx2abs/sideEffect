@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="attachment" name="system.io.SimpleAttachment" > 
+<id name="id" column="ID" >
+ <generator class="sequence"> 
+	  	<param name="sequence">ATTACHMENT_ID_SEQ</param> 
+  </generator>
+</id>
+<property name="name">
+ <column name="name"/>
+</property>
+<property name="extension">
+ <column name="extension"/>
+</property>
+<property name="fullURL">
+ <column name="full_url"/>
+</property>
+<property name="physicalPath">
+ <column name="physical_path"/>
+</property>
+<property name="relativeLogicalPath">
+ <column name="relative_logical_path"/>
+</property>
+
+<property name="table_id">
+ <column name="table_id"/>
+</property>
+
+<property name="type">
+ <column name="type"/>
+</property>
+
+<property name="fileName">
+ <column name="file_name"/>
+</property>
+
+<property name="logical_name">
+ <column name="logical_name"/>
+</property>
+
+
+</class> 
+ </hibernate-mapping>

@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate//Hibernate Configuration DTD//EN"
+    
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+ <!-- "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd" -->
+<hibernate-configuration>
+    <session-factory>
+          
+		  
+        <!--  
+		<mapping resource="hdm/mea_class_no.hbm.xml"/>
+		<mapping resource="hdm/mea_compay.hbm.xml"/>
+		<mapping resource="hdm/meb_item.hbm.xml"/>
+		-->
+		<mapping resource="hdm/reporter_type.hbm.xml"/>
+		<mapping resource="hdm/attachment.hbm.xml"/>
+		<mapping resource="hdm/causality.hbm.xml"/>
+		<mapping resource="hdm/cause_of_sideeffect.hbm.xml"/>
+		<mapping resource="hdm/sideeffect_report.hbm.xml"/>
+		
+		<mapping resource="hdm/sideeffect_report_vo.hbm.xml"/>
+		
+		<mapping resource="hdm/gender.hbm.xml"/>
+		<mapping resource="hdm/sideeffect_severity.hbm.xml"/>
+		<mapping resource="hdm/component_code.hbm.xml"/>
+		<mapping resource="hdm/component_code.history.hbm.xml"/>
+		<mapping resource="hdm/medical_device_malfunction_code.hbm.xml"/>
+		<mapping resource="hdm/medical_device_malfunction_code_history.hbm.xml"/>
+		<mapping resource="hdm/country_manufactured_in.hbm.xml"/>
+		<mapping resource="hdm/patient_condition.hbm.xml"/>
+		<mapping resource="hdm/patient_condition.history.hbm.xml"/>
+		<mapping resource="hdm/report_status.hbm.xml"/>
+		<!-- <mapping resource="hdm/report_type.hbm.xml"/> -->
+		<mapping resource="hdm/country_reported_in.hbm.xml"/>
+		<mapping resource="hdm/safety_report.hbm.xml"/>
+		<mapping resource="hdm/safety_report_view.hbm.xml"/>
+		
+		
+		
+		
+		<!-- not in use --> 
+		<!--
+			<mapping resource="hdm/properties.item.hbm.xml"/> 
+			<mapping resource="hdm/safetyReport_hyh.hbm.xml"/>
+			
+			
+			<mapping resource="hdm/properties.item.item_grade.hbm.xml"/>
+			
+			
+			<mapping resource="hdm/junc_mea_class_no_history.hbm.xml"/>
+			<mapping resource="hdm/junc_mea_class_no_parent.hbm.xml"/>
+			<mapping resource="hdm/properties.compay.hbm.xml"/>
+			<mapping resource="hdm/properties.company.history.hbm.xml"/>
+			<mapping resource="hdm/properties.product.hbm.xml"/>
+			<mapping resource="hdm/properties.product.history.hbm.xml"/>
+		 -->
+		 
+		 <!-- begin tables in use -->
+		 <mapping resource="hdm/default_is_in_use.hbm.xml"/>
+		<!--  end tables in use -->
+
+		<!-- begin tables not-sure-if-used  -->		
+		<mapping resource="hdm/junc_safety_reporter_types.hbm.xml"/>
+		<mapping resource="hdm/properties.item.historyType.hbm.xml"/>
+		<mapping resource="hdm/properties.item.history.hbm.xml"/>
+		<mapping resource="hdm/foreign.simple_foreign_grade.hbm.xml"/>
+		<mapping resource="hdm/properties.country.hbm.xml"/>
+		<mapping resource="hdm/properties.item.item_code_type.hbm.xml"/>
+		<mapping resource="hdm/properties.country.history.hbm.xml"/>
+		<mapping resource="hdm/properties.reportType.hbm.xml"/>
+		<mapping resource="hdm/properties.reportType.history.hbm.xml"/>
+		<mapping resource="hdm/properties.junc.reportType.hbm.xml"/>
+		<mapping resource="hdm/properties.item.traceability.hbm.xml"/>
+		
+		<mapping resource="hdm/properties.product.code_type.hbm.xml"/>
+		<mapping resource="hdm/properties.company.closeType.hbm.xml"/>
+		<mapping resource="hdm/properties.company.flagType.hbm.xml"/>
+		<mapping resource="hdm/properties.match.master.hbm.xml"/>
+		<mapping resource="hdm/properties.match.slave.hbm.xml"/>
+		<mapping resource="hdm/properties.match.history.hbm.xml"/>
+		<mapping resource="hdm/properties.meb_lot_no.hbm.xml"/>
+		<mapping resource="hdm/properties.properties.product.SimpleProductType.hbm.xml"/>
+		<mapping resource="hdm/system.log.hbm.xml"/>
+		
+		<mapping resource="hdm/side_effect_result.hbm.xml"/>
+		<mapping resource="hdm/side_effect_result_history.hbm.xml"/>
+		<mapping resource="hdm/side_effect_cause.hbm.xml"/>
+		
+		<mapping resource="hdm/junc_sideeffect_result.hbm.xml"/>
+		<mapping resource="hdm/junc_sideeffect_cause.hbm.xml"/>
+		<mapping resource="hdm/junc_sideeffect_report_types.hbm.xml"/>
+		<mapping resource="hdm/junc_report_attachment.hbm.xml"/>
+		<mapping resource="hdm/properties.junc_meb_lot_no.hbm.xml"/>
+		<mapping resource="hdm/properties.junc_meb_type_info.hbm.xml"/>
+		
+		<mapping resource="hdm/mea_class_no_level.hbm.xml"/>
+		<mapping resource="hdm/patient_condition_level.hbm.xml"/>
+		<mapping resource="hdm/medical_device_malfunction_code_level.hbm.xml"/>
+		<mapping resource="hdm/component_code_level.hbm.xml"/>
+		
+		<mapping resource="hdm/side_effect_report_type.hbm.xml"/>
+		
+		
+		<mapping resource="hdm/member.hbm.xml"/>
+		<mapping resource="hdm/member.encrypted_password.hbm.xml"/>
+		<mapping resource="hdm/system.security.user_log.hbm.xml"/>
+		<mapping resource="hdm/mea_class_no_view2.hbm.xml"/>
+		
+		<mapping resource="hdm/junc_side_effect_patient_condition.hbm.xml"/>
+		<mapping resource="hdm/junc_side_effect_medical_code.hbm.xml"/>
+		<mapping resource="hdm/junc_side_effect_component_code.hbm.xml"/>
+		
+		<mapping resource="hdm/junc_safety_component_code.hbm.xml"/>
+		<mapping resource="hdm/junc_safety_medical_code.hbm.xml"/>
+		<mapping resource="hdm/junc_safety_patient_condition.hbm.xml"/>
+		
+		<mapping resource="hdm/system.properties.hbm.xml"/>
+		
+		<mapping resource="hdm/junc_safety_report_type.hbm.xml"/>
+		
+		<mapping resource="hdm/statistics.property.report_date.hbm.xml"/>
+		
+		<mapping resource="hdm/reportType2.hbm.xml"/>
+		<mapping resource="hdm/junc_side_effect_report_types2.hbm.xml"/>
+		<mapping resource="hdm/side_effect_report_type_date.hbm.xml"/>
+		<mapping resource="hdm/junc_safety_report_types2.hbm.xml"/>
+		<mapping resource="hdm/safety_report_type_date.hbm.xml"/>
+		
+		<mapping resource="hdm/report_follow_up_action.hbm.xml"/>
+		<mapping resource="hdm/side_effect_report_meb_type_info.hbm.xml"/>
+		<mapping resource="hdm/safety_report_meb_type_info.hbm.xml"/>
+		
+		<!--begin renewal -->
+		
+			<!-- begin address -->
+			<mapping resource="hdm/address_busan.hbm.xml"/>
+			<mapping resource="hdm/address_chungcheong_s.hbm.xml"/>
+			<mapping resource="hdm/address_chungcheong_n.hbm.xml"/>
+			<mapping resource="hdm/address_daegu.hbm.xml"/>
+			<mapping resource="hdm/address_daejeon.hbm.xml"/>
+			<mapping resource="hdm/address_gangwon.hbm.xml"/>
+			<mapping resource="hdm/address_gwangju.hbm.xml"/>
+			<mapping resource="hdm/address_gyeonggi.hbm.xml"/>
+			<mapping resource="hdm/address_gyeongsang_s.hbm.xml"/>
+			<mapping resource="hdm/address_gyeongsang_n.hbm.xml"/>
+			<mapping resource="hdm/address_incheon.hbm.xml"/>
+			<mapping resource="hdm/address_jeju.hbm.xml"/>
+			<mapping resource="hdm/address_jeolla_s.hbm.xml"/>
+			<mapping resource="hdm/address_jeolla_n.hbm.xml"/>
+			<mapping resource="hdm/address_sejong.hbm.xml"/>
+			<mapping resource="hdm/address_seoul.hbm.xml"/>
+			<mapping resource="hdm/address_ulsan.hbm.xml"/>
+			<!--  end address -->
+		
+			<mapping resource="hdm/safety.renewal.sgi.category.item_code_type.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.sgi.category.item_grade.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.sgi.category.itemCategory.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.sgi.category.itemCategoryHistory.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.sgi.category.SimpleItemCategoryLevel.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.sgi.category.traceability.hbm.xml"/>
+			<mapping resource="hdm/safety.renoewal.sgi.category.SimpleJncItemCategoryHistory.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.company.history.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.company.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.company.closeType.hbm.xml"/>
+			<mapping resource="hdm/safety.renewal.company.flagType.hbm.xml"/>
+		
+		
+			<mapping resource="hdm/sgi_item.hbm.xml"/>
+			<mapping resource="hdm/sgi_item_history.hbm.xml"/>
+			<mapping resource="hdm/sgi_item_lot_no.hbm.xml"/>
+			<mapping resource="hdm/sgi_item_type_info.hbm.xml"/>
+			<mapping resource="hdm/sgi_item_code_type.hbm.xml"/>
+			<mapping resource="hdm/junc_item_lot_no.hbm.xml"/>
+			<mapping resource="hdm/junc_item_type_info.hbm.xml"/>
+			<mapping resource="hdm/temp_sgi_item.hbm.xml"/>
+	
+			<!-- begin system.batch -->
+			<mapping resource="hdm/system.batch.job.hbm.xml"/>
+			<mapping resource="hdm/system.batch.job_group.hbm.xml"/>
+			<mapping resource="hdm/system.batch.compay.hbm.xml"/>
+			<mapping resource="hdm/system.batch.jobStatus.hbm.xml"/>
+			<mapping resource="hdm/system.batch.moveJobStatus.hbm.xml"/>
+			<mapping resource="hdm/system.batch.jobTable.hbm.xml"/>
+			<mapping resource="hdm/system.batch.patient_condition.hbm.xml"/>
+			<mapping resource="hdm/system.batch.component_code.hbm.xml"/>
+			<mapping resource="hdm/system.batch.safety_report.hbm.xml"/>
+			<mapping resource="hdm/system.batch.sideeffect_report.hbm.xml"/>
+			<mapping resource="hdm/system.batch.SimpleTmpMedicalDeviceMalfunctionCode.hbm.xml"/>
+			<mapping resource="hdm/system.batch.itemCategoryInsert.hbm.xml"/>
+			<!-- end system.batch -->
+			
+			<!-- risk.category -->
+			<mapping resource="hdm/risk/category/item_category_group.hbm.xml"/>
+			<mapping resource="hdm/risk/category/item_category_group_back.hbm.xml"/>
+			<mapping resource="hdm/risk/category/item_category_gruop_history.hbm.xml"/>
+			<mapping resource="hdm/risk/category/junc_item_category_group.hbm.xml"/>
+			<mapping resource="hdm/risk/category/item_category_group_type.hbm.xml"/>
+			
+			<mapping resource="hdm/risk/category/possibility/possibility_class.hbm.xml"/>
+			<mapping resource="hdm/risk/category/possibility/junc_possibility_class.hbm.xml"/>
+			<mapping resource="hdm/risk/category/risk/risk_class.hbm.xml"/>
+			<mapping resource="hdm/risk/category/risk/junc_risk_class.hbm.xml"/>
+			
+			<mapping resource="hdm/risk/item/importoutput/itemImport.hbm.xml"/>
+			<mapping resource="hdm/risk/item/importoutput/item_import_history.hbm.xml"/>
+			<mapping resource="hdm/risk/item/importoutput/itemOutput.hbm.xml"/>
+			<mapping resource="hdm/risk/item/importoutput/item_output_history.hbm.xml"/>
+			<!-- end risk.category -->
+    </session-factory>
+         
+</hibernate-configuration>

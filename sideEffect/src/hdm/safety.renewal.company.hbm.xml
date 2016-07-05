@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="SGI_SE_COMPANY" name="safety.renewal.company.SimpleCompany1"
+   select-before-update="true"> 
+<id name="id" column="id" >
+  <generator class="sequence">
+				<param name="sequence">COMPANY_PK</param>
+</generator> 
+</id>
+<property name="meddev_entp_seq" not-null="false">
+ <column name="MEDDEV_ENTP_SEQ"/>
+</property>
+<property name="cob_flag_code">
+ <column name="COB_FLAG_CODE"/>
+</property>
+<property name="item_permit_code">
+ <column name="ITEM_PERMIT_CODE"/>
+</property>
+<property name="desct_doc_code">
+ <column name="DESCT_DOC_CODE"/>
+</property>
+<property name="permit_area_code">
+ <column name="PERMIT_AREA_CODE"/>
+</property>
+<property name="meddev_entp_no">
+ <column name="MEDDEV_ENTP_NO"/>
+</property>
+<property name="tax_no">
+ <column name="TAX_NO"/>
+</property>
+<property name="entp_name">
+ <column name="ENTP_NAME"/>
+</property>
+<property name="permit_date">
+ <column name="PERMIT_DATE"/>
+</property>
+<property name="permit_state_code">
+ <column name="PERMIT_STATE_CODE"/>
+</property>
+<property name="shutdown_close_reopen_code">
+ <column name="SHUTDOWN_CLOSE_REOPEN_CODE"/>
+</property>
+<property name="close_date">
+ <column name="CLOSE_DATE"/>
+</property>
+<property name="shotdown_plan_start_date">
+ <column name="SHOTDOWN_PLAN_START_DATE"/>
+</property>
+<property name="shotdown_plan_end_date">
+ <column name="SHOTDOWN_PLAN_END_DATE"/>
+</property>
+<property name="reopen_date">
+ <column name="REOPEN_DATE"/>
+</property>
+<property name="permit_cond">
+ <column name="PERMIT_COND"/>
+</property>
+<property name="diff_bywork">
+ <column name="DIFF_BYWORK"/>
+</property>
+<property name="entp_tel_no">
+ <column name="ENTP_TEL_NO"/>
+</property>
+<property name="entp_fax_no">
+ <column name="ENTP_FAX_NO"/>
+</property>
+<property name="entp_zip_no">
+ <column name="ENTP_ZIP_NO"/>
+</property>
+<property name="entp_addr1">
+ <column name="ENTP_ADDR1"/>
+</property>
+<property name="entp_addr2">
+ <column name="ENTP_ADDR2"/>
+</property>
+<property name="remark">
+ <column name="REMARK"/>
+</property>
+<property name="receipt_no">
+ <column name="RECEIPT_NO"/>
+</property>
+<property name="change_reason">
+ <column name="CHANGE_REASON"/>
+</property>
+<property name="apply_reason">
+ <column name="APPLY_REASON"/>
+</property>
+<property name="sample_entp_yn">
+ <column name="SAMPLE_ENTP_YN"/>
+</property>
+<property name="regist_ts">
+ <column name="REGIST_TS"/>
+</property>
+<property name="regist_id">
+ <column name="REGIST_ID"/>
+</property>
+<property name="update_ts">
+ <column name="UPDATE_TS"/>
+</property>
+<property name="update_id">
+ <column name="UPDATE_ID"/>
+</property>
+<property name="serv_target">
+ <column name="SERV_TARGET"/>
+</property>
+<property name="serv_target2">
+ <column name="SERV_TARGET2"/>
+</property>
+<property name="kfda_manage_code">
+ <column name="KFDA_MANAGE_CODE"/>
+</property>
+<property name="default_in_use_id">
+ <column name="DEFAULT_IN_USE_ID"/>
+</property>
+
+ 	<set name="companyHistory"   table="SGI_JUNC_COMPANY_HISTORY"
+	     lazy="false" fetch="select" 
+	     order-by="history_id"
+	    >
+	    <key>
+	        <column  name="company_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore" column="history_id"
+	        
+	         class="safety.renewal.company.SimpleCompanyHistory1" />
+	</set>
+
+</class> 
+ </hibernate-mapping>

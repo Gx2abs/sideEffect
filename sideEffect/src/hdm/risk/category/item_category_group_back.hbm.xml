@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="ITEM_CATEGORY_GROUP_BACK" name="risk.category.SimpleItemCategoryGroupBack" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">ITEM_CATEGORY_GROUP_BACK_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="revisionName">
+		 	<column name="revision_name"/>
+		</property>
+		
+		<property name="startDate">
+		 	<column name="start_date"/>
+		</property>
+		
+		<property name="group_id">
+		 	<column name="group_id"/>
+		</property>
+		
+		<bag name="possibility"   table="JUNC_POSSIBILITY_CLASS"
+		lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+		order-by="possibility_id">
+		    <key>
+		        <column  name="group_id" ></column>
+		    </key>
+		    <many-to-many not-found="ignore" column="possibility_id"
+		        class="risk.category.possibility.SimplePossibility" />
+		</bag>
+		
+		<bag name="risk"   table="JUNC_RISK_CLASS"
+		lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+		order-by="risk_id">
+		    <key>
+		        <column  name="group_id" ></column>
+		    </key>
+		    <many-to-many not-found="ignore" column="risk_id"
+		        class="risk.category.risk.SimpleRisk" />
+		</bag>
+		
+	</class> 
+</hibernate-mapping>

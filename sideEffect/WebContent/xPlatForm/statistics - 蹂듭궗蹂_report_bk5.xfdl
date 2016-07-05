@@ -1,0 +1,2210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="report" classname="report" inheritanceid="" position="absolute 0 0 900 700" titletext="부작용 등 안전성정보  DB관리 시스템" onload="report_onload">
+    <Layouts>
+      <Layout>
+        <Div id="Div_condition" taborder="0" position2="absolute l:8 w:884 t:50 h:110" positiontype="position2" text="Div00">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" text="조회기간" position2="absolute l:13 w:91 t:10 h:16" positiontype="position2"/>
+              <Calendar id="Calendar_fm_y" taborder="1" position2="absolute l:84 w:85 t:11 h:22" dateformat="yyyy" value="null" editformat="yyyy" type="spin" positiontype="position2"/>
+              <Static id="static_year" text="년" position2="absolute l:178 w:21 t:11 h:22" onclick="Div00_Static02_onclick" positiontype="position2"/>
+              <Calendar id="Calendar_fm_m" taborder="2" position2="absolute l:199 w:64 t:11 h:22" type="spin" dateformat="MM" editformat="MM" value="null" displaynulltext="01" positiontype="position2"/>
+              <Static id="Static02" text="월 ~ " position2="absolute l:272 w:53 t:11 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_y" taborder="3" dateformat="yyyy" editformat="yyyy" position2="absolute l:316 w:85 t:11 h:22" type="spin" positiontype="position2"/>
+              <Static id="static_year00" text="년" onclick="Div00_Static02_onclick" position2="absolute l:410 w:21 t:11 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_m" taborder="4" position2="absolute l:440 w:64 t:11 h:22" type="spin" dateformat="MM" editformat="MM" value="null" displaynulltext="12" positiontype="position2"/>
+              <Static id="Static03" text="월 " position2="absolute l:504 w:53 t:11 h:22" positiontype="position2"/>
+              <Button id="btn_search" taborder="0" text="조회" position2="absolute l:546 w:43 t:12 h:19" positiontype="position2"/>
+              <Button id="btn_reporterType" taborder="5" text="보고자 유형" position2="absolute l:21 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" onclick="Div_condition_btn_reporterType_onclick" bindgestureset="popReporterType"/>
+              <Button id="btn_meaCompany" taborder="6" text="업소명" position2="absolute l:162 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaCompany" onclick="Div_condition_btn_meaCompany_onclick"/>
+              <Button id="btn_country" taborder="7" text="제조국" position2="absolute l:303 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popContyryMI" onclick="Div_condition_btn_country_onclick"/>
+              <Button id="btn_meaClassNo" taborder="8" text="품목" position2="absolute l:444 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaClassNo" onclick="Div_condition_btn_meaClassNo_onclick"/>
+              <Button id="btn_itemGrade" taborder="9" text="등급" position2="absolute l:585 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popItemGrade" onclick="Div_condition_btn_itemGrade_onclick"/>
+              <Button id="Button06" taborder="11" text="결과 및 위해성 정도" position2="absolute l:703 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popSideeffectResult" onclick="Div_condition_Button06_onclick"/>
+              <Button id="btn_medicalDMC" taborder="13" text="의료기기문제코드" position2="absolute l:190 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMedical" onclick="Div_condition_btn_medicalDMC_onclick"/>
+              <Button id="btn_component" taborder="14" text="구성요소문제코드" position2="absolute l:361 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popComponent" onclick="Div_condition_btn_component_onclick"/>
+              <Button id="btn_causeOS" taborder="15" text="부작용 원인분류" position2="absolute l:532 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCauseOfSideeffect" onclick="Div_condition_btn_causeOS_onclick"/>
+              <Button id="btn_causality" taborder="16" text="인과관계" position2="absolute l:726 w:126 t:58 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCausality" onclick="Div_condition_btn_causality_onclick"/>
+              <Button id="btn_excel" taborder="18" text="E" position2="absolute l:708 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_excel_onclick"/>
+              <Button id="btn_csv" taborder="19" text="C" position2="absolute l:732 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_csv_onclick"/>
+              <Button id="btn_text" taborder="20" text="T" position2="absolute l:756 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_text_onclick"/>
+              <Button id="btn_print" taborder="21" text="P" position2="absolute l:780 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_print_onclick"/>
+              <Button id="btn_char" taborder="22" text="Chart" position2="absolute l:822 w:47 t:6 h:19" positiontype="position2" onclick="Div_condition_btn_char_onclick"/>
+              <Button id="btn_patient" taborder="23" text="환자문제코드" position2="absolute l:19 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popPatient" onclick="Div_condition_btn_patient_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" text="Static00" position2="absolute l:10 w:241 t:15 h:23" positiontype="position2"/>
+        <PopupDiv id="PopupDiv_code" text="PopupDiv_code" visible="false" position2="absolute l:128 w:564 t:169 h:435" positiontype="position2" tooltiptype="default" positionstep="0" style="background:whitesmoke;">
+          <Layouts>
+            <Layout>
+              <Button id="btn_all_select" taborder="0" text="전체선택" position2="absolute l:17 w:81 t:7 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_all_select_onclick"/>
+              <Button id="btn_all_cancel" taborder="1" text="전체취소" position2="absolute l:102 w:81 t:7 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_all_cancel_onclick"/>
+              <Grid id="grid_code" taborder="2" useinputpanel="false" position2="absolute l:8 w:545 t:53 h:342" positiontype="position2" binddataset="ds_codeList" cantreestatuschange="PopupDiv_code_grid_code_cantreestatuschange">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="531"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="tree" edittype="tree" text="bind:NAME" treelevel="bind:DEPTH_LEVEL" treecheck="bind:CHECK_YN"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Edit id="Edit_searchWord" taborder="3" position2="absolute l:301 w:192 t:10 h:22" positiontype="position2"/>
+              <Button id="btn_code_search" taborder="4" text="검색" position2="absolute l:507 w:40 t:9 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_code_search_onclick"/>
+              <Button id="btn_code_select" taborder="5" text="조회" position2="absolute l:136 w:57 t:401 h:22" positiontype="position2" onclick="PopupDiv_code_btn_code_select_onclick"/>
+              <Button id="btn_popClose" taborder="6" text="취소" position2="absolute l:357 w:57 t:401 h:22" positiontype="position2" onclick="PopupDiv_code_btn_popClose_onclick"/>
+              <Static id="Static_total" text="   건 조회 되었습니다." position2="absolute l:22 w:156 t:38 h:10" positiontype="position2" style="font:Verdana,8,bold;"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Button id="Button00" taborder="3" text="Button00" position2="absolute l:291 w:88 t:17 h:21" positiontype="position2" onclick="Button00_onclick"/>
+        <Grid id="grd_output" taborder="4" binddataset="ds_data1" useinputpanel="false" cellsizingtype="col" cellsizebandtype="allband" position="absolute 10 168 892 647">
+          <Formats>
+            <Format id="default"/>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+      <Dataset id="ds_codeList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="19"/>
+          <Column id="NAME" type="string" size="255"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">4</Col>
+            <Col id="NAME">의료기기판매업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">5</Col>
+            <Col id="NAME">의료기기대임업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_info" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="true" keystring="YEARMM">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="CODE" type="INT" size="10"/>
+          <Column id="NAME" type="STRING" size="900"/>
+          <Column id="DATE" type="DATE" size="256"/>
+          <Column id="NCOUNT" type="INT" size="10"/>
+          <Column id="YEAR" type="STRING" size="4"/>
+          <Column id="YEARMM" type="STRING" size="6"/>
+          <Column id="DEPTH_LEVEL" type="STRING" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="ID">1</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130105</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201301</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130110</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201301</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">3</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130205</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201302</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">4</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130222</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201302</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">5</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130301</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201303</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">6</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130501</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201305</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">7</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130601</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">8</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130607</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">9</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130708</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201307</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">10</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="CODE">3</Col>
+            <Col id="DATE">20130506</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201305</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">11</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130606</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">12</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130630</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">13</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130801</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201308</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">14</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130901</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201309</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">15</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130905</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201309</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_data1" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="CODE" type="STRING" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_data0" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="CODE" type="STRING" size="256"/>
+          <Column id="YEAR" type="STRING" size="256"/>
+          <Column id="VALUE" type="INT" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1970</Col>
+            <Col id="VALUE">98222.48</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1971</Col>
+            <Col id="VALUE">98234.29</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1972</Col>
+            <Col id="VALUE">98484.1</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1973</Col>
+            <Col id="VALUE">98757.69</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1974</Col>
+            <Col id="VALUE">98824.29</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1975</Col>
+            <Col id="VALUE">98806.96</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1976</Col>
+            <Col id="VALUE">98799.07</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1977</Col>
+            <Col id="VALUE">98858.51</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1978</Col>
+            <Col id="VALUE">98954.54</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1979</Col>
+            <Col id="VALUE">98966.25</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">98992.34</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">99015.99</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">99022.44</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">99091.06</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">99117.26</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">99143.32</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">99173.26</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">99221.77</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">99236.58</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">99262.63</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">99273.7</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">99299.8</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">99313.66</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">99391.82</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">99393.81</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">99268.38</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">99313.46</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">99373.04</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">99407.9</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">99434.26</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">99460.74</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">99538</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">99585.2</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">99600.87</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">999</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">99617.38</Col>
+            <Col id="NAME">SEOUL</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1970</Col>
+            <Col id="VALUE">609.81</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1971</Col>
+            <Col id="VALUE">609.81</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1972</Col>
+            <Col id="VALUE">613</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1973</Col>
+            <Col id="VALUE">627.86</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1974</Col>
+            <Col id="VALUE">628.01</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1975</Col>
+            <Col id="VALUE">600.39</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1976</Col>
+            <Col id="VALUE">607.97</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1977</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1978</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1979</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">95</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">87</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">54</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">54</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">655</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">22</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">14</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">59</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">2332</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">100</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">2365</Col>
+            <Col id="NAME">TOKYO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">24.01</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">223</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">24.01</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">322</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">30</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">99</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">98</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">89</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">101</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">23.91</Col>
+            <Col id="NAME">PARIS</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">10</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">46</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">46</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">464</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">79</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">4</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">97</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">46</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">46</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">64</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">64</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">64</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">323</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">24</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">6646</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1970</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1971</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1972</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1973</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1974</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1975</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1976</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1977</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1978</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1979</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">4</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">46</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">64</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">64</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">69</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">8</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">654</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">55</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">332</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">1232</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">132</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">200</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">TEHERAN</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">213</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">465</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">123</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">21</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">21</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">12</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">300</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">122</Col>
+            <Col id="NAME">ROME</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1981</Col>
+            <Col id="VALUE">2122</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">21</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">69</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1984</Col>
+            <Col id="VALUE">0</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1985</Col>
+            <Col id="VALUE">21</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">56</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">8</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">1</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">400</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">BEIJING</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1986</Col>
+            <Col id="VALUE">55</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1987</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1988</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">32</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">233</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">23</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">500</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">HANOI</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1989</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1990</Col>
+            <Col id="VALUE">65</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1991</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1992</Col>
+            <Col id="VALUE">68</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1993</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1994</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1995</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1996</Col>
+            <Col id="VALUE">8</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1997</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1998</Col>
+            <Col id="VALUE">89</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">1999</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">2000</Col>
+            <Col id="VALUE">89</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">2001</Col>
+            <Col id="VALUE">4</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">2002</Col>
+            <Col id="VALUE">8</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">2003</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">600</Col>
+            <Col id="YEAR">2004</Col>
+            <Col id="VALUE">9</Col>
+            <Col id="NAME">OSLO</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1983</Col>
+            <Col id="VALUE">5</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">6</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1980</Col>
+            <Col id="VALUE">3</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+          <Row>
+            <Col id="CODE">102</Col>
+            <Col id="YEAR">1982</Col>
+            <Col id="VALUE">2</Col>
+            <Col id="NAME">LONDON</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript4.0"><![CDATA[
+// 당일날짜 계산
+function Today()
+{
+	var sToday = "";
+	var objDate = new Date();
+	var sToday  = objDate.getFullYear().toString();
+	sToday += Right("0" + (objDate.getMonth() + 1), 2);
+	sToday += Right("0" + objDate.getDate(), 2);
+
+	return sToday;
+}
+
+function Right(sOrg, nSize)
+{
+	if( sOrg == null )
+		return "";
+	if( sOrg.length < nSize )
+		return sOrg;
+	else
+		return sOrg.substr(sOrg.length-nSize, nSize);
+}
+
+function report_onload(obj:Form, e:LoadEventInfo)
+{
+	// 초기날짜셋팅
+	var year = Today();
+	Div_condition.Calendar_fm_y.displaynulltext = year.substring(0,4);
+	Div_condition.Calendar_to_y.displaynulltext = year.substring(0,4);
+}
+// 엑셀저장
+function Div_condition_btn_excel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var nCnt = ExtObj0.clear();
+
+	ExtObj0.exporttype = ExportTypes.EXCEL;
+	
+	var sSheetName = "ExcelDown";
+	var sFileName = "조회코드.xlsx";
+	
+	ExtObj0.activepagename = sSheetName;	
+	ExtObj0.exportfilename = sFileName;
+	
+	ExtObj0.exportopenmode = "existopen";
+	var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Grid_info, sSheetName+"!A1" );
+	
+	ExtObj0.export();
+}
+
+// csv 저장
+function Div_condition_btn_csv_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var objFdg = new FileDialog();
+	    
+	//파일확장자지정
+	objFdg.filter = "Worksheet Files(*.csv)|*.csv|"; 
+	//확장자를 입력하지 않았을 때 자동으로 확장자를 붙일지 여부를 설정
+	objFdg.defaultextention = true; 
+	//저장위치
+	var objFile = objFdg.open("파일 저장", FileDialog.SAVE, "%MYDOCUMENT%");
+	
+	var read_data = objFile.open(VirtualFile.openWrite|VirtualFile.openText);
+	
+	var sCSV;
+	sCSV = Grid_info.getCsvData();
+	// 엔터 특수문자변환 방지
+	//sCSV = sCSV.replace(String.fromCharCode(10),String.fromCharCode(13)+String.fromCharCode(10)); 
+	var strCSVText;
+
+	strCSVText = objFile.write(sCSV, "utf_8");
+
+	trace(strCSVText);
+	objFile.close();
+}
+
+
+
+// 텍스트파일저장
+function Div_condition_btn_text_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var objFdg = new FileDialog();
+	//파일확장자지정
+	objFdg.filter = "Data Files (*.txt)|*.txt|"; 
+	//확장자를 입력하지 않았을 때 자동으로 확장자를 붙일지 여부를 설정
+	objFdg.defaultextention = true; 
+
+	var objFile = objFdg.open("파일 저장", FileDialog.SAVE, "%MYDOCUMENT%");
+
+	var read_data = objFile.open(VirtualFile.openWrite|VirtualFile.openBinary);
+	
+	var sCSV;
+	sCSV = Grid_info.getCsvData();
+	// 엔터 특수문자변환 방지
+	 sCSV = sCSV.replace(String.fromCharCode(10),String.fromCharCode(13)+String.fromCharCode(10)); 
+	
+	var strCSVText;
+
+	strCSVText = objFile.write(sCSV, "utf-8");
+
+	trace(strCSVText);
+	objFile.close();
+	
+}
+
+
+// 출력
+function Div_condition_btn_print_onclick(obj:Button,  e:ClickEventInfo)
+{
+	Grid_info.print(false);
+}
+
+//차트
+function Div_condition_btn_char_onclick(obj:Button,  e:ClickEventInfo)
+{
+	
+}
+
+// 코드팝업
+function fn_popupDivPosition(obj)
+{
+	var nx = system.clientToScreenX(obj, 0) ;
+	var ny = system.clientToScreenY(obj, obj.position.height);
+	PopupDiv_code.trackPopup(nx, ny);
+	//alert(PopupDiv_code.bindgestureset);
+}
+
+// 코드조회
+function fn_popupRetrieve(actionCode, searchWord, tra)
+{
+	var vURL = "siteURL::statistics.do?action="+actionCode;
+	if (searchWord != "") {
+		vURL = vURL + "&search="+searchWord;
+	}
+	
+	// 데이타 조회
+	transaction(tra,
+			vURL
+			,"",
+			"ds_codeList=ds_codeList"
+			,""
+			,"fn_pop_callback");
+	PopupDiv_code.bindgestureset=actionCode;
+}
+
+// 조회결과 
+var vObj = "";	// 팝업오픈시 사용
+function fn_pop_callback(trID, errCD, errMSG) 
+{
+	// transaction ID (=transaction 첫번째 인자), 에러코드, 에러메세지
+	if(trID == "tra_select") {
+		if(errCD < 0) {
+			alert("전송실패."+ errMSG);
+			return;
+		} 
+	} else if (trID == "tra_retrieve" ) {
+		if(errCD < 0) {
+			PopupDiv_code_btn_popClose_onclick();
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			PopupDiv_code.Static_total.text = ds_codeList.rowcount + "건 조회되었습니다."
+			fn_popupDivPosition(vObj);
+		}
+	} else if (trID == "tra_search" ) {
+		if(errCD < 0) {
+			PopupDiv_code_btn_popClose_onclick();
+			alert("검색실패."+ errMSG);
+			return;
+		} else {
+			PopupDiv_code.Static_total.text = ds_codeList.rowcount + "건 조회되었습니다."
+		}
+	}
+}
+
+//팝업닫기
+function PopupDiv_code_btn_popClose_onclick(obj:Button,  e:ClickEventInfo)
+{
+	PopupDiv_code.closePopup();
+}
+
+//보고자유형
+function Div_condition_btn_reporterType_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//업소명
+function Div_condition_btn_meaCompany_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//제조국
+function Div_condition_btn_country_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//품목
+function Div_condition_btn_meaClassNo_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//등급
+function Div_condition_btn_itemGrade_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//인과관계
+function Div_condition_btn_causality_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//환자문제
+function Div_condition_btn_patient_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//의료기기코드
+function Div_condition_btn_medicalDMC_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//구성요소문제
+function Div_condition_btn_component_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//부작용원인분류
+function Div_condition_btn_causeOS_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//결과 및 위해성정도
+function Div_condition_Button06_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//전체선택
+function PopupDiv_code_btn_all_select_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		ds_codeList.setColumn(i, "CHECK_YN",1 );
+	}
+}
+
+//전체취소
+function PopupDiv_code_btn_all_cancel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		ds_codeList.setColumn(i, "CHECK_YN",0 );
+	}
+}
+
+//검색
+function PopupDiv_code_btn_code_search_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var searchWord = PopupDiv_code.Edit_searchWord.value;
+	
+	if (searchWord == null) {
+		searchWord = ""
+	} else {
+		searchWord.trim();
+	}
+	var actionCode = PopupDiv_code.bindgestureset;
+	fn_popupRetrieve(actionCode, searchWord,"tra_search");
+}
+
+// 코드선택
+function PopupDiv_code_btn_code_select_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var popGB = "sideEffect";
+	var popName = PopupDiv_code.bindgestureset;
+	
+	var nCnt = 0;
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		nSelect = parseInt(ds_codeList.getColumn(i, "CHECK_YN"));
+		if (nSelect > 0 ) {
+			nCnt = nCnt + 1;
+		}	
+	}
+	
+	if (nCnt < 1 ) {
+		//alert("1개 이상 선택해야합니다.");
+		//return;
+	} else {
+
+		
+		// 데이타 선택
+		transaction("tra_select",
+			"siteURL::statistics.do?action=selectCode"
+			,"ds_codeList=ds_codeList:u"
+			,""
+			,"varCodeName='"+popName+"' varGubun='"+popGB+"'"
+			,"fn_pop_callback");
+	}
+	
+}
+
+
+
+
+/*
+ * Function Name : fn_crossTab
+ * Description   : 크로스탭 생성
+ * Parameter     : 
+ * Return        : 
+ * Example       : fn_crossTab();
+ */
+function fn_crossTab()
+{
+	ds_data1.clearData();
+	
+	var nAddRow	 = 0;	
+	var strTmp   = "";
+	var nSum     = 0;
+	var sMaxYEAR = ds_data0.getMax("YEAR");	
+	var sMinYEAR = ds_data0.getMin("YEAR");		
+
+	//소팅후 구현
+	ds_data0.keystring="S:CODE+YEAR";
+
+	for (var i = sMaxYEAR; i >= sMinYEAR; i--)
+	{
+		if (ds_data0.findRow("YEAR", i) > -1)
+		{
+			ds_data1.addColumn("C_" + i, "BIGDECIMAL", 255);
+		}	
+	}
+	ds_data1.addColumn("CITY_SUM", "BIGDECIMAL", 255);
+	//ds_data1.addColumn("CITY_AVG", "BIGDECIMAL", 255);
+		
+	ds_data1.enableevent = false;
+	
+	for (var i = 0; i < ds_data0.rowcount; i++)
+	{	
+		if (ds_data0.getColumn(i,"CODE") != strTmp)
+		{	
+			nAddRow = ds_data1.addRow();
+			ds_data1.setColumn(nAddRow, "CODE" 	   , ds_data0.getColumn(i, "CODE"));
+			ds_data1.setColumn(nAddRow, "NAME", ds_data0.getColumn(i, "NAME"));						
+			ds_data1.setColumn(nAddRow, "C_" + ds_data0.getColumn(i, "YEAR"), ds_data0.getColumn(i, "VALUE"));	
+			
+            ds_data1.setColumn(nAddRow, "CITY_SUM" , ds_data0.getCaseSum("CODE == '" + ds_data0.getColumn(i, "CODE") + "'", "VALUE"), 2);
+            //ds_data1.setColumn(nAddRow, "CITY_AVG" , Math.round(ds_data0.getCaseAvg("NAME == '" + ds_data0.getColumn(i, "NAME") + "'", "VALUE"), 2));		
+		
+		} 
+		else 
+		{	
+			nSum = Math.round(Number(fn_Trim(ds_data1.getColumn(nAddRow, "C_" + ds_data0.getColumn(i,"YEAR")))) 
+			     + Number(ds_data0.getColumn(i, "VALUE")), 2);
+			ds_data1.setColumn(nAddRow, "C_" + ds_data0.getColumn(i, "YEAR"), nSum);
+		}
+
+		strTmp = ds_data0.getColumn(i, "CODE");
+	}	 
+
+	ds_data1.enableevent = true;	
+	
+	grd_output.enableredraw = false;
+	grd_output.createFormat();
+	grd_output.deleteContentsCol(0);		
+	grd_output.setFormatColProperty(0, "size", 100);	
+	grd_output.setFormatColProperty(0, "band", "left");
+ 	grd_output.setCellProperty("Head", 0, "text", "CODE");		
+    grd_output.setCellProperty("Head", grd_output.getCellCount("Head") - 1, "text", "SUM");	
+    //grd_output.setCellProperty("Head", grd_output.getCellCount("Head") - 1, "text", "AVG");
+    grd_output.setFormatColProperty(grd_output.getCellCount("Head") - 1, "band", "right");
+    //grd_output.setFormatColProperty(grd_output.getCellCount("Head") - 1, "band", "right");	
+    grd_output.setCellProperty("Body", 0, "celltype", "head");		
+    grd_output.setCellProperty("Body", grd_output.getCellCount("Head") - 1, "celltype", "head");
+    //grd_output.setCellProperty("Body", grd_output.getCellCount("Head") - 1, "celltype", "head");		
+	grd_output.appendContentsRow("summ");
+	//grd_output.appendContentsRow("summ");    
+    grd_output.setCellProperty("Summ", 0, "text", "SUM");	
+    //grd_output.setCellProperty("Summ", grd_output.getCellCount("Head"), "text", "AVG");		
+			
+    //합계, 평균 Summary		
+	var nJ = 1;
+	var nK = 1 + (ds_data1.colcount - 4) + 2; // 시작컬럼위치 + (데이터셋컬럼 - 고정) + (SUM컬럼 + AVG컬럼+ CITY컬럼)
+
+	for (var i = sMaxYEAR; i >= sMinYEAR; i--)
+	{
+		if (ds_data0.findRow( "YEAR", i) > -1)
+		{
+            grd_output.setCellProperty( "Head", nJ  , "text",  grd_output.getCellText(-1, nJ).substr(2));
+            grd_output.setCellProperty( "Body", nJ  , "align", "right");
+            //grd_output.setCellProperty( "Summ", nJ  , "align", "right");
+            //grd_output.setCellProperty( "Summ", nK  , "align", "right");
+			grd_output.setCellProperty( "Summ", nJ++, "text",  ds_data1.getSum("C_" + i));
+			//grd_output.setCellProperty( "Summ", nK++, "text",  Math.round(ds_data1.getAvg("C_" + i), 2));
+		}	
+	}
+	
+	grd_output.setCellProperty( "Summ", nJ  , "text",  ds_data0.getSum("VALUE"));		
+    //grd_output.setCellProperty( "Summ", nJ  , "align", "right");			
+	//grd_output.setCellProperty( "Body", nJ  , "align", "right");
+	//grd_output.setCellProperty( "Body", ++nJ, "align", "right");	
+	//grd_output.enableredraw = true;
+//	trace(grd_output.getCurFormatString());	
+	ds_data1.rowposition = -1;	
+}
+
+/* 공백제거 - Script::Script_String_Trim.xfdl 참조 */
+function fn_Trim(sValue)
+{
+    if (sValue == null) return "";
+    if (new String(sValue).valueOf() == "undefined") return "";
+    if (new String(sValue) == null) return "";
+
+    var retVal = (new String(sValue)).replace(/^\s+|\s+$/g, '');
+
+    return retVal;
+}
+
+
+function Button00_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_crossTab();
+}
+]]></Script>
+  </Form>
+</FDL>

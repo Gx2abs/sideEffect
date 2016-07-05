@@ -1,0 +1,1384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="risk" classname="report" inheritanceid="" position="absolute 0 0 930 700" titletext="부작용 등 안전성정보  DB관리 시스템" onload="risk_onload" hotkey="S">
+    <Layouts>
+      <Layout>
+        <Tab id="Tab_item" taborder="17" position2="absolute l:10 w:901 t:2 h:660" positiontype="position2" tabindex="0" scrollbars="autoboth" style="font:굴림,9,bold;" enable="true">
+          <Tabpages>
+            <Tabpage id="tab_list" text="품목코드별 통계" onkeydown="Tab_item_tab_list_onkeydown">
+              <Layouts>
+                <Layout width="901" height="651">
+                  <Div id="Div_condition" taborder="0" position2="absolute l:16 w:864 t:18 h:110" positiontype="position2" text="Div00">
+                    <Layouts>
+                      <Layout width="864" height="110">
+                        <Static id="Static00" text="조회기간" position2="absolute l:241 w:91 t:72 h:22" positiontype="position2"/>
+                        <Calendar id="Calendar_fm_y" taborder="30" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:297 w:85 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+                        <Static id="static_year" text="년" onclick="Div00_Static02_onclick" position2="absolute l:391 w:21 t:73 h:22" positiontype="position2"/>
+                        <Calendar id="Calendar_fm_m" taborder="31" displaynulltext="01" type="spin" dateformat="MM" editformat="MM" position2="absolute l:412 w:64 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+                        <Static id="Static02" text="월 ~ " position2="absolute l:485 w:53 t:73 h:22" positiontype="position2"/>
+                        <Calendar id="Calendar_to_y" taborder="32" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:520 w:85 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+                        <Static id="static_year00" text="년" onclick="Div00_Static02_onclick" position2="absolute l:614 w:21 t:73 h:22" positiontype="position2"/>
+                        <Calendar id="Calendar_to_m" taborder="33" displaynulltext="12" type="spin" dateformat="MM" editformat="MM" position2="absolute l:636 w:64 t:67 h:22" positiontype="position2" style="align:center middle;font:굴림체,9,bold;"/>
+                        <Static id="Static03" text="월 " position2="absolute l:708 w:28 t:73 h:22" positiontype="position2"/>
+                        <Button id="btn_search" taborder="34" text="검색" position2="absolute l:746 w:47 t:12 h:31" positiontype="position2" style="color:mediumblue;font:굴림체,8,bold;" onclick="Tab_item_tab_list_Div_condition_btn_search_onclick"/>
+                        <Button id="btn_excel" taborder="35" text="E" position2="absolute l:802 w:21 t:21 h:17" positiontype="position2" onclick="btn_excel_onclick"/>
+                        <Button id="btn_print" taborder="36" text="P" position2="absolute l:826 w:21 t:21 h:17" positiontype="position2" onclick="btn_print_onclick"/>
+                        <Static id="Static01" text="조회구분" position2="absolute l:13 w:68 t:73 h:22" positiontype="position2"/>
+                        <ListBox id="ListBox01" taborder="37" position2="absolute l:68 w:105 t:-39 h:22" positiontype="position2"/>
+                        <Combo id="Combo_reportType" taborder="38" innerdataset="@ds_ReportType" codecolumn="ID" datacolumn="NAME" position2="absolute l:67 w:156 t:67 h:22" positiontype="position2" style="font:굴림체,9,bold;"/>
+                        <Static id="Static04" text="품목명" onclick="Div_condition_Static04_onclick" position2="absolute l:21 w:40 t:21 h:22" positiontype="position2"/>
+                        <Static id="Static05" text="품목분류번호" onclick="Div_condition_Static05_onclick" position2="absolute l:442 w:79 t:21 h:22" positiontype="position2"/>
+                        <Edit id="Edit_ClassKorName" taborder="39" position2="absolute l:67 w:315 t:18 h:20" positiontype="position2"/>
+                        <Edit id="Edit_ClassNo" taborder="40" position2="absolute l:520 w:180 t:18 h:20" positiontype="position2" oneditclick="Tab_item_tab_list_Div_condition_Edit_ClassNo_oneditclick"/>
+                        <CheckBox id="CheckBox_equal" taborder="43" text="CheckBox00" position2="absolute l:66 w:16 t:41 h:16" positiontype="position2" truevalue="Y" falsevalue="N"/>
+                        <Static id="Static07" text="품목명 단어 일치" position2="absolute l:86 w:143 t:43 h:12" positiontype="position2" style="font:arial,8;"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Static id="Static_total" text="* 총 건수" position2="absolute l:16 w:77 t:139 h:17" positiontype="position2" style="align:left middle;" onclick="Tab_item_tab_list_Static_total_onclick"/>
+                  <Static id="Static00" text="* 건수" position2="absolute l:744 w:44 t:139 h:17" positiontype="position2" style="align:left middle;"/>
+                  <Combo id="Combo_liseSize" taborder="1" innerdataset="@ds_list_size" codecolumn="ID" datacolumn="SIZE" position2="absolute l:793 w:85 t:139 h:17" positiontype="position2" onitemchanged="Tab_item_tab_list_Combo_liseSize_onitemchanged"/>
+                  <Button id="btn_more" taborder="3" text="더보기" onclick="btn_more_onclick" position2="absolute l:810 w:67 t:600 h:31" positiontype="position2" style="color:mediumblue;font:굴림체,8,bold;"/>
+                  <Static id="Static_currentTotal" position2="absolute l:95 w:145 t:139 h:17" positiontype="position2" style="align:left middle;"/>
+                  <Grid id="grd_output" taborder="4" binddataset="ds_category" useinputpanel="false" cellsizingtype="col" cellsizebandtype="allband" cellmovingtype="col" treeusecheckbox="false" treeuseimage="false" treeinitstatus="expand,null" onmousemove="Tab_item_tab_list_grd_output_onmousemove" oncellclick="Tab_item_tab_list_grd_output_oncellclick" onheadclick="grd_output_onheadclick" position="absolute 10 161 886 592" style="font:굴림,9,antialias;" oncelldblclick="Tab_item_tab_list_grd_output_oncelldblclick" selecttype="row">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="40"/>
+                          <Column size="134"/>
+                          <Column size="218"/>
+                          <Column size="53"/>
+                          <Column size="108"/>
+                          <Column size="110"/>
+                          <Column size="102"/>
+                          <Column size="102"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                          <Row size="24" band="summ"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell style="font:굴림체,9;selectfont:굴림체,9;" text="No."/>
+                          <Cell col="1" style="font:굴림체,9;selectfont:굴림체,9;" text="품목분류번호"/>
+                          <Cell col="2" style="font:굴림체,9;selectfont:굴림체,9;" text="품목명"/>
+                          <Cell col="3" style="font:굴림체,9;selectfont:굴림체,9;" text="등급"/>
+                          <Cell col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="보고건수"/>
+                          <Cell col="5" style="font:굴림체,9;selectfont:굴림체,9;" text="의료기기"/>
+                          <Cell col="6" style="font:굴림체,9;selectfont:굴림체,9;" text="환자문제"/>
+                          <Cell col="7" style="font:굴림체,9;selectfont:굴림체,9;" text="구성요소"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell style="font:굴림체,9;selectfont:굴림체,9;" text="expr:currow +1"/>
+                          <Cell col="1" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:MEA_CLASS_NO"/>
+                          <Cell col="2" style="align:left;font:굴림체,9;selectfont:굴림체,9;" text="bind:CLASS_KOR_NAME"/>
+                          <Cell col="3" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:MEA_GRADE"/>
+                          <Cell col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:GET_SUM"/>
+                          <Cell col="5" style="color:navy;font:굴림체,9;selectcolor:navy;selectfont:굴림체,9,bold underline;" expr="bind:GET_SUM_M"/>
+                          <Cell col="6" style="color:navy;font:굴림체,9;selectcolor:navy;selectfont:굴림체,9,bold underline;" expr="bind:GET_SUM_P"/>
+                          <Cell col="7" style="color:navy;font:굴림체,9;selectcolor:navy;selectfont:굴림체,9,bold underline;" expr="bind:GET_SUM_C"/>
+                        </Band>
+                        <Band id="summary">
+                          <Cell/>
+                          <Cell col="1" colspan="2">
+                            <Cell/>
+                            <Cell col="1"/>
+                          </Cell>
+                          <Cell col="3"/>
+                          <Cell col="4" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" expr="expr:getSum(&quot;GET_SUM&quot;)"/>
+                          <Cell col="5" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" expr="expr:getSum(&quot;GET_SUM_M&quot;)"/>
+                          <Cell col="6" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" expr="expr:getSum(&quot;GET_SUM_P&quot;)"/>
+                          <Cell col="7" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" expr="expr:getSum(&quot;GET_SUM_C&quot;)"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tab_version" text="점수범위 " enable="false">
+              <Layouts>
+                <Layout>
+                  <Div id="Div_condition" taborder="0" position2="absolute l:12 w:872 t:12 h:126" positiontype="position2" text="Div00">
+                    <Layouts>
+                      <Layout width="981" height="110">
+                        <Button id="btn_excel" taborder="34" text="E" onclick="btn_excel_onclick" position2="absolute l:802 w:21 t:13 h:17" positiontype="position2"/>
+                        <Button id="btn_print" taborder="35" text="P" onclick="btn_print_onclick" position2="absolute l:834 w:21 t:13 h:17" positiontype="position2"/>
+                        <ListBox id="ListBox01" taborder="36" position2="absolute l:68 w:105 t:-39 h:22" positiontype="position2"/>
+                        <Static id="Static00" text="* 품목명 : " position2="absolute l:21 w:71 t:11 h:14" positiontype="position2"/>
+                        <Static id="Static01" text="* 품목분류 번호 / 등급 : " position2="absolute l:21 w:147 t:35 h:14" positiontype="position2"/>
+                        <Static id="Static03" text="* 조회기간 : " position2="absolute l:21 w:84 t:56 h:14" onclick="Tab_item_tab_view_Div_condition_Static03_onclick" positiontype="position2"/>
+                        <Static id="Static_item_name" position2="absolute l:79 w:494 t:10 h:14" positiontype="position2"/>
+                        <Static id="Static_class_no" position2="absolute l:161 w:123 t:36 h:14" positiontype="position2"/>
+                        <Static id="Static_selectDate" position2="absolute l:88 w:427 t:56 h:12" positiontype="position2"/>
+                        <Static id="Static02" text="* 부작용코드 종류 : " onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:21 w:117 t:79 h:14" positiontype="position2"/>
+                        <Static id="Static04" text="* 부작용 코드 건수 :" onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:21 w:121 t:101 h:14" positiontype="position2"/>
+                        <Static id="Static_codeType" position2="absolute l:135 w:427 t:80 h:12" positiontype="position2"/>
+                        <Static id="Static_codeCnt" position2="absolute l:135 w:127 t:100 h:12" positiontype="position2"/>
+                        <Grid id="Grid00" taborder="37" useinputpanel="false" position2="absolute l:515 w:256 t:32 h:87" positiontype="position2" binddataset="ds_selectData" visible="false">
+                          <Formats>
+                            <Format id="default">
+                              <Columns>
+                                <Col size="80"/>
+                                <Col size="80"/>
+                                <Col size="80"/>
+                                <Col size="80"/>
+                                <Col size="80"/>
+                              </Columns>
+                              <Rows>
+                                <Row band="head" size="24"/>
+                                <Row band="body" size="24"/>
+                              </Rows>
+                              <Band id="head">
+                                <Cell col="0" text="FMDATE" displaytype="normal"/>
+                                <Cell col="1" text="TODATE" displaytype="normal"/>
+                                <Cell col="2" text="CATEGORY_SEQ" displaytype="normal"/>
+                                <Cell col="3" text="CODE_GB" displaytype="normal"/>
+                                <Cell col="4" text="VERSION_SEQ" displaytype="normal"/>
+                              </Band>
+                              <Band id="body">
+                                <Cell col="0" text="bind:FMDATE" displaytype="normal"/>
+                                <Cell col="1" text="bind:TODATE" displaytype="normal"/>
+                                <Cell col="2" text="bind:CATEGORY_SEQ" displaytype="normal"/>
+                                <Cell col="3" text="bind:CODE_GB" displaytype="normal"/>
+                                <Cell col="4" text="bind:VERSION_SEQ" displaytype="normal"/>
+                              </Band>
+                            </Format>
+                          </Formats>
+                        </Grid>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Grid id="grid_item_view" taborder="2" useinputpanel="false" position2="absolute l:627 w:270 t:130 h:180" positiontype="position2" binddataset="ds_item_view" enable="false" visible="false">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="133"/>
+                          <Column size="132"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="body">
+                          <Cell style="align:left;" text="* 품목명 :"/>
+                          <Cell col="1" style="align:left;" text="bind:품목명"/>
+                          <Cell row="1" style="align:left;" text="* 품목분류번호 / 등급 :"/>
+                          <Cell row="1" col="1" style="align:left;" text="bind:품목분류번호"/>
+                          <Cell row="2" style="align:left;font:굴림체,9;selectfont:굴림체,9;" text="* 조회기간 :"/>
+                          <Cell row="2" col="1" style="align:left;" text="bind:조회기간"/>
+                          <Cell row="3" style="align:left;font:굴림체,9;selectfont:굴림체,9;" text="* 부작용코드 종류 :"/>
+                          <Cell row="3" col="1" style="align:left;" text="bind:부작용코드종류"/>
+                          <Cell row="4" style="align:left;" text="* 부작용 코드 건수 :"/>
+                          <Cell row="4" col="1" displaytype="number" style="align:left;" text="bind:부작용코드건수"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Grid id="grd_output" taborder="3" binddataset="ds_version" useinputpanel="false" cellsizingtype="col" cellsizebandtype="allband" cellmovingtype="col" treeusecheckbox="false" treeuseimage="false" treeinitstatus="expand,null" onmousemove="Tab_item_tab_view_grd_output_onmousemove" position="absolute 12 173 884 630" style="font:돋움체,9,antialias;" selecttype="currow" summarytype="default" suppresslevel="allskip" mergeview="scrollview" oncelldblclick="Tab_item_tab_version_grd_output_oncelldblclick">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="80"/>
+                          <Column size="75"/>
+                          <Column size="75"/>
+                          <Column size="168"/>
+                          <Column size="88"/>
+                          <Column size="376"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="29"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell style="font:굴림체,9;selectfont:굴림체,9;" text="Version"/>
+                          <Cell col="1" style="font:굴림체,9;selectfont:굴림체,9;" text="기준적용일"/>
+                          <Cell col="2" style="font:굴림체,9;selectfont:굴림체,9;" text="구분"/>
+                          <Cell col="3" style="font:굴림체,9;selectfont:굴림체,9;" text="분류"/>
+                          <Cell col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="범위"/>
+                          <Cell col="5" style="font:굴림체,9;selectfont:굴림체,9;" text="비고"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell style="background:white;background2:white;color:navy;font:굴림체,9,bold;selectcolor:navy;selectfont:굴림체,9,bold underline;" text="bind:REVISION_NAME" suppress="1"/>
+                          <Cell col="1" displaytype="date" style="background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="bind:START_DATE" mask="yyyy-MM" suppress="2"/>
+                          <Cell col="2" style="background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="bind:CLASS_GB" suppress="3"/>
+                          <Cell col="3" style="align:left;background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="bind:CLASS_NAME" suppress="3"/>
+                          <Cell col="4" style="align:left;background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="expr:LIMIT_FM + &quot; ~ &quot;+ LIMIT_TO"/>
+                          <Cell col="5" style="align:left;background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="bind:NOTE" wordwrap="word"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Static id="Static04" text="* Version 을 선택하면 위험매트릭스가 조회됩니다." onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:13 w:423 t:150 h:14" positiontype="position2"/>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="tab_matrix" text="위험평가 조회" enable="false">
+              <Layouts>
+                <Layout width="901" height="639">
+                  <Static id="Static_code_title" text="* 위험 매트릭스(Risk Matrix)" position2="absolute l:23 w:204 t:147 h:14" positiontype="position2" style="align:left middle;"/>
+                  <Grid id="grid_matrix" taborder="2" useinputpanel="false" position2="absolute l:63 w:748 t:168 h:180" positiontype="position2" binddataset="ds_matrix" cellsizingtype="both" autosizingtype="none" autofitbandtype="allband" autofittype="col,allrow" selecttype="cell" oncelldblclick="Tab_item_tab_matrix_grid_matrix_oncelldblclick" scrollbars="none" autosizebandtype="allband" selectbandtype="body">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="73"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="30" band="head"/>
+                          <Row size="30"/>
+                        </Rows>
+                        <Band id="head" style="font:굴림체,9;selectfont:굴림체,9;">
+                          <Cell style="font:굴림체,9;selectfont:굴림체,9;" text="구분"/>
+                        </Band>
+                        <Band id="body" style="font:굴림체,9;selectfont:굴림체,9;">
+                          <Cell style="background:white;background2:white;font:굴림체,9;selectfont:굴림체,9;" text="bind:NAME"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Div id="Div_condition" taborder="3" position2="absolute l:12 w:872 t:12 h:126" positiontype="position2" text="Div00">
+                    <Layouts>
+                      <Layout width="981" height="110">
+                        <Button id="btn_excel" taborder="37" text="E" onclick="btn_excel_onclick" position2="absolute l:802 w:21 t:13 h:17" positiontype="position2"/>
+                        <Button id="btn_print" taborder="38" text="P" onclick="btn_print_onclick" position2="absolute l:834 w:21 t:13 h:17" positiontype="position2"/>
+                        <ListBox id="ListBox01" taborder="39" position2="absolute l:68 w:105 t:-39 h:22" positiontype="position2"/>
+                        <Static id="Static00" text="* 품목명 : " position2="absolute l:21 w:71 t:11 h:14" positiontype="position2"/>
+                        <Static id="Static01" text="* 품목분류 번호 / 등급 : " position2="absolute l:21 w:147 t:35 h:14" positiontype="position2"/>
+                        <Static id="Static03" text="* 조회기간 : " onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:21 w:84 t:56 h:14" positiontype="position2"/>
+                        <Static id="Static_item_name" position2="absolute l:79 w:494 t:10 h:14" positiontype="position2"/>
+                        <Static id="Static_class_no" position2="absolute l:161 w:123 t:36 h:14" positiontype="position2"/>
+                        <Static id="Static_selectDate" position2="absolute l:88 w:427 t:56 h:12" positiontype="position2"/>
+                        <Static id="Static02" text="* 부작용코드 종류 : " onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:21 w:117 t:79 h:14" positiontype="position2"/>
+                        <Static id="Static04" text="* 부작용 코드 건수 :" onclick="Tab_item_tab_view_Div_condition_Static03_onclick" position2="absolute l:21 w:121 t:101 h:14" positiontype="position2"/>
+                        <Static id="Static_codeType" position2="absolute l:135 w:427 t:80 h:12" positiontype="position2"/>
+                        <Static id="Static_codeCnt" position2="absolute l:135 w:127 t:100 h:12" positiontype="position2"/>
+                      </Layout>
+                    </Layouts>
+                  </Div>
+                  <Grid id="grid_matrix_list" taborder="5" useinputpanel="false" position2="absolute l:9 w:882 t:366 h:257" positiontype="position2" binddataset="ds_matrix_list" cellsizingtype="both">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="32"/>
+                          <Column size="89"/>
+                          <Column size="125"/>
+                          <Column size="59"/>
+                          <Column size="60"/>
+                          <Column size="84"/>
+                          <Column size="88"/>
+                          <Column size="83"/>
+                          <Column size="88"/>
+                          <Column size="78"/>
+                          <Column size="79"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24" band="summ"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell rowspan="2" style="font:굴림체,9;selectfont:굴림체,9;" text="No."/>
+                          <Cell col="1" rowspan="2" style="font:굴림체,9;selectfont:굴림체,9;" text="품목허가번호"/>
+                          <Cell col="2" rowspan="2" style="font:굴림체,9;selectfont:굴림체,9;" text="업체명"/>
+                          <Cell col="3" rowspan="2" style="font:굴림체,9;selectfont:굴림체,9;" text="기간"/>
+                          <Cell col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="건수"/>
+                          <Cell col="5" style="font:굴림체,9;selectfont:굴림체,9;" text="MFDS"/>
+                          <Cell col="6" colspan="5" style="font:굴림체,9;selectfont:굴림체,9;" text="MFDS Source PT"/>
+                          <Cell row="1" col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="누적건수"/>
+                          <Cell row="1" col="5" style="font:굴림체,9;selectfont:굴림체,9;" text="발생빈도분율"/>
+                          <Cell row="1" col="6" style="font:굴림체,9;selectfont:굴림체,9;" text="발생가능성"/>
+                          <Cell row="1" col="7" style="font:굴림체,9;selectfont:굴림체,9;" text="위해심각도"/>
+                          <Cell row="1" col="8" style="font:굴림체,9;selectfont:굴림체,9;" text="위해도점수"/>
+                          <Cell row="1" col="9" style="font:굴림체,9;selectfont:굴림체,9;" text="생산량"/>
+                          <Cell row="1" col="10" style="font:굴림체,9;selectfont:굴림체,9;" text="수입량"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell rowspan="2" style="selectfont:굴림체,9;" text="expr:currow +1"/>
+                          <Cell col="1" rowspan="2" style="selectfont:굴림체,9;" text="bind:ITEM"/>
+                          <Cell col="2" rowspan="2" style="align:left;selectfont:굴림체,9;" text="bind:ENTPNAME"/>
+                          <Cell col="3" rowspan="2" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:REPORTDATE"/>
+                          <Cell col="4" style="selectfont:굴림체,9;" text="bind:VARCNT"/>
+                          <Cell col="5" style="selectfont:굴림체,9;" text="bind:FDACODE"/>
+                          <Cell col="6" colspan="5" style="align:left;selectfont:굴림체,9;" text="bind:FDASOURCE"/>
+                          <Cell row="1" col="4" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:TOTALCNT"/>
+                          <Cell row="1" col="5" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:FRACTION" mask="###,##0.0##"/>
+                          <Cell row="1" col="6" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:POSSIBILITY"/>
+                          <Cell row="1" col="7" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:RISK"/>
+                          <Cell row="1" col="8" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:RISKNUM"/>
+                          <Cell row="1" col="9" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:IMPORT"/>
+                          <Cell row="1" col="10" style="font:굴림체,9;selectfont:굴림체,9;" text="bind:OUTPUT"/>
+                        </Band>
+                        <Band id="summary">
+                          <Cell/>
+                          <Cell col="1"/>
+                          <Cell col="2"/>
+                          <Cell col="3" style="font:굴림체,9;selectfont:굴림체,9;" text="건수합계"/>
+                          <Cell col="4" displaytype="number" style="font:굴림체,9;selectfont:굴림체,9;" text="expr:getSum(&quot;VARCNT&quot;)"/>
+                          <Cell col="5"/>
+                          <Cell col="6"/>
+                          <Cell col="7"/>
+                          <Cell col="8"/>
+                          <Cell col="9"/>
+                          <Cell col="10"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Grid id="grid_item_view" taborder="6" binddataset="ds_item_view" useinputpanel="false" enable="false" visible="false" position2="absolute l:599 w:270 t:126 h:180" positiontype="position2">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="133"/>
+                          <Column size="132"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="body">
+                          <Cell style="align:left;" text="* 품목명 :"/>
+                          <Cell col="1" style="align:left;" text="bind:품목명"/>
+                          <Cell row="1" style="align:left;" text="* 품목분류번호 / 등급 :"/>
+                          <Cell row="1" col="1" style="align:left;" text="bind:품목분류번호"/>
+                          <Cell row="2" style="align:left;font:굴림체,9;selectfont:굴림체,9;" text="* 조회기간 :"/>
+                          <Cell row="2" col="1" style="align:left;" text="bind:조회기간"/>
+                          <Cell row="3" style="align:left;font:굴림체,9;selectfont:굴림체,9;" text="* 부작용코드 종류 :"/>
+                          <Cell row="3" col="1" style="align:left;" text="bind:부작용코드종류"/>
+                          <Cell row="4" style="align:left;" text="* 부작용 코드 건수 :"/>
+                          <Cell row="4" col="1" displaytype="number" style="align:left;" text="bind:부작용코드건수"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+        <PopupMenu id="PopupRMenu" innerdataset="@ds_rmenu" idcolumn="id" captioncolumn="name" levelcolumn="level" onmenuclick="PopupRMenu_onmenuclick" position2="absolute l:823 w:88 t:97 h:66" positiontype="position2" style="font:arial,9;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+      <Dataset id="ds_rmenu" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="id" type="STRING" size="10"/>
+          <Column id="name" type="STRING" size="20"/>
+          <Column id="level" type="INT" size="1"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="id">D</Col>
+            <Col id="name"> 내림차순</Col>
+            <Col id="level">0</Col>
+          </Row>
+          <Row>
+            <Col id="id">A</Col>
+            <Col id="name"> 오름차순</Col>
+            <Col id="level">0</Col>
+          </Row>
+          <Row>
+            <Col id="id">N</Col>
+            <Col id="name"> 초기화</Col>
+            <Col id="level">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_ReportType" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="string" size="900"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_category" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ITEM_CATEGORY_ID" type="INT" size="10"/>
+          <Column id="MEA_CLASS_NO" type="STRING" size="255"/>
+          <Column id="MEA_GRADE" type="STRING" size="10"/>
+          <Column id="GET_SUM" type="INT" size="10"/>
+          <Column id="GET_SUM_M" type="INT" size="10"/>
+          <Column id="GET_SUM_P" type="INT" size="10"/>
+          <Column id="GET_SUM_C" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_list_size" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SIZE" type="STRING" size="10"/>
+          <Column id="ID" type="INT" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="SIZE">10</Col>
+            <Col id="ID">10</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">50</Col>
+            <Col id="ID">50</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">100</Col>
+            <Col id="ID">100</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">500</Col>
+            <Col id="ID">500</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">전체</Col>
+            <Col id="ID">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_matrix_list" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="NUM" type="int" size="10"/>
+          <Column id="ITEM_ID" type="INT" size="256"/>
+          <Column id="ITEM" type="STRING" size="255"/>
+          <Column id="ENTPNAME" type="STRING" size="500"/>
+          <Column id="FDACODE" type="STRING" size="10"/>
+          <Column id="FDASOURCE" type="STRING" size="500"/>
+          <Column id="REPORTDATE" type="STRING" size="255"/>
+          <Column id="VARCNT" type="INT" size="10"/>
+          <Column id="TOTALCNT" type="INT" size="10"/>
+          <Column id="POSSIBILITY" type="STRING" size="255"/>
+          <Column id="FRACTION" type="FLOAT" size="10"/>
+          <Column id="RISK" type="STRING" size="255"/>
+          <Column id="RISKNUM" type="INT" size="10"/>
+          <Column id="IMPORT" type="FLOAT" size="20"/>
+          <Column id="OUTPUT" type="FLOAT" size="20"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_version" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" keystring="S:-ID+CLASS_GB+CLASS_CODE">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="GROUP_ID" type="INT" size="10"/>
+          <Column id="REVISION_NAME" type="STRING" size="256"/>
+          <Column id="START_DATE" type="STRING" size="256"/>
+          <Column id="CLASS_GB" type="STRING" size="20"/>
+          <Column id="CLASS_CODE" type="INT" size="10"/>
+          <Column id="CLASS_NAME" type="STRING" size="256"/>
+          <Column id="LIMIT_FM" type="FLOAT" size="10"/>
+          <Column id="LIMIT_TO" type="FLOAT" size="10"/>
+          <Column id="NOTE" type="STRING" size="500"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">아주낮음</Col>
+            <Col id="LIMIT_FM">0</Col>
+            <Col id="LIMIT_TO">0.01</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">낮음</Col>
+            <Col id="LIMIT_FM">0.01</Col>
+            <Col id="LIMIT_TO">0.1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">보통</Col>
+            <Col id="LIMIT_FM">0.1</Col>
+            <Col id="LIMIT_TO">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">높음</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">5</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">허용불가 위험성</Col>
+            <Col id="LIMIT_FM">12</Col>
+            <Col id="LIMIT_TO">20</Col>
+            <Col id="NOTE">즉시 개선으로 원인 파악 등 자료 제출 요구 또는 필요시 검사 명령</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">중대한 위험성</Col>
+            <Col id="LIMIT_FM">8</Col>
+            <Col id="LIMIT_TO">10</Col>
+            <Col id="NOTE">지속 조치로서 차 년도 수거, 검사, 업체 감시 등 반영하고 주시적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">상당한 위험성</Col>
+            <Col id="LIMIT_FM">4</Col>
+            <Col id="LIMIT_TO">6</Col>
+            <Col id="NOTE">안전 정보 제공 및 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">1.0</Col>
+            <Col id="START_DATE">2014.01.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">경미한 위험성</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">3</Col>
+            <Col id="NOTE">현재 안전대책 유지</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">아주낮음</Col>
+            <Col id="LIMIT_FM">0</Col>
+            <Col id="LIMIT_TO">0.01</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">낮음</Col>
+            <Col id="LIMIT_FM">0.01</Col>
+            <Col id="LIMIT_TO">0.1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">보통</Col>
+            <Col id="LIMIT_FM">0.1</Col>
+            <Col id="LIMIT_TO">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">높음</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">5</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">발생가능성</Col>
+            <Col id="CLASS_CODE">5</Col>
+            <Col id="CLASS_NAME">아주높음</Col>
+            <Col id="LIMIT_FM">5</Col>
+            <Col id="LIMIT_TO">100</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">1</Col>
+            <Col id="CLASS_NAME">허용불가 위험성</Col>
+            <Col id="LIMIT_FM">12</Col>
+            <Col id="LIMIT_TO">20</Col>
+            <Col id="NOTE">즉시 개선으로 원인 파악 등 자료 제출 요구 또는 필요시 검사 명령</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">2</Col>
+            <Col id="CLASS_NAME">중대한 위험성</Col>
+            <Col id="LIMIT_FM">8</Col>
+            <Col id="LIMIT_TO">10</Col>
+            <Col id="NOTE">지속 조치로서 차 년도 수거, 검사, 업체 감시 등 반영하고 주시적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">3</Col>
+            <Col id="CLASS_NAME">상당한 위험성</Col>
+            <Col id="LIMIT_FM">4</Col>
+            <Col id="LIMIT_TO">6</Col>
+            <Col id="NOTE">안전 정보 제공 및 주기적인 추이 변화 관찰</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="GROUP_ID">1</Col>
+            <Col id="REVISION_NAME">2.0</Col>
+            <Col id="START_DATE">2014.06.01</Col>
+            <Col id="CLASS_GB">위험도점수</Col>
+            <Col id="CLASS_CODE">4</Col>
+            <Col id="CLASS_NAME">경미한 위험성</Col>
+            <Col id="LIMIT_FM">1</Col>
+            <Col id="LIMIT_TO">3</Col>
+            <Col id="NOTE">현재 안전대책 유지</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_matrix" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="NUM" type="INT" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+          <Column id="1" type="INT" size="256"/>
+          <Column id="2" type="INT" size="256"/>
+          <Column id="3" type="INT" size="256"/>
+          <Column id="4" type="INT" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="NUM">1</Col>
+            <Col id="1"/>
+            <Col id="NAME">아주낮음</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">2</Col>
+            <Col id="1"/>
+            <Col id="NAME">낮음</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">3</Col>
+            <Col id="1"/>
+            <Col id="NAME">보통</Col>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">4</Col>
+            <Col id="1"/>
+            <Col id="NAME">높음</Col>
+            <Col id="3"/>
+            <Col id="2">0</Col>
+          </Row>
+          <Row>
+            <Col id="NUM">5</Col>
+            <Col id="1"/>
+            <Col id="NAME">아주높음</Col>
+            <Col id="2">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_category_more" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ITEM_CATEGORY_ID" type="INT" size="10"/>
+          <Column id="MEA_CLASS_NO" type="STRING" size="255"/>
+          <Column id="MEA_GRADE" type="STRING" size="10"/>
+          <Column id="GET_SUM" type="INT" size="10"/>
+          <Column id="GET_SUM_M" type="INT" size="10"/>
+          <Column id="GET_SUM_P" type="INT" size="10"/>
+          <Column id="GET_SUM_C" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_selectData" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="FMDATE" type="STRING" size="256"/>
+          <Column id="TODATE" type="STRING" size="256"/>
+          <Column id="REPORTTYPE" type="STRING" size="256"/>
+          <Column id="CATEGORY_SEQ" type="INT" size="256"/>
+          <Column id="CODE_GB" type="STRING" size="256"/>
+          <Column id="VERSION_SEQ" type="INT" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_result" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false" keystring="S:+NUM">
+        <ColumnInfo>
+          <Column id="NUM" type="INT" size="256"/>
+          <Column id="NAME" type="STRING" size="256"/>
+          <Column id="ID" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_item_view" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="품목명" type="STRING" size="500"/>
+          <Column id="품목분류번호" type="STRING" size="256"/>
+          <Column id="조회기간" type="STRING" size="256"/>
+          <Column id="부작용코드종류" type="STRING" size="256"/>
+          <Column id="부작용코드건수" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="Tab_item.tab_view.Div_condition.Static_item_name" propid="text" datasetid="ds_item_view" columnid="CLASS_KOR_NAME"/>
+      <BindItem id="item1" compid="Tab_item.tab_view.Div_condition.Static_class_no" propid="text" datasetid="ds_item_view" columnid="MEA_CLASS_NO"/>
+      <BindItem id="item3" compid="Tab_item.tab_view.Div_condition.Static_meddev_item" propid="text" datasetid="ds_item_view" columnid="ENTP_NAME"/>
+      <BindItem id="item2" compid="Tab_item.tab_category.Div_condition.Static_item_name" propid="text" datasetid="ds_category" columnid="CLASS_KOR_NAME"/>
+      <BindItem id="item4" compid="Tab_item.tab_category.Div_condition.Static_class_no" propid="text" datasetid="ds_category" columnid="MEA_CLASS_NO"/>
+      <BindItem id="item6" compid="Tab_item.tab_severity.Div_condition.Static_item_name" propid="text" datasetid="ds_item_view" columnid="CLASS_KOR_NAME"/>
+      <BindItem id="item7" compid="Tab_item.tab_severity.Div_condition.Static_class_no" propid="text" datasetid="ds_item_view" columnid="MEA_CLASS_NO"/>
+    </Bind>
+    <Script type="xscript4.0"><![CDATA[
+var gvPopGB = "sideeffect";
+//var gvPopGB = "safety";
+
+var badList = new Array("!", "@",  "#", 
+						                "$", "%",  "^", 
+						                "&", "*",   
+						                "_",  "--", 
+						                "=", "+",  "\"", 
+						                "|", "~",  "`", 
+						                "{", "}",  "[", 
+						                "]", ";",  ":", 
+						                "'", "<",  ">", 
+						                "/", 
+						                "?", "\\",  
+						                "select", "from", "where", 
+						                "union", "' or 1=1", "drop", 
+						                "/*", "*/");
+			            
+
+/*
+	검색어에 특수문자 사용했는지 체크
+*/
+function searchValueCheck(){
+	var result = true;
+	
+	var v_classKorName = Tab_item.tab_list.Div_condition.Edit_ClassKorName.text;
+	var v_classNo = Tab_item.tab_list.Div_condition.Edit_ClassNo.text;
+	
+	for(var k=0; k<badList.length; k++){
+		if(v_classKorName.indexOf(badList[k]) > -1 || 
+		   v_classNo.indexOf(badList[k]) > -1 )
+		{
+		   
+			alert("특수문자 및 허용하지 않는 문자열이 포함되어있습니다.");
+			result = false;
+			return result;
+			break;
+		}
+	}	
+		
+	return result;
+}
+
+
+// 당일날짜 계산
+function Today()
+{
+	var sToday = "";
+	var objDate = new Date();
+	var sToday  = objDate.getFullYear().toString();
+	sToday += Right("0" + (objDate.getMonth() + 1), 2);
+	sToday += Right("0" + objDate.getDate(), 2);
+
+	return sToday;
+}
+
+function Right(sOrg, nSize)
+{
+	if( sOrg == null )
+		return "";
+	if( sOrg.length < nSize )
+		return sOrg;
+	else
+		return sOrg.substr(sOrg.length-nSize, nSize);
+}
+
+
+function risk_onload(obj:Form, e:LoadEventInfo)
+{
+	// 초기날짜셋팅
+	var year = Today();
+	Tab_item.tab_list.Div_condition.Calendar_fm_y.value =  (year.substring(0,4)-1) + '0101';
+	Tab_item.tab_list.Div_condition.Calendar_fm_m.value = Tab_item.tab_list.Div_condition.Calendar_fm_y.value
+	Tab_item.tab_list.Div_condition.Calendar_to_y.value = (year.substring(0,4)-1) + '1231';
+	Tab_item.tab_list.Div_condition.Calendar_to_m.value = Tab_item.tab_list.Div_condition.Calendar_to_y.value
+	Tab_item.tab_list.Div_condition.Calendar_fm_y.displaynulltext = year.substring(0,4);
+	Tab_item.tab_list.Div_condition.Calendar_to_y.displaynulltext = year.substring(0,4);
+	
+	Tab_item.tab_list.Combo_liseSize.index="2"
+
+	// 보고종류 조회 
+	transaction("tra_reportType",
+		"siteURL::statistics.do?action=reportTypeList"
+		,"",
+		"ds_ReportType=ds_ReportType"
+		,""
+		,"fn_callback");
+
+}
+
+
+/*************************************************공통사용-조회결과시작**************************************************************/
+// 조회 결과 
+function fn_callback(trID, errCD, errMSG) 
+{	
+	if (trID == "tra_retrieve" ) {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} 
+	} else if (trID == "tra_reportType" ) {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			Tab_item.tab_list.Div_condition.Combo_reportType.index = "0";
+		}
+	} else if (trID == "tra_productCode" ) {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			Tab_item.tab_list.Div_condition.Combo_product.index = "0";
+		}
+	} else if (trID == "tra_itemLikelihoodList" ) {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			// 검색조건 총 건수 표시
+			Tab_item.tab_list.Static_total.text = "* 총 "+errMSG+"건."
+			totalCnt = Number(errMSG);
+			ds_category.keystring  = "S:-GET_SUM";
+			// 더보기 버튼 표시체크
+			var dsCnt = ds_category.rowcount;
+			Tab_item.tab_list.Static_currentTotal.text = "- ("+dsCnt+")건 조회"
+			if ( dsCnt >= totalCnt) {
+				Tab_item.tab_list.btn_more.visible = false;
+			} else {
+				Tab_item.tab_list.btn_more.visible = true;
+			}
+			
+			Tab_item.tab_version.enable = false;
+			Tab_item.tab_matrix.enable = false;
+		}
+	} else if (trID == "tra_itemLikelihoodList_more" ) {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			
+			ds_category.appendData(ds_category_more);
+			ds_category.keystring  = "S:-GET_SUM";
+			// 더보기 버튼 표시체크
+			var dsCnt = ds_category.rowcount;
+			Tab_item.tab_list.Static_currentTotal.text = "- ("+dsCnt+")건 조회"
+			if ( dsCnt >= totalCnt) {
+				Tab_item.tab_list.btn_more.visible = false;
+			} else {
+				Tab_item.tab_list.btn_more.visible = true;
+			}
+		}
+	} else if (trID == "tra_itemCatagoryGroup") {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			Tab_item.tab_version.enable = true;
+			Tab_item.tabindex = 1;
+		}
+	} else if (trID == "tra_itemCatagoryMatrix") {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			Tab_item.tab_matrix.enable = true;
+			fn_matrix_grid();
+		}
+	} else if (trID == "tra_matrixList") {
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			
+		}
+	}
+}
+/*************************************************공통사용-조회결과종료**************************************************************/
+
+/*************************************************tab_list 시작***************************************************************/
+
+ // 조회버튼
+
+
+
+function Tab_item_tab_list_Div_condition_btn_search_onclick(obj:Button,  e:ClickEventInfo)
+{
+
+	var searchCheck = searchValueCheck();
+	
+	if(searchCheck==false){
+		return;
+	}
+
+	var vSelectPara = fn_parameter('N');
+	var vURL = "";
+	
+
+	// 품목허가번호 코드 조회 
+	transaction("tra_itemLikelihoodList"
+		,"siteURL::risk.do?action=itemLikelihoodList"
+		,""
+		,"ds_category=ds_category"
+		, vSelectPara
+		,"fn_callback");	
+}
+
+// 조회조건
+function fn_parameter(more) {
+
+	var v_classKorName = Tab_item.tab_list.Div_condition.Edit_ClassKorName.text;
+	var v_classNo = Tab_item.tab_list.Div_condition.Edit_ClassNo.text;
+	var v_classKorNameEqual = Tab_item.tab_list.Div_condition.CheckBox_equal.value;
+	
+	var reportType = Tab_item.tab_list.Div_condition.Combo_reportType.value;
+	var fmYY = new String ( Tab_item.tab_list.Div_condition.Calendar_fm_y.value);
+	var fmMM = new String (Tab_item.tab_list.Div_condition.Calendar_fm_m.value);
+	var toYY = new String (Tab_item.tab_list.Div_condition.Calendar_to_y.value);
+	var toMM = new String (Tab_item.tab_list.Div_condition.Calendar_to_m.value);
+		fmYY = fmYY.substring(0,4);
+		fmMM = fmMM.substring(4,6);
+		toYY = toYY.substring(0,4);
+		toMM = toMM.substring(4,6);
+	var vPgSize = Tab_item.tab_list.Combo_liseSize.value;
+		
+	if (v_classKorName == null) {
+		v_classKorName = "";
+	}
+	if (v_classNo == null) {
+		v_classNo = "";
+	}
+	
+	// 전체조회일경우
+	if (more == "Y" && vPgSize == 0 ) {
+		ds_category.clear()
+	}
+	
+	var vStartPg = ds_category.rowcount;
+	var vPara = "classKorName='" + v_classKorName + "' meaClassNo='" + v_classNo + "' "
+			 + "reportType='" + reportType + "' fmDate='" + fmYY + fmMM + "' toDate='" + toYY + toMM + "' "
+			 + "pgSize=" +vPgSize+ " startPg=" + vStartPg + " moreYN="+more+" statisticsGB="+gvPopGB
+			 + " classKorNameEqual="+v_classKorNameEqual+" " ;
+			 
+	return vPara;
+}
+
+// 더보기
+function btn_more_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var vSelectPara = fn_parameter('Y');
+	var vURL = "";
+	
+	// 품목허가번호 코드 조회 
+	transaction("tra_itemLikelihoodList_more"
+		,"siteURL::risk.do?action=itemLikelihoodList"
+		,""
+		,"ds_category_more=ds_category_more"
+		, vSelectPara
+		,"fn_callback");
+}
+
+// 마우스 오른쪽 메뉴 열기
+function Tab_item_tab_list_grd_output_onheadclick(obj:Grid, e:GridClickEventInfo)
+{
+	if (e.col > 0) {
+		PopupRMenu.trackPopup(e.screenX, e.screenY);
+		vCol = Tab_item.tab_list.grd_output.getCellProperty("Body", e.col, "text");
+		trace(e.col);
+		vCol = vCol.substring(5,100);
+	} 
+}
+
+// 품목명,품목분류번호 셀 클릭시 검색어에 셋팅되도록 함
+function Tab_item_tab_list_grd_output_oncellclick(obj:Grid, e:GridClickEventInfo)
+{
+	var cellValue = "";
+	if (e.col== 1) {
+		cellValue = Tab_item.tab_list.grd_output.getCellValue(e.row,e.col);
+		Tab_item.tab_list.Div_condition.Edit_ClassNo.value = cellValue;
+	} else if (e.col== 2) {
+		cellValue = Tab_item.tab_list.grd_output.getCellValue(e.row,e.col);
+		Tab_item.tab_list.Div_condition.Edit_ClassKorName.value = cellValue;
+	} 
+}
+
+// Enter시 조회 
+function Tab_item_tab_list_onkeydown(obj:Tabpage, e:KeyEventInfo)
+{
+	var vKeyCode = e.keycode;
+	if (vKeyCode == 13) {
+		Tab_item_tab_list_Div_condition_btn_search_onclick();
+	} else {
+		return;
+	}
+}
+
+// 정렬 메뉴 열기
+function grd_output_onheadclick(obj:Grid, e:GridClickEventInfo)
+{
+	if (e.col > 0) {
+		PopupRMenu.trackPopup(e.screenX, e.screenY);
+		vCol = Tab_item.tab_list.grd_output.getCellProperty("Body", e.col, "text");
+		vCol = vCol.substring(5,100);
+	} 
+}
+
+// 탭이동
+function Tab_item_tab_list_grd_output_oncelldblclick(obj:Grid, e:GridClickEventInfo)
+{
+	if ((e.col== 5) || (e.col== 6) || (e.col== 7) ){
+		var reportType = Tab_item.tab_list.Div_condition.Combo_reportType.value;
+		var fmYY = new String ( Tab_item.tab_list.Div_condition.Calendar_fm_y.value);
+		var fmMM = new String (Tab_item.tab_list.Div_condition.Calendar_fm_m.value);
+		var toYY = new String (Tab_item.tab_list.Div_condition.Calendar_to_y.value);
+		var toMM = new String (Tab_item.tab_list.Div_condition.Calendar_to_m.value);
+			fmYY = fmYY.substring(0,4);
+			fmMM = fmMM.substring(4,6);
+			toYY = toYY.substring(0,4);
+			toMM = toMM.substring(4,6);
+		var selectDate = fmYY + "." + fmMM + " ~ " + toYY + "." + toMM;
+	
+		Tab_item.tab_version.Div_condition.Static_item_name.text = Tab_item.tab_list.grd_output.getCellValue(e.row, 2);
+		Tab_item.tab_version.Div_condition.Static_class_no.text = Tab_item.tab_list.grd_output.getCellValue(e.row, 1) + " / "
+																+Tab_item.tab_list.grd_output.getCellValue(e.row, 3);
+		Tab_item.tab_version.Div_condition.Static_selectDate.text  = selectDate;
+		var codeCnt = ds_category.getColumn(e.row, e.col);
+		Tab_item.tab_version.Div_condition.Static_codeCnt.text = codeCnt; 
+		var codeGB = "";
+		if (e.col == 5) {
+			Tab_item.tab_version.Div_condition.Static_codeType.text = "의료기기문제";
+			codeGB = "M";
+		 } else if (e.col == 6) {
+			Tab_item.tab_version.Div_condition.Static_codeType.text = "환자문제";
+			codeGB = "P";
+		 } else if (e.col == 7) {
+			Tab_item.tab_version.Div_condition.Static_codeType.text = "구성요소문제";
+			codeGB = "C";
+		 }
+		var categorySeq = ds_category.getColumn(e.row, "ITEM_CATEGORY_ID");		
+		para_version(fmYY+fmMM, toYY+toMM, reportType, categorySeq, codeGB);
+		//Tab_item.tabindex = 1;
+	}
+}
+
+/*************************************************tab_list 종료***************************************************************/
+
+/*************************************************공통사용-정렬시작**************************************************************/
+function PopupRMenu_onmenuclick(obj:PopupMenu, e:MenuClickEventInfo)
+{
+	var vTabGB = Tab_item.tabindex; 
+	var vId = e.id;
+	var vSort;
+	var vSortKey;
+	
+	// 항목조합 통계
+	if (vTabGB == 0) {
+		if (vId == "D") {
+			if (vCol == "COB_FLAG_NAME+ ' ' + MEDDEV_ITEM_NO") {
+				ds_category.keystring  ="S:-COB_FLAG_NAME-MEDDEV_ITEM_NO_NUM1-MEDDEV_ITEM_NO_NUM2";
+			} else {
+				vSort = "-";
+				vSortKey = "S:"+vSort+vCol;
+				ds_category.keystring  = vSortKey;		
+			}
+		} 
+		if (vId == "A") {
+			if (vCol == "COB_FLAG_NAME+ ' ' + MEDDEV_ITEM_NO") {
+				ds_category.keystring  = "S:+COB_FLAG_NAME+MEDDEV_ITEM_NO_NUM1+MEDDEV_ITEM_NO_NUM2";
+			} else {
+				vSort = "+";
+				vSortKey = "S:"+vSort+vCol;
+				ds_category.keystring  = vSortKey;		
+			}
+		} 
+		if (vId == "N") {
+			ds_category.keystring  = "S:+CLASS_KOR_NAME"
+		}
+	}
+}
+
+/*************************************************공통사용-정렬종료**************************************************************/
+
+/*************************************************tab_version 시작***************************************************************/
+
+//버전정보 조회
+function para_version(fmDate, toDate, reportType, categorySeq, codeGB) {
+	//선택정보 DataSet에 셋팅
+	ds_selectData.reset();
+	ds_selectData.insertRow(0);
+	ds_selectData.setColumn(0,0,fmDate);
+	ds_selectData.setColumn(0,1,toDate);
+	ds_selectData.setColumn(0,2,reportType);
+	ds_selectData.setColumn(0,3,categorySeq);
+	ds_selectData.setColumn(0,4,codeGB);
+	ds_selectData.setColumn(0,5,0);
+
+	transaction("tra_itemCatagoryGroup"
+		,"siteURL::risk.do?action=itemCatagoryGroup"
+		,""
+		,"ds_version=ds_version"
+		,"itemCategorySeq='" + categorySeq + "' " + "fmDate='" + fmDate + "' toDate='" + toDate + "' "
+		,"fn_callback");
+}
+
+// 위험패트릭스 조회탭이동
+function Tab_item_tab_version_grd_output_oncelldblclick(obj:Grid, e:GridClickEventInfo)
+{
+	if (e.col== 0) {
+		Tab_item.tab_matrix.Div_condition.Static_item_name.text = Tab_item.tab_version.Div_condition.Static_item_name.text;
+		Tab_item.tab_matrix.Div_condition.Static_class_no.text = Tab_item.tab_version.Div_condition.Static_class_no.text;
+		Tab_item.tab_matrix.Div_condition.Static_selectDate.text = Tab_item.tab_version.Div_condition.Static_selectDate.text;
+		Tab_item.tab_matrix.Div_condition.Static_codeType.text = Tab_item.tab_version.Div_condition.Static_codeType.text;
+		Tab_item.tab_matrix.Div_condition.Static_codeCnt.text = Tab_item.tab_version.Div_condition.Static_codeCnt.text;
+		ds_selectData.setColumn(0,5,ds_version.getColumn(e.row,0));
+		para_matrix();
+		//Tab_item.tabindex = 2;
+	}
+}
+
+
+/*************************************************tab_version 종료***************************************************************/
+/*************************************************tab_matrix 시작***************************************************************/
+// 메트릭스 조회
+function para_matrix() {
+	var fmDate = ds_selectData.getColumn(0,0);
+	var toDate = ds_selectData.getColumn(0,1);
+	var reportType = ds_selectData.getColumn(0,2);
+	var categorySeq = ds_selectData.getColumn(0,3);
+	var codeGB = ds_selectData.getColumn(0,4);
+	var verSeq = ds_selectData.getColumn(0,5);
+	
+	for(var a = (ds_result.rowcount); a > 0; a--){
+		Tab_item.tab_matrix.grid_matrix.deleteContentsCol(a);
+	}
+
+	// 개정버전에 따라 조회날짜 제어
+	var selectFmDate = "";
+	var selectToDate = "";
+	var versionStartDate = Tab_item.tab_version.grd_output.getCellValue(Tab_item.tab_version.grd_output.currentrow,1);
+	versionStartDate = versionStartDate.substring(0,6);
+	
+	if( versionStartDate > fmDate) {
+		selectFmDate = versionStartDate;
+	} else {
+		selectFmDate = fmDate;
+	}
+	
+	for(var b= (ds_version.rowcount-1); b >= 0; b--) {
+		var nextDate = ds_version.getColumn(b,"START_DATE");
+		nextDate = nextDate.substring(0,6);
+		// 다음버전 개정일 한달전 날짜 계산
+		if(nextDate > selectFmDate) {
+			nextDateYY = nextDate.substring(0,4);
+			nextDateMM = nextDate.substring(4,6);
+			if(nextDateMM == "01") {
+				nextDateYY = new String(parseInt(nextDateYY) -1);
+				nextDateMM = "12";
+			} else {
+				nextDateMM = new String(parseInt(nextDateMM)-1);
+				if(nextDateMM.length < 2) nextDateMM = "0"+nextDateMM;
+			}
+			selectToDate = nextDateYY+nextDateMM;
+			break;
+		} else {
+			selectToDate = toDate;
+		}
+	}
+	//trace(selectFmDate);
+	//trace(selectToDate);
+	
+	// 조회기간 표시 수정
+	var selectDate = selectFmDate.substring(0,4) + "." + selectFmDate.substring(4,6) + " ~ " + selectToDate.substring(0,4) + "." + selectToDate.substring(4,6);
+	Tab_item.tab_matrix.Div_condition.Static_selectDate.text = selectDate;
+	
+	// 조회기간 값 변경
+	ds_selectData.setColumn(0,0,selectFmDate);
+	ds_selectData.setColumn(0,1,selectToDate);
+	
+	transaction("tra_itemCatagoryMatrix"
+		,"siteURL::risk.do?action=itemCatagoryMatrix"
+		,""
+		,"ds_matrix=ds_matrix ds_result=ds_result"
+		,"itemCategorySeq='" + categorySeq + "' " + "fmDate='" + selectFmDate + "' toDate='" + selectToDate + "' verDate='" + versionStartDate 
+			+ "' reportType='"+reportType + "' codeGB='"+codeGB+"' verSeq="+verSeq
+		,"fn_callback");
+}
+
+// grid_matrix fromat편집
+function fn_matrix_grid() {
+	Tab_item.tab_matrix.grid_matrix_list.visible=false;
+	for(var a = 0; a < ds_result.rowcount; a++)
+	{
+		Tab_item.tab_matrix.grid_matrix.appendContentsCol();
+		var colorColName = new String(ds_result.getColumn(a,2))+"COLOR";
+		
+		var colText = ds_result.getColumn(a,0)+"."+ds_result.getColumn(a,1);
+		var colBind = ds_result.getColumn(a,1);
+		
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Head", a+1, "text", colText);
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Head", a+1, "font", "굴림체,9,bold;");
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Head", a+1, "selectfont", "굴림체,9,bold;");
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Body", a+1, "text", "bind:"+colBind);
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Body", a+1, "background", "bind:"+colorColName);
+		Tab_item.tab_matrix.grid_matrix.setCellProperty("Body", a+1, "background2", "bind:"+colorColName);
+	}
+	Tab_item.tab_matrix.grid_matrix.setBandProperty("Head","style", "font:굴림체,9,bold;selectfont:굴림체,9,bold;" );
+	Tab_item.tab_matrix.grid_matrix.setBandProperty("Body","style", "font:굴림체,9,bold;selectfont:굴림체,9,bold;" );
+	//trace(Tab_item.tab_matrix.grid_matrix.getCurFormatString());
+	Tab_item.tabindex = 2;
+}
+
+// matrix 건수 상세조회
+function Tab_item_tab_matrix_grid_matrix_oncelldblclick(obj:Grid, e:GridClickEventInfo)
+{
+	if(e.col > 0) {
+		if(obj.getCellValue(e.row, e.col) > 0) {
+			Tab_item.tab_matrix.grid_matrix_list.visible=true;
+			para_matrix_list(e.col, e.row);
+		} else {
+			Tab_item.tab_matrix.grid_matrix_list.visible=false;
+		}
+	}
+}
+
+// 메트릭스 조회
+function para_matrix_list(colNo, rowNo) {
+	var fmDate = ds_selectData.getColumn(0,0);
+	var toDate = ds_selectData.getColumn(0,1);
+	var reportType = ds_selectData.getColumn(0,2);
+	var categorySeq = ds_selectData.getColumn(0,3);
+	var codeGB = ds_selectData.getColumn(0,4);
+	var verSeq = ds_selectData.getColumn(0,5);
+	var resultSeq = ds_result.getColumn(colNo-1,2);
+	var possibilitySeq = ds_matrix.getColumn(rowNo,0);
+
+	transaction("tra_matrixList"
+	,"siteURL::risk.do?action=matrixList"
+	,""
+	,"ds_matrix_list=ds_matrix_list"
+	,"itemCategorySeq='" + categorySeq + "' " + "fmDate='" + fmDate + "' toDate='" + toDate 
+		+ "' reportType='"+reportType + "' codeGB='"+codeGB+"' verSeq="+verSeq + " resultSeq="+resultSeq + " possibilitySeq="+possibilitySeq
+	,"fn_callback");
+
+}
+
+
+/*************************************************tab_matrix 종료***************************************************************/
+
+/*************************************************엑셀,출력 시작***************************************************************/
+// 엑셀파일
+function btn_excel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var nCnt = ExtObj0.clear();
+	var vTabGB = Tab_item.tabindex;
+
+	ExtObj0.exporttype = ExportTypes.EXCEL;
+	
+	var sSheetName = "ExcelDown";
+	var sFileName = "조회코드.xlsx";
+	
+	ExtObj0.activepagename = sSheetName;	
+	ExtObj0.exportfilename = sFileName;
+	ExtObj0.exportopenmode = "existopen";
+
+	if(vTabGB == 0) {
+		var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_list.grd_output, sSheetName+"!A1" );
+	} else if(vTabGB == 1) {
+		 //엑셀용grid에 set
+		 ds_item_view.setColumn(0,0,Tab_item.tab_version.Div_condition.Static_item_name.text);
+		 ds_item_view.setColumn(0,1,Tab_item.tab_version.Div_condition.Static_class_no.text);
+		 ds_item_view.setColumn(0,2,Tab_item.tab_version.Div_condition.Static_selectDate.text);
+		 ds_item_view.setColumn(0,3,Tab_item.tab_version.Div_condition.Static_codeType.text);
+		 ds_item_view.setColumn(0,4,Tab_item.tab_version.Div_condition.Static_codeCnt.text);
+		 
+		var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_version.grid_item_view, sSheetName+"!B1" );
+		 nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_version.grd_output, sSheetName+"!A7" );
+	} else if(vTabGB == 2) {
+		 //엑셀용grid에 set
+		 ds_item_view.setColumn(0,0,Tab_item.tab_matrix.Div_condition.Static_item_name.text);
+		 ds_item_view.setColumn(0,1,Tab_item.tab_matrix.Div_condition.Static_class_no.text);
+		 ds_item_view.setColumn(0,2,Tab_item.tab_matrix.Div_condition.Static_selectDate.text);
+		 ds_item_view.setColumn(0,3,Tab_item.tab_matrix.Div_condition.Static_codeType.text);
+		 ds_item_view.setColumn(0,4,Tab_item.tab_matrix.Div_condition.Static_codeCnt.text);
+		 
+		 // selecttype 속성이 cell 이면 head가 출력되지 않음
+		 Tab_item.tab_matrix.grid_matrix.selecttype = "row";
+		 
+		 var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_matrix.grid_item_view, sSheetName+"!B1" );
+		 nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_matrix.grid_matrix, sSheetName+"!A7" );
+		 var dsRowCnt = ds_matrix.rowcount + 7+3;
+		 nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Tab_item.tab_matrix.grid_matrix_list, sSheetName+"!A"+dsRowCnt );
+	}
+	
+	ExtObj0.export();
+	Tab_item.tab_matrix.grid_matrix.selecttype =  "cell";
+}
+
+
+// 출력
+function btn_print_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var vTabGB = Tab_item.tabindex;
+	if (vTabGB == 0) {
+		Tab_item.tab_list.print(false,"top");
+	} else if (vTabGB == 1) {
+		Tab_item.tab_version.print(false,"top");
+	} else if (vTabGB == 2) {
+		Tab_item.tab_matrix.print(false,"top");
+	}
+}
+
+/*************************************************엑셀,출력 종료***************************************************************/]]></Script>
+  </Form>
+</FDL>

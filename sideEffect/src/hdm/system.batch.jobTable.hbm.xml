@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!-- 
+    	where is_active != 2  
+    	is_active ==2 는 비활성 상태를 의미함. 사용 안하는 코드라는 뜻.
+    	is_active ==1 은 활성 (사용하는 코드)
+    	is_active == 0 는 활성화 정보 알수없음
+    -->
+	<class table="sgi_se_batch_job_table_type" name="system.batch.SimpleBatchJobTableType" 
+	    
+	    > 
+		<id name="id">
+			<column name="id"/>
+		 	<generator class="sequence">
+				<param name="sequence">seq_batch_history_pk</param>
+			</generator> 
+		</id>
+		<property name="tmpIdSeqName" type="string">
+		    <column name="tmp_id_seq_name"></column>
+		</property>
+	 	<property name="propertyValue" type="string">
+	 	    <column name="property_value"></column>
+	 	</property>
+	 	
+	 	<property name="tableName" type="string">
+	 	    <column name="table_name"></column>
+	 	</property>
+	 	
+	 	<property name="className" type="string">
+	 	    <column name="object_type"></column>
+	 	</property>
+	 	
+	 	<property name="idSequenceName" type="string">
+	 	    <column name="id_sequence_name"></column>
+	 	</property>
+	 	
+	 	<property name="tempTableName" type="string">
+	 	    <column name="temp_table_name"></column>
+	 	</property>
+	 	
+	 	<property name="numberOfColumns" type="long">
+	 	    <column name="number_of_columns"></column>
+	 	</property>
+	 	
+	 	<property name="templateFile" type="string">
+	 	    <column name="template_file"></column>
+	 	</property>
+	 	
+	</class> 
+ </hibernate-mapping>

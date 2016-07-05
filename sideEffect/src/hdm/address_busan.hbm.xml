@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="BUSAN" name="address.SimpleAddressBusan" > 
+	
+		<id name="id">
+			<column name="id" />
+		</id>
+		
+		<property name="zipcode">
+		 	<column name="zipcode"/>
+		</property>
+		
+		<property name="zipcode_seq">
+		 	<column name="zipcode_seq"/>
+		</property>
+		
+		<property name="sido">
+		 	<column name="sido"/>
+		</property>
+		
+		<property name="gu">
+		 	<column name="gu"/>
+		</property>
+		
+		<property name="doro_code">
+		 	<column name="doro_code"/>
+		</property>
+		
+		<property name="doro_nm">
+		 	<column name="doro_nm"/>
+		</property>
+		
+		<property name="bldg1">
+		 	<column name="bldg1"/>
+		</property>
+		
+		<property name="bldg2">
+		 	<column name="bldg2"/>
+		</property>
+		
+		<property name="bldg_nm">
+		 	<column name="bldg_nm"/>
+		</property>
+		
+
+	</class> 
+	
+</hibernate-mapping>

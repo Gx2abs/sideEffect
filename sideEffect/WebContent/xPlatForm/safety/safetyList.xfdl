@@ -1,0 +1,1395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="safetyList" classname="safetyList" inheritanceid="" position="absolute 0 0 1100 628" titletext="New Form" onload="safetyList_onload" style="background:#ffffffff;border:0 dashed #ffffffff white;align:left;" onkeydown="safetyList_onkeydown">
+    <Layouts>
+      <Layout>
+        <Div id="Div_condition" taborder="10" position2="absolute l:12 w:928 t:5 h:91" positiontype="position2" style="border:0 none white ;">
+          <Layouts>
+            <Layout width="1001" height="119">
+              <Combo id="Combo_reporterType" taborder="0" ondropdown="Div_condition_Combo_reporterType_ondropdown" position2="absolute l:458 w:235 t:10 h:22" positiontype="position2" style="font:Dotum,9;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="Button01" taborder="6" text="엑셀로 내리기" position2="absolute l:13 w:103 t:549 h:31" positiontype="position2" onclick="fn_excel" style="color:black;font:굴림체,8,bold;"/>
+        <Grid id="Grid00" taborder="7" useinputpanel="false" position2="absolute l:4 w:925 t:118 h:417" positiontype="position2" binddataset="ds_saferyList_server" onheadclick="Grid00_onheadclick" cellmovingtype="col" cellsizingtype="col" style="focusborder:0px dotted green ;color:black;font:굴림,11;" oncelldblclick="Grid00_oncelldblclick" onmove="Grid00_onmove">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="43"/>
+                <Column size="104"/>
+                <Column size="46"/>
+                <Column size="105"/>
+                <Column size="131"/>
+                <Column size="158"/>
+                <Column size="265"/>
+                <Column size="120"/>
+                <Column size="183"/>
+                <Column size="170"/>
+                <Column size="129"/>
+                <Column size="115"/>
+                <Column size="122"/>
+                <Column size="114"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="No"/>
+                <Cell col="1" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="품목명"/>
+                <Cell col="2" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="등급"/>
+                <Cell col="3" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="품목허가번호"/>
+                <Cell col="4" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="의료기기문제코드"/>
+                <Cell col="5" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="환자문제코드"/>
+                <Cell col="6" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="안전성정보원인및내용"/>
+                <Cell col="7" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="업소의후속조치"/>
+                <Cell col="8" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="안전성정보 보고유형"/>
+                <Cell col="9" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="보고자유형"/>
+                <Cell col="10" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="상호명"/>
+                <Cell col="11" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="대상업체명"/>
+                <Cell col="12" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="구성요소코드"/>
+                <Cell col="13" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="문서번호"/>
+              </Band>
+              <Band id="body">
+                <Cell style="font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:ROW"/>
+                <Cell col="1" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:class_kor_name"/>
+                <Cell col="2" style="font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:grade"/>
+                <Cell col="3" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:product_cob_code"/>
+                <Cell col="4" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:medicalcode"/>
+                <Cell col="5" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:patientcode"/>
+                <Cell col="6" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:safety_cause_content"/>
+                <Cell col="7" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:sollowup"/>
+                <Cell col="8" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:report_type"/>
+                <Cell col="9" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:reporter_type"/>
+                <Cell col="10" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:company_name"/>
+                <Cell col="11" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:entp_name"/>
+                <Cell col="12" style="align:left;font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:componentcode"/>
+                <Cell col="13" displaytype="text" style="font:굴림체,9;selectfont:굴림체,9,bold;" text="bind:document_number" editlimitbymask="decimal"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Button id="Button02" taborder="8" text="글쓰기" position2="absolute l:826 w:93 t:549 h:31" positiontype="position2" onclick="Button02_onclick" style="color:black;font:굴림체,8,bold;"/>
+        <Static id="Static01" text="조회구분" position2="absolute l:109 w:68 t:22 h:16" positiontype="position2"/>
+        <Combo id="Combo_reportType" taborder="11" innerdataset="@ds_ReportType" codecolumn="ID" datacolumn="NAME" position2="absolute l:179 w:173 t:17 h:22" positiontype="position2" style="font:Dotum,9;"/>
+        <Static id="Static00" text="조회기간" position2="absolute l:110 w:67 t:49 h:16" positiontype="position2"/>
+        <Calendar id="Calendar_fm_y" taborder="12" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:180 w:109 t:44 h:22" positiontype="position2" style="align:center middle;font:돋움,9,bold;"/>
+        <Static id="static_year" text="년" onclick="Div00_Static02_onclick" position2="absolute l:300 w:21 t:49 h:16" positiontype="position2"/>
+        <Calendar id="Calendar_fm_m" taborder="13" displaynulltext="01" type="spin" dateformat="MM" editformat="MM" position2="absolute l:333 w:64 t:43 h:22" positiontype="position2" style="align:center middle;font:돋움,9,bold;"/>
+        <Static id="static_month" text="월  ~ " position2="absolute l:411 w:39 t:47 h:22" positiontype="position2"/>
+        <Calendar id="Calendar_to_y" taborder="14" type="spin" dateformat="yyyy" editformat="yyyy" position2="absolute l:465 w:85 t:43 h:22" positiontype="position2" style="align:center middle;font:돋움,9,bold;"/>
+        <Static id="static_year00" text="년" onclick="Div00_Static02_onclick" position2="absolute l:569 w:21 t:47 h:22" positiontype="position2"/>
+        <Calendar id="Calendar_to_m" taborder="15" displaynulltext="12" type="spin" dateformat="MM" editformat="MM" position2="absolute l:607 w:64 t:43 h:22" positiontype="position2" style="align:center middle;font:돋움,9,bold;"/>
+        <Static id="Static03" text="월 " position2="absolute l:688 w:21 t:47 h:22" positiontype="position2"/>
+        <Button id="btn_search" taborder="16" text="조회" onclick="btn_search" position2="absolute l:817 w:45 t:27 h:29" positiontype="position2" style="color:mediumblue;font:굴림체,8,bold;"/>
+        <Button id="Button03" taborder="17" text="검색조건" onclick="Button03_onclick" position2="absolute l:732 w:77 t:26 h:29" positiontype="position2" style="color:black;font:굴림체,8,bold;"/>
+        <PopupDiv id="PopupDiv_search" text="PopupDiv00" position2="absolute l:149 w:538 t:149 h:386" positiontype="position2" style="background:whitesmoke;" visible="false" onkeydown="PopupDiv_search_onkeydown">
+          <Layouts>
+            <Layout width="538" height="386">
+              <Grid id="Grid_details_search" taborder="3" binddataset="ds_details_search" useinputpanel="false" position2="absolute l:14 w:510 t:41 h:330" style="font:굴림,72,antialias;" onheadclick="ds_details_search_headclick" positiontype="position2" autoenter="select">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="163"/>
+                      <Column size="235"/>
+                      <Column size="71"/>
+                      <Column size="40"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="검색항목"/>
+                      <Cell col="1" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="검색"/>
+                      <Cell col="2" style="font:굴림체,9,bold;selectfont:굴림체,9,bold;" text="AND, OR"/>
+                      <Cell col="3" style="color:mediumblue;font:굴림체,9,bold underline;selectfont:굴림체,9,bold underline;" text="삭제"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell displaytype="combo" edittype="combo" style="background:white;background2:white;font:굴림체,9;selectbackground:beige;selectcolor:black;selectfont:굴림체,9;" text="bind:SCID" combodataset="ds_sc" combocodecol="SCID" combodatacol="SC" combodisplayrowcount="10"/>
+                      <Cell col="1" displaytype="text" edittype="text" style="align:left;background:white;background2:white;font:굴림체,9;selectbackground:beige;selectcolor:black;selectfont:굴림체,9;" text="bind:SV"/>
+                      <Cell col="2" displaytype="combo" edittype="combo" style="background:white;background2:white;font:굴림체,9;selectbackground:beige;selectcolor:black;selectfont:굴림체,9;" text="bind:OPTION" combodataset="ds_options" combocodecol="OPTIONID" combodatacol="OPTION" combodisplaynulltext="AND"/>
+                      <Cell col="3" displaytype="checkbox" edittype="checkbox" style="background:white;background2:white;font:굴림체,9;selectbackground:beige;selectcolor:black;selectfont:굴림체,9;" text="bind:CHECK_YN"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Button id="Button_ins" taborder="4" text="추가" onclick="PopupDiv_search_Button_ins_onclick" position2="absolute l:398 w:58 t:9 h:18" positiontype="position2"/>
+              <Button id="Button_del" taborder="5" text="삭제" onclick="PopupDiv_search_Button_del_onclick" position2="absolute l:462 w:58 t:9 h:18" positiontype="position2"/>
+              <Button id="Button00" taborder="6" text="설정완료" position2="absolute l:227 w:82 t:324 h:21" style="font:굴림체,8,bold;gradation:linear 50,0 #e4e4e4ff 50,100 #ccccccff;" onclick="PopupDiv_search_Button00_onclick" positiontype="position2"/>
+              <Static id="Static03" position2="absolute l:184 w:169 t:13 h:26" positiontype="position2"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Static id="Static02" text="※ 검색조건 설정 후 조회하여 주십시오. ※ " onclick="Div_condition_Static01_onclick" position2="absolute l:368 w:254 t:76 h:19" positiontype="position2" style="color:red;align:center top;"/>
+        <Static id="Static04" text="※ 각 항목명을 마우스로 클릭하면 데이터가 오름차순, 내림차순으로 정렬됩니다. ※ " onclick="Div_condition_Static01_onclick" position2="absolute l:3 w:480 t:103 h:19" positiontype="position2" style="font:Dotum,9;"/>
+        <Div id="Div02" taborder="20" position2="absolute l:88 w:16 t:43 h:16" positiontype="position2" style="background:#ffffffff URL('theme://IMG\root_menthead.gif');border:0 none #ffffffff #ffffffff;color:#ffffffff;bordertype:normal 0 0 ;shadow:drop 0,1 3 #ffffffff;"/>
+        <Div id="div_page" taborder="18" style="background:white;border:2 none white #ffffffff;color:white;bordertype:normal 0 0 ;shadow:drop 0,0 0 white;" text="Div00" position="absolute 201 555 627 580" scrollbars="none">
+          <Layouts>
+            <Layout width="725" height="25">
+              <Static id="stc_No9" text="10" onclick="div_page_stc_No_onclick" visible="false" position="absolute 334 -4 363 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No8" text="9" onclick="div_page_stc_No_onclick" visible="false" position="absolute 304 -4 333 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No7" text="8" onclick="div_page_stc_No_onclick" visible="false" position="absolute 273 -4 302 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No6" text="7" onclick="div_page_stc_No_onclick" visible="false" position="absolute 242 -4 271 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No5" text="6" onclick="div_page_stc_No_onclick" visible="false" position="absolute 211 -4 240 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No4" text="5" onclick="div_page_stc_No_onclick" visible="false" position="absolute 180 -4 209 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No3" text="4" onclick="div_page_stc_No_onclick" visible="false" position="absolute 149 -4 178 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No2" text="3" onclick="div_page_stc_No_onclick" visible="false" position="absolute 118 -4 147 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No1" text="2" onclick="div_page_stc_No_onclick" visible="false" position="absolute 87 -4 116 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_No0" text="1" onclick="div_page_stc_No_onclick" visible="false" position="absolute 56 -4 85 23" style="color:#0000ffff;align:center;cursor:hand;glow:3 transparent;" anchor="default"/>
+              <Static id="stc_Prev" text="이전" onclick="div_page_stc_Prev_onclick" visible="false" position="absolute 34 2 53 29" style="background:#ffffffff URL('theme://IMG\btn_prev_01.gif');color:white;align:center;cursor:hand;" anchor="default"/>
+              <Div id="Div0" taborder="1" position2="absolute l:84 w:6 t:3 h:12" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;color:#dcdcdcff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2">
+                <Layouts>
+                  <Layout/>
+                </Layouts>
+              </Div>
+              <Div id="Div1" taborder="2" position2="absolute l:117 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div2" taborder="3" position2="absolute l:148 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div3" taborder="4" position2="absolute l:179 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div4" taborder="5" position2="absolute l:209 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div5" taborder="6" position2="absolute l:240 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div6" taborder="7" position2="absolute l:271 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div7" taborder="8" position2="absolute l:302 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Div id="Div8" taborder="9" position2="absolute l:333 w:6 t:3 h:13" style="background:#ffffffff URL('theme://IMG\page_div5.gif') 0,0 0 50;border:0 none white #ffffffff;shadow:drop 0,1 0 transparent;" visible="false" positiontype="position2"/>
+              <Static id="stc_Prev00" visible="false" position="absolute 9 2 28 29" style="background:#ffffffff URL('theme://IMG\btn_prev_02.gif');color:white;align:center;cursor:hand;" anchor="default" onclick="div_page_stc_Prev00_onclick"/>
+              <Static id="stc_Next" text="다음" onclick="div_page_stc_Next_onclick" visible="false" position="absolute 373 3 402 30" style="background:#ffffffff URL('theme://IMG\btn_next_01.gif');color:white;align:center;cursor:hand;" anchor="default"/>
+              <Static id="stc_Next00" visible="false" position="absolute 397 3 426 30" style="background:#ffffffff URL('theme://IMG\btn_next_02.gif');color:white;align:center;cursor:hand;" anchor="default" onclick="div_page_stc_Next00_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <PopupDiv id="PopupDiv_reporterType" position2="absolute l:527 w:241 t:80 h:341" positiontype="position2" scrollbars="none" visible="false">
+          <Layouts>
+            <Layout>
+              <Grid id="Grid_reporterTypes" taborder="3" binddataset="ds_reporterTypes" scrollbars="autovert" useinputpanel="false" treeuseline="false" treeuseimage="false" position2="absolute l:3 w:231 t:28 h:305" positiontype="position2" onkillfocus="PopupDiv_reporterType_Grid_reporterTypes_onkillfocus">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="220"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="tree" edittype="tree" style="background:white;background2:white;" text="bind:NAME" treecheck="bind:CHECK_YN"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Button id="btn_reporterTypes_select" taborder="4" text="전체선택" onclick="PopupDiv_reporterType_btn_reporterTypes_select_onclick" position2="absolute l:8 w:51 t:6 h:17" style="font:굴림,8;shadow:drop 0,0 0 #80808066;" positiontype="position2"/>
+              <Button id="btn_reporterTypes_cancel" taborder="5" text="전체취소" onclick="PopupDiv_reporterType_btn_reporterTypes_cancel_onclick" position2="absolute l:64 w:51 t:6 h:17" style="font:굴림,8;shadow:drop 0,0 0 #80808066;" positiontype="position2"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Div id="Div01" taborder="22" position2="absolute l:368 w:20 t:18 h:16" positiontype="position2" style="background:#ffffffff URL('theme://IMG\root_menthead.gif');border:0 none #ffffffff #ffffffff;color:#ffffffff;bordertype:normal 0 0 ;shadow:drop 0,1 3 #ffffffff;"/>
+        <Static id="Static05" text="보고자유형" onclick="Static01_onclick" position2="absolute l:389 w:68 t:22 h:16" positiontype="position2"/>
+        <Div id="Div00" taborder="23" position2="absolute l:88 w:20 t:18 h:16" positiontype="position2" style="background:#ffffffff URL('theme://IMG\root_menthead.gif');border:0 none #ffffffff #ffffffff;color:#ffffffff;bordertype:normal 0 0 ;shadow:drop 0,1 3 #ffffffff;" scrollbars="none">
+          <Layouts>
+            <Layout>
+              <Combo id="Combo_reporterType" taborder="2" ondropdown="Div_condition_Combo_reporterType_ondropdown" position2="absolute l:458 w:235 t:-14 h:22" positiontype="position2"/>
+              <Static id="Static03" text="보고자유형" onclick="Static01_onclick" position2="absolute l:389 w:68 t:1 h:16" positiontype="position2"/>
+              <Div id="Div01" taborder="3" position2="absolute l:368 w:20 t:-3 h:16" style="background:#ffffffff URL('theme://IMG\root_menthead.gif');border:0 none #ffffffff #ffffffff;color:#ffffffff;bordertype:normal 0 0 ;shadow:drop 0,1 3 #ffffffff;" positiontype="position2"/>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+      <Dataset id="ds_saferyList_server" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ROW" type="INT" size="11"/>
+          <Column id="document_number" type="STRING" size="256"/>
+          <Column id="reporter_type" type="BIGDECIMAL" size="0"/>
+          <Column id="company_name" type="STRING" size="256"/>
+          <Column id="entp_name" type="STRING" size="256"/>
+          <Column id="grade" type="STRING" size="256"/>
+          <Column id="class_kor_name" type="STRING" size="256"/>
+          <Column id="product_cob_code" type="STRING" size="256"/>
+          <Column id="medicalcode" type="STRING" size="256"/>
+          <Column id="patientcode" type="STRING" size="256"/>
+          <Column id="componentcode" type="STRING" size="256"/>
+          <Column id="report_type" type="STRING" size="256"/>
+          <Column id="safety_cause_content" type="STRING" size="256"/>
+          <Column id="sollowup" type="STRING" size="256"/>
+          <Column id="report_year" type="STRING" size="256"/>
+          <Column id="report_month" type="STRING" size="256"/>
+          <Column id="first_modified" type="STRING" size="256"/>
+          <Column id="id" type="INT" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_ReportType" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="string" size="900"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_sc" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SCID" type="STRING" size="256"/>
+          <Column id="SC" type="STRING" size="256"/>
+          <Column id="ORDERID" type="INT" size="256"/>
+          <Column id="USE_YN" type="STRING" size="1"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="SC">구분</Col>
+            <Col id="SCID">1</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">보고구분</Col>
+            <Col id="SCID">2</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">보고자 유형</Col>
+            <Col id="SCID">3</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">N</Col>
+          </Row>
+          <Row>
+            <Col id="SC">상호명</Col>
+            <Col id="SCID">4</Col>
+            <Col id="ORDERID">3</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">대표자 성명</Col>
+            <Col id="SCID">5</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">담당자명</Col>
+            <Col id="SCID">6</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">전화</Col>
+            <Col id="SCID">7</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">FAX</Col>
+            <Col id="SCID">8</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">EMAIL</Col>
+            <Col id="SCID">9</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">주소</Col>
+            <Col id="SCID">10</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">대상업체명</Col>
+            <Col id="SCID">11</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">업허가번호</Col>
+            <Col id="SCID">12</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">품목명</Col>
+            <Col id="SCID">13</Col>
+            <Col id="ORDERID">1</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">분류번호</Col>
+            <Col id="SCID">14</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">등급</Col>
+            <Col id="SCID">15</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">품목허가번호</Col>
+            <Col id="SCID">16</Col>
+            <Col id="ORDERID">2</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">제조국</Col>
+            <Col id="SCID">17</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">제조원</Col>
+            <Col id="SCID">18</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">형명</Col>
+            <Col id="SCID">20</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">제조번호</Col>
+            <Col id="SCID">21</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">안전성 정보 원인 및 내용</Col>
+            <Col id="SCID">22</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">환자문제코드</Col>
+            <Col id="SCID">23</Col>
+            <Col id="ORDERID">5</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">의료기기문제코드</Col>
+            <Col id="SCID">24</Col>
+            <Col id="ORDERID">4</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">구성요소코드</Col>
+            <Col id="SCID">25</Col>
+            <Col id="ORDERID">6</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">업소의 후속조치</Col>
+            <Col id="SCID">26</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">안전성정보보고 유형</Col>
+            <Col id="SCID">27</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">진행상황</Col>
+            <Col id="SCID">28</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SC">기타사항</Col>
+            <Col id="SCID">29</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+          <Row>
+            <Col id="SCID">30</Col>
+            <Col id="SC">문서번호</Col>
+            <Col id="ORDERID">7</Col>
+            <Col id="USE_YN">Y</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_options" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="OPTIONID" type="STRING" size="256"/>
+          <Column id="OPTION" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="OPTIONID">AND</Col>
+            <Col id="OPTION">AND</Col>
+          </Row>
+          <Row>
+            <Col id="OPTIONID">OR</Col>
+            <Col id="OPTION">OR</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_details_search" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SCID" type="STRING" size="256"/>
+          <Column id="SV" type="STRING" size="256"/>
+          <Column id="OPTION" type="STRING" size="256"/>
+          <Column id="CHECK_YN" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_list_size" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="SIZE" type="INT" size="10"/>
+          <Column id="ID" type="INT" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="SIZE">100</Col>
+            <Col id="ID">100</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">200</Col>
+            <Col id="ID">200</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">500</Col>
+            <Col id="ID">500</Col>
+          </Row>
+          <Row>
+            <Col id="SIZE">1000</Col>
+            <Col id="ID">1000</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_reporterTypes" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="STRING" size="900"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="STRING" size="10"/>
+          <Column id="SUB_NAME" type="STRING" size="900"/>
+          <Column id="NUM" type="INT" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Bind/>
+    <Script type="xscript4.0"><![CDATA[
+var iStartPageNo    = 0;   // 전체 페이지 순서
+var iUnitSelRowNo   = 0;   // 한번 Server호출시 가져올 row갯수
+var iStartSelRowNo  = 1;   // Server호출시 시작할 row no
+var iMaxPageNum     = 50;  // 화면에 보여줄 최대 Page번호 갯수
+var iServerRowCount = 0;   // 서버에서 넘어온 Row갯수
+var iLastRow        = 0;
+
+var orderText = "";
+var order = "desc";
+var firstResult = 1;
+var allCheck = "n";
+var pgSize = 0;
+var totalCnt = 0;
+var rowCount = 0;
+var k=0;
+var pg = 1;
+var paginga = "y";
+var padding2 = 0;
+
+var badList = new Array("!", "@",  "#", 
+						                "$", "%",  "^", 
+						                "&", "*",   
+						                "_",  "--", 
+						                "=", "+",  "\"", 
+						                "|", "~",  "`", 
+						                "{", "}",  "[", 
+						                "]", ";",  ":", 
+						                "'", "<",  ">", 
+						                "/", 
+						                "?", "\\",  
+						                "select", "from", "where", 
+						                "union", "' or 1=1", "drop", 
+						                "/*", "*/");
+
+//==================================================================================================
+//==================================================================================================
+//var gvPopYN = "N";
+//==================================================================================================
+//==================================================================================================
+
+// 당일날짜 계산
+function Today()
+{
+	var sToday = "";
+	var objDate = new Date();
+	var sToday  = objDate.getFullYear().toString();
+	sToday += Right("0" + (objDate.getMonth() + 1), 2);
+	sToday += Right("0" + objDate.getDate(), 2);
+
+	return sToday;
+}
+function Right(sOrg, nSize)
+{
+	if( sOrg == null )
+		return "";
+	if( sOrg.length < nSize )
+		return sOrg;
+	else
+		return sOrg.substr(sOrg.length-nSize, nSize);
+}
+
+
+function safetyList_onload(obj:Form, e:LoadEventInfo)
+{
+ 
+ 	// 조회조건 Y 인것만 사용
+	ds_sc.filter("USE_YN == 'Y'");
+	
+		// 보고자유형 조회 
+	transaction("tra_reporterType",
+				"siteURL::statistics.do?action=reporterType"
+				,"",
+				"ds_reporterTypes=ds_reporterTypes"
+				,""
+				,"fn_Callback");	
+ 
+	if (gvPopYN == "Y") {	
+		// 글쓰기 버튼 비활성화
+		Button02.visible = false;
+		Calendar_fm_y.value = gVfmDate+ '01';
+		Calendar_to_y.value = gVtoDate+ '01';
+		Calendar_fm_m.value = gVfmDate+ '01';
+		Calendar_to_m.value = gVtoDate+ '01';
+		//Static_codeName.text = gVcodeName;
+		
+		// 조회
+		var id = "search";
+		var url = "siteURL::safetyReport.do?action=safetyList&sc="+gVReportType+"&year1="+gVfmDate+"&year2="+gVtoDate+"&month1="+gVfmDate+"&month2="+gVtoDate;
+		var reqDs = "ds_details_search=ds_details_search"; 
+		var respDs = "ds_saferyList_server=ds_saferyList_server"; 
+		if (gVitemSeq != "0" || gVitemSeq != null) {
+			args = "gvPopYN='"+gvPopYN+"' gVpopName='"+gVpopName+"' gVcodeArr='"+gVcodeArr+"' gVitemSeq="+gVitemSeq;
+		} else {
+			args = "gvPopYN='"+gvPopYN+"' gVpopName='"+gVpopName+"' gVcodeArr='"+gVcodeArr+"'";
+		}
+		
+	} else {
+
+		// 초기날짜셋팅
+		var year = Today();
+	
+		Calendar_fm_y.value =  (year.substring(0,4)-1) + '0101';
+		Calendar_fm_m.value = Calendar_fm_y.value
+		Calendar_to_y.value = (year.substring(0,4)-1) + '1231';
+		Calendar_to_m.value = Calendar_to_y.value
+		Calendar_fm_y.displaynulltext = year.substring(0,4);
+		Calendar_to_y.displaynulltext = year.substring(0,4);
+
+		//셀렉트박스 가나다순 정렬하기
+	    //var getCellText = "S:+SC";
+	    //ds_sc.keystring.current = getCellText;
+	    
+	    ds_details_search.deleteRow(ds_details_search.rowposition);	
+	    ds_details_search.addRow();
+	    ds_details_search.setColumn(ds_details_search.rowposition, "OPTION", "AND");
+	    
+	    ds_sc.keystring = "S:+ORDERID+SC"; 
+	    
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
+// Callback
+//-------------------------------------------------------------------------------------------------
+function fn_Callback(id, code, message)
+{
+
+
+	if(code == 0){
+	
+		if(gvPrivilegeId != 2){
+			Button02.visible = false;	
+		}
+		if(id == "list"){
+			Static02.text="※ 검색조건 설정 후 조회하여 주십시오. ※ ";
+			Static02.style.color="red";
+		}else if(id == "search"){
+			//alert(id);
+			//alert(ds_saferyList_server.getRowCount());
+			//alert(ds_saferyList_more.getRowCount());
+			
+			Static02.style.color="gray";			
+		}
+
+		if(id =="tra_reportType"){
+			if (gvPopYN == "Y") {	
+				Combo_reportType.value =  gVReportType;
+				if(ds_ReportType.loadstatus == false){
+					paginga = "y";
+					orderText = "";
+					go_Search(1,  "");
+				}
+			} else {
+				Static02.text = "※ 검색조건 설정 후 조회하여 주십시오. ※ ";
+				Static02.style.color="red";
+				Combo_reportType.value =  1;
+				
+			}
+		}
+		
+		//보고자유형
+		if(id == "tra_reporterType"){
+			if (gvPopYN == "Y") {	
+				//보고자유형 선택 set
+				var reporterTypeArr = gVReporterTypes.split(",");
+				// 보고자유형 선택값이 있는경우(월별통계)
+				if (reporterTypeArr.length > 0 && gVReporterTypes != "") {
+					for(var a=0; a< reporterTypeArr.length; a++) {
+						for(var b=0; b< ds_reporterTypes.rowcount; b++ ) {
+							if(reporterTypeArr[a]== String(ds_reporterTypes.getColumn(b,"ID"))) {
+								ds_reporterTypes.setColumn(b,"CHECK_YN",1);
+								break;
+							}
+						}
+					}
+				// 보고자유형 선택값이 없는경우(조합통계)
+				} else {
+					for(var b=0; b< ds_reporterTypes.rowcount; b++ ) {
+						ds_reporterTypes.setColumn(b, "CHECK_YN",1 );
+					}
+				}
+			}
+			
+			// 보고종류 조회 (보고자유형 선택때문에 조회 완료 후 보고종류 조회)
+			transaction("tra_reportType",
+				"siteURL::statistics.do?action=reportTypeList"
+				,"",
+				"ds_ReportType=ds_ReportType"
+				,""
+				,"fn_Callback");
+					
+		} // 보고자유형 if 종료
+		
+		if(id == "search"){
+			fn_row_count(message);
+		}
+		
+		if(paginga == "y"){
+	
+			paging("");
+		}
+		
+		
+	} else {
+		//alert("Error  ="+"errCode : "+code+" message : "+message);
+	}  
+	
+}
+
+
+
+function fn_row_count(arg){
+		rowCount = arg;
+		Static02.text = "총 "+rowCount+"건이 검색 되었습니다.";
+		Static02.style.color="gray";
+}
+
+
+//-------------------------------------------------------------------------------------------------
+// 정렬
+//-------------------------------------------------------------------------------------------------
+function Grid00_onheadclick(obj:Grid, e:GridClickEventInfo)
+{
+	//alert(e.cell);
+	var getCellText = ds_saferyList_server.getColID(e.cell);
+	if(e.cell == 3){
+		getCellText = "company_name";
+	}
+	if(e.cell == 2){
+		getCellText = "reporter_type";
+	}
+	
+	//alert(getCellText);
+	if(getCellText == "ROW"){
+		return;
+	}
+	
+	if(order == "desc"){
+		order = "asc";
+	}else{
+		order = "desc";
+	}
+	
+	allCheck = "y";
+	pg = 1;
+	fn_SetStyle("stc_No0");
+	orderText = getCellText;
+	go_Search(pg, getCellText);
+
+	
+}
+
+//-------------------------------------------------------------------------------------------------
+// 상세보기
+//-------------------------------------------------------------------------------------------------
+function Grid00_oncelldblclick(obj:Grid, e:GridClickEventInfo)
+{
+
+	var articleId = ds_saferyList_server.getColumn(e.row, "id");
+
+	var url = "safetyReport.do?action=read&articleId="+articleId;
+	userNotify(1, url);
+}
+
+//-------------------------------------------------------------------------------------------------
+// 검색
+//-------------------------------------------------------------------------------------------------
+function Button00_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var sv = Edit00.text;
+	
+	var id = "search";
+	var url = "siteURL::safetyReport.do?action=safetyList&sv="+sv;
+	var reqDs = "";
+	var respDs = "ds_saferyList_server=ds_saferyList_server"; 
+	var args = "";
+	var callback = "fn_Callback"; 
+	
+	trace("url  "+url);	
+	
+	ds_saferyList_server.filter("");
+	//ds_saferyList_client.filter("");
+	ds_saferyList_server.clearData();
+	//ds_saferyList_client.clearData();
+	
+	
+	//ds_saferyList_server.url=url;
+	//ds_saferyList_server.load(false);
+	trace(url);
+	//ds_saferyList_client.url=url;
+	//ds_saferyList_client.load(false);
+	
+	//alert("<before>ds_sideEffectList_server.getRowCount() := " + ds_sideEffectList_server.getRowCount());
+	
+	//paging("");
+	
+	ds_saferyList_server.filter("");
+	ds_saferyList_server.clearData();
+	
+	
+	iStartPageNo    = 0;   // 전체 페이지 순서
+	iUnitSelRowNo   = 0;   // 한번 Server호출시 가져올 row갯수
+	iStartSelRowNo  = 1;   // Server호출시 시작할 row no
+	iMaxPageNum     = 10;  // 화면에 보여줄 최대 Page번호 갯수
+	iServerRowCount = 0;   // 서버에서 넘어온 Row갯수
+	
+	transaction(id, url, reqDs, respDs, args, callback);
+	//transaction(id, url, reqDs, respDs, args, callback, "true", 1, "false");
+	//alert(ds_sideEffectList_server.getRowCount());
+	
+}
+
+//-------------------------------------------------------------------------------------------------
+// 엑셀로 내리기
+//-------------------------------------------------------------------------------------------------
+function fn_excel(obj:Button,  e:ClickEventInfo)
+{
+	var sc = Combo_reportType.value;
+	var year1 = Calendar_fm_y.value;
+	var year2 = Calendar_to_y.value;
+	
+	var month1 = Calendar_fm_m.value;
+	var month2 = Calendar_to_m.value;
+	
+	var vPgSize = 10;
+	//orderText = agr2;
+	
+	pg = 1;
+	
+	
+	var args = "";
+	
+	
+	if (gVitemSeq != "0" || gVitemSeq != null) {
+		args = "&gvPopYN='"+gvPopYN+"'&gVpopName='"+gVpopName+"'&gVcodeArr='"+gVcodeArr+"'&gVitemSeq="+gVitemSeq;
+	} else {
+		args = "&gvPopYN='"+gvPopYN+"' &VpopName='"+gVpopName+"'&gVcodeArr='"+gVcodeArr+"'";
+	}
+	
+	var reportType = Combo_reportType.value;
+	
+	var scid = "";
+	var sv = "";
+	var option = "";
+	
+	for(var i=0; i<ds_details_search.rowcount; i++){
+		scid = scid + ds_details_search.getColumn(i, "SCID")+",";
+		sv = sv + ds_details_search.getColumn(i, "SV")+",";
+		option = option + ds_details_search.getColumn(i, "OPTION")+",";
+		
+	}
+	
+	//보고자유형
+	var reporterTypes = "";
+	for(var i=0; i< ds_reporterTypes.rowcount; i++ ) {
+		if (ds_reporterTypes.getColumn(i,"CHECK_YN") == "1" ) {
+			reporterTypes = reporterTypes + ds_reporterTypes.getColumn(i,"ID")+",";
+		} 
+	}
+	
+	var url = "safetyReport.do?action=goExcel&sc="+sc+"&year1="+year1+"&year2="+year2+"&month1="+month1+"&month2="+month2+"&pgSize="+vPgSize+"&rowCount="+rowCount+"&pg="+1+"&orderText=&order="+order+""+args+"&scid="+scid+"&sv="+sv+"&option="+option+"&reportType="+reportType+ "&reporterTypes="+reporterTypes;
+	userNotify(2, url);
+	
+}
+
+function Button02_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var url = "safetyReport.do?action=createPage";
+	userNotify(2, url);
+}
+
+
+
+
+//년도로 조회하기
+function Button03_onclick(obj:Button,  e:ClickEventInfo)
+{
+	
+	var sc = Combo00.value;
+	var date1 = Edit01.text;
+	var date2 = Edit02.text;
+	//alert("sc=  "+sc+"  date1=  "+date1+"  date2=  "+date2);
+	
+	var id = "search";
+	var url = "siteURL::safetyReport.do?action=safetyList&sc="+sc+"&date1="+date1+"&date2="+date2;
+	var reqDs = "";
+	var respDs = "ds_saferyList_server=ds_saferyList_server"; 
+	var args = "";
+	var callback = "fn_Callback"; 
+	
+	trace("url  "+url);	
+	
+	ds_saferyList_server.filter("");
+	//ds_saferyList_client.filter("");
+	ds_saferyList_server.clearData();
+	//ds_saferyList_client.clearData();
+	
+	
+	ds_saferyList_server.url=url;
+	ds_saferyList_server.load(false);
+	trace(url);
+	
+}
+
+
+
+
+function btn_search(obj:Button,  e:ClickEventInfo)
+{
+	//검색어에 특수문자 썻는지 확인
+	var searchCheck = searchValueCheck();
+	
+	if(searchCheck==false){
+		return;
+	}
+	
+	// 보고자유형 선택 표시
+	var chk =0;
+	for(var i=0; i< ds_reporterTypes.rowcount; i++ ) {
+		if (ds_reporterTypes.getColumn(i,"CHECK_YN") == "1" ) {
+			Div_condition.Combo_reporterType.text = ds_reporterTypes.getColumn(i,"NAME");
+			Div_condition.Combo_reporterType.displaynulltext = ds_reporterTypes.getColumn(i,"NAME");
+			chk++;
+			break;
+			return;
+		} 
+	}
+	if(chk < 1) {
+		Div_condition.Combo_reporterType.displaynulltext = "";
+		Div_condition.Combo_reporterType.text = "";
+	}	
+		
+	paginga = "y";
+	orderText = "";
+	go_Search(1,  "");
+}
+
+
+function go_Search(agr1, agr2){
+	var sc = Combo_reportType.value;
+	var year1 = Calendar_fm_y.value;
+	var year2 = Calendar_to_y.value;
+	
+	var month1 = Calendar_fm_m.value;
+	var month2 = Calendar_to_m.value;
+	
+	var vPgSize = 10;
+	//orderText = agr2;
+	
+	pg = agr1;
+	
+	// 보고자유형 선택유무 체크
+	var chk=0;
+	for(var i=0; i< ds_reporterTypes.rowcount; i++ ) {
+		if (ds_reporterTypes.getColumn(i,"CHECK_YN") == "1" ) {
+			Div_condition.Combo_reporterType.text = ds_reporterTypes.getColumn(i,"NAME");
+			Div_condition.Combo_reporterType.displaynulltext = ds_reporterTypes.getColumn(i,"NAME");
+			chk++;
+			break;
+		} 
+	}
+	if (chk < 1) {
+		alert("보고자유형을 선택하지 않았습니다. 1개이상 선택해야합니다.");
+		return;
+	}
+	
+	var id = "search";
+	var url = "siteURL::safetyReport.do?action=safetyList&sc="+sc+"&year1="+year1+"&year2="+year2+"&month1="+month1+"&month2="+month2+"&pgSize="+vPgSize+"&pg="+pg+"&orderText="+orderText+"&order="+order;
+	//var reqDs = "ds_sideEffectList_server=ds_sideEffectList_server"; 
+	var reqDs = "ds_details_search=ds_details_search ds_reporterTypes=ds_reporterTypes"; 
+	var respDs = "ds_saferyList_server=ds_saferyList_server"; 
+	//var respDs = "";
+	
+	var args = "";
+	var callback = "fn_Callback"; 
+	
+	if (gVitemSeq != "0" || gVitemSeq != null) {
+		args = "gvPopYN='"+gvPopYN+"' gVpopName='"+gVpopName+"' gVcodeArr='"+gVcodeArr+"' gVitemSeq="+gVitemSeq;
+	} else {
+		args = "gvPopYN='"+gvPopYN+"' gVpopName='"+gVpopName+"' gVcodeArr='"+gVcodeArr+"'";
+	}
+	
+	trace("url  "+url);	
+	
+	ds_saferyList_server.filter("");
+	ds_saferyList_server.clearData();
+	
+	
+	
+	transaction(id, url, reqDs, respDs, args, callback);
+	//ds_sideEffectList_server.url=url;
+	//ds_sideEffectList_server.load(false);
+	trace(url);
+}
+
+
+
+// 상세검색
+function Button03_onclick(obj:Button,  e:ClickEventInfo)
+{
+	//userNotify(10, "details_search");
+	var nx = system.clientToScreenX(obj, 0) ;
+	var ny = system.clientToScreenY(obj, obj.position.height);
+	PopupDiv_search.trackPopup(nx, ny);
+}
+
+
+// 상세검색 row추가
+function PopupDiv_search_Button_ins_onclick(obj:Button,  e:ClickEventInfo)
+{
+	if(ds_details_search.getRowCount() == 10){
+	   alert("검색조건은 10개 이상 추가하실 수 없습니다.");
+	   return;
+	}
+	
+	ds_details_search.addRow();
+	ds_details_search.setColumn(ds_details_search.rowposition, "OPTION", "AND");
+}
+
+// 상세검색 row삭제
+function PopupDiv_search_Button_del_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var checked = -1;
+	for(var i=ds_details_search.rowcount; i>=0; i--){
+		var chk_state = ds_details_search.getColumn(i, "CHECK_YN");
+		if(chk_state != undefined){
+			checked = 1;
+			ds_details_search.deleteRow(i);	
+		}else{
+		
+		}
+	}
+
+	if(checked == -1){
+		PopupDiv_search.Static03.text="삭제할 항목을 체크해 주세요.";
+		PopupDiv_search.Static03.style.color="red";
+	}else{
+		PopupDiv_search.Static03.text="";
+	}
+	
+}
+
+function Div_condition_Static01_onclick(obj:Static,  e:ClickEventInfo)
+{
+	
+}
+
+// 더보기
+function btn_more_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var sc = Combo_reportType.value;
+	var year1 = Calendar_fm_y.value;
+	var year2 = Calendar_to_y.value;
+	
+	var month1 = Calendar_fm_m.value;
+	var month2 = Calendar_to_m.value;
+	
+	var vPgSize = 10;
+	var dataSetGubun = "more";
+	
+	var rowMaxValue = 1;
+	
+		rowMaxValue = ds_saferyList_server.getMax(0);
+	
+	
+	firstResult ++;
+	
+	var url = "siteURL::safetyReport.do?action=safetyList&sc="+sc+"&year1="+year1+"&year2="+year2+"&month1="+month1+"&month2="+month2+"&pgSize="+vPgSize+"&dataSetGubun="+dataSetGubun+"&firstResult="+firstResult+"&rowMaxValue="+rowMaxValue;
+	
+	transaction("search"
+		,url
+		,"ds_details_search=ds_details_search"
+		,""
+		, ""
+		,"fn_Callback");
+		
+}
+
+// Enter 키 누르면 조회 
+function safetyList_onkeydown(obj:Form, e:KeyEventInfo)
+{
+	var vKeyCode = e.keycode;
+	if (vKeyCode == 13) {
+		btn_search();
+	} else {
+		return;
+	}
+}
+
+function PopupDiv_search_onkeydown(obj:PopupDiv, e:KeyEventInfo)
+{
+	var vKeyCode = e.keycode;
+	if (vKeyCode == 13) {
+		btn_search();
+	} else {
+		return;
+	}
+}
+
+
+//전체선택
+function ds_details_search_headclick(obj:Grid, e:GridClickEventInfo)
+{
+
+	if(allCheck == "n"){
+		for(var i=0; i< ds_details_search.rowcount; i++ ) {
+			ds_details_search.setColumn(i, "CHECK_YN",1 );
+		}
+		allCheck = "y";
+	}else{
+		for(var i=0; i< ds_details_search.rowcount; i++ ) {
+			ds_details_search.setColumn(i, "CHECK_YN",undefined );
+		}
+		allCheck = "n";
+	}
+}
+
+// Head 에 mouse 이동시 커서 변경
+function Grid00_onmove(obj:Grid, e:MoveEventInfo)
+{
+	if(e.row==-1) {
+		Grid00.cursor = "hand";
+	} else {
+		Grid00.cursor = "auto";
+	}
+}
+
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+// 페이징 처리
+//-------------------------------------------------------------------------------------------------
+function paging(str){
+
+		iUnitSelRowNo = ds_saferyList_server.getRowCount();
+		//alert(iUnitSelRowNo);
+		iLastRow=iStartPageNo*iUnitSelRowNo;
+		
+		
+		if( ds_saferyList_server.getRowCount() == 0 ){
+			//	alert("더이상 조회할 자료가 없습니다.");
+			//	ds_sideEffectList_server.filter("");
+			//	return;
+			}
+		
+				iServerRowCount=ds_saferyList_server.getRowCount();
+					
+				//fn_SetStyle();
+				fn_SetPageNo();
+				//div_page.stc_No0.style.color="red";
+	
+}
+
+//-------------------------------------------------------------------------------------------------
+// 인텍스 클릭
+//-------------------------------------------------------------------------------------------------
+function div_page_stc_No_onclick(obj:Static,  e:ClickEventInfo){
+
+	var iNo=new Number(obj.text);
+	go_Search(iNo, "");
+	paginga = "n";
+	fn_SetStyle(obj.name);
+	
+}
+
+//-------------------------------------------------------------------------------------------------
+// 이전 버튼
+//-------------------------------------------------------------------------------------------------
+function div_page_stc_Prev_onclick(obj:Static,  e:ClickEventInfo){
+	var pgMinNum:int = div_page.stc_No0.text;
+	var agr1:int = pgMinNum - 10;
+	paginga = "y";
+	go_Search(agr1, "");
+}
+
+//-------------------------------------------------------------------------------------------------
+// 다음버튼
+//-------------------------------------------------------------------------------------------------
+function div_page_stc_Next_onclick(obj:Static,  e:ClickEventInfo){
+	var pgMaxNum:int = div_page.stc_No9.text;
+	var agr1:int = pgMaxNum + 1;
+	paginga = "y";
+	go_Search(agr1, "");
+}
+
+
+//-------------------------------------------------------------------------------------------------
+// 제일 앞으로  버튼
+//-------------------------------------------------------------------------------------------------
+function div_page_stc_Prev00_onclick(obj:Static,  e:ClickEventInfo)
+{
+	var iNo= 1;
+	go_Search(iNo, "");
+	paginga = "y";
+	fn_SetStyle(obj.name);
+}
+
+//-------------------------------------------------------------------------------------------------
+// 제일 마지막으로  버튼
+//-------------------------------------------------------------------------------------------------
+function div_page_stc_Next00_onclick(obj:Static,  e:ClickEventInfo)
+{
+	var iNo:int= (rowCount / 50) + 1;
+	var striNo = new String(iNo);
+	var pgNum:int= iNo - striNo.substring(1,striNo.length);
+	
+	trace(iNo);
+	go_Search(iNo, "");
+	paginga = "y";
+	pg = pgNum;
+	fn_SetStyle(obj.name);
+}
+
+
+//-------------------------------------------------------------------------------------------------
+// Page번호 Setting
+//-------------------------------------------------------------------------------------------------
+function fn_SetPageNo(){
+
+	
+	//rowCount = 400;
+	//iServerRowCount = rowCount;
+	
+	var sPage=iStartPageNo*iMaxPageNum;
+
+
+	
+//rowCount = 60;
+//alert(rowCount)
+var temp1:int = pg*50;
+var stcNext:int = rowCount - temp1;
+
+//alert("stcNext  "+stcNext)
+
+	// 마지막 버튼 처리
+	if((rowCount > 500) && (stcNext > 50)){
+		div_page.stc_Next.visible=true;
+	}else{
+		div_page.stc_Next.visible=false;
+	}
+
+
+	
+    var curPage = pg;
+
+	var pageLimit = rowCount / 50;
+	
+	
+	//고정 페이징
+	var startNum = ((curPage-1)/iMaxPageNum)*iMaxPageNum+1;
+	var endNum:int = (((curPage-1)+iMaxPageNum)/iMaxPageNum)*iMaxPageNum;
+	
+	/*
+	//유동 페이징
+	var startNum = ((pg-1)/iMaxPageNum)*iMaxPageNum+1;
+	var endNum = (((pg-1)+iMaxPageNum)/iMaxPageNum)*iMaxPageNum;
+	*/
+	
+	var totalPage;
+	
+	if(rowCount % 50 == 0){
+		totalPage = rowCount/50;
+	}else{
+		totalPage = (rowCount/50) + 1;
+	}
+	
+	if(endNum > totalPage){
+		endNum = totalPage;
+	}
+		
+	if(totalPage > 1){//3
+	
+	//alert("startNum  "+startNum+" "+"endNum  "+endNum+"  "+"iServerRowCount  "+iServerRowCount+"  "+"iMaxPageNum  "+iMaxPageNum+"  sPage  "+sPage+"  pageLimit  "+pageLimit);
+	
+		// 이전버튼 처리
+	if(startNum <= 10 || iServerRowCount == 0){
+		div_page.stc_Prev.visible=false;
+	} else {
+		div_page.stc_Prev.visible=true;
+	}
+	
+		var limit = -1;
+		for(var i=startNum; i<=endNum; i++){//2
+			limit = limit+1;
+		
+			if(limit < 10){//1
+		
+				//alert(sPage+i);
+				eval("div_page.stc_No"+limit+".text="+(sPage+i));
+				eval("div_page.stc_No"+limit+".visible=true");
+				eval("div_page.stc_No"+limit+".style.align=\"center\"");
+				//div_page.stc_No0.style.margin.left = "40px";
+				
+				if(limit < 9){
+					eval("div_page.Div"+limit+".visible=true");
+				}
+				
+				if(pageLimit < (sPage+i) ){
+					div_page.stc_Next.visible=false;
+				}
+				
+			}//1
+		}//2
+		
+		
+		//for(var j=0; j<=6; j++){
+			//eval("div_page.stc_No"+(j)+".style.margin.left=\"40px\"");
+			//eval("div_page.stc_No0.style.margin.left=\"30px\"");
+			//eval("div_page.style.margin.left=\"40px\"");
+			
+			
+		//}
+		
+		var padding1 = 0;
+		for(var k=limit; k<9; k++){
+			padding1 = padding1 + 1;
+			//alert(k);
+			eval("div_page.stc_No"+(k+1)+".visible=false");
+			eval("div_page.Div"+k+".visible=false");
+			
+			if(k==8){
+				div_page.stc_Next.visible=false;
+			}
+		}
+		
+		if(padding1 > 0){
+			padding2 = 1;
+			var j = (20 * padding1) + 20;
+			eval("div_page.style.margin.left=\""+j+"\"");
+		}else if(padding2 == 1){
+			eval("div_page.style.margin.left=\"0\"");
+	    }
+	    
+		fn_SetStyle("stc_No0");
+		
+	}//3
+
+	
+}
+//-------------------------------------------------------------------------------------------------
+// Style조정
+//-------------------------------------------------------------------------------------------------
+function fn_SetStyle(args1){
+
+	for(var i=0; i<10; i++){
+		eval("div_page.stc_No"+i+".style.color=\"#6a6a6aff\"");
+		//alert(args1 +"   "+(i));
+		if(args1 == "stc_No"+(i)+""){
+			eval("div_page.stc_No"+(i)+".style.color=\"#6a6a6aff\"");
+			eval("div_page.stc_No"+(i)+".style.font.size=\"12\"");
+		}else{
+			eval("div_page.stc_No"+(i)+".style.font.size=\"9\"");
+		}
+	}
+}
+
+function PopupDiv_search_Button00_onclick(obj:Button,  e:ClickEventInfo)
+{
+	//검색어에 특수문자 썻는지 확인
+	searchValueCheck();
+	PopupDiv_search.Static03.text="";
+	PopupDiv_search.closePopup();
+}
+
+
+
+// 보고자유형 팝업Open
+function Div_condition_Combo_reporterType_ondropdown(obj:Combo, e:EventInfo)
+{
+	var nx = system.clientToScreenX(obj, 0) -5 ;
+	var ny = system.clientToScreenY(obj, obj.position.height);
+	PopupDiv_reporterType.trackPopup(nx, ny);
+}
+
+// 보고자유형 전체선택
+function PopupDiv_reporterType_btn_reporterTypes_select_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_reporterTypes.rowcount; i++ ) {
+		ds_reporterTypes.setColumn(i, "CHECK_YN",1 );
+	}
+}
+
+// 보고자유형 전체취소
+function PopupDiv_reporterType_btn_reporterTypes_cancel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_reporterTypes.rowcount; i++ ) {
+		ds_reporterTypes.setColumn(i, "CHECK_YN",0 );
+	}
+}
+
+
+/*
+	검색어에 특수문자 사용했는지 체크
+*/
+function searchValueCheck(){
+	var result = true;
+	
+	for(var i=0; i<ds_details_search.rowcount; i++){
+		var sv = ds_details_search.getColumn(i, "SV");
+		if(sv!=undefined){
+			for(var k=0; k<badList.length; k++){
+				if(sv.indexOf(badList[k]) > -1){
+					alert("특수문자 및 허용하지 않는 문자열이 포함되어있습니다.");
+					result = false;
+					return result;
+					break;
+				}
+			}	
+		}
+	}
+	
+	return result;
+}
+]]></Script>
+  </Form>
+</FDL>

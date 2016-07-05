@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:jee="http://www.springframework.org/schema/jee"
+	   xmlns:lang="http://www.springframework.org/schema/lang"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	   http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+	   
+	   >
+
+   
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:db.properties</value>
+		</property>
+	</bean>
+
+	
+    <!-- Session Factory -->
+ 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+ 	 	<property name="dataSource" ref="dataSource"/>
+ 		<property name="configLocation">
+        	<value>classpath:hibernate.cfg.xml</value>
+    	</property>
+    	
+    	<property name="hibernateProperties">
+	    	<props>
+	       		<prop key="hibernate.dialect">${dialect}</prop>
+	        	<prop key="hibernate.connection.driver_class">${driverClass}</prop>
+			 	<prop key="hibernate.connection.url">${jdbcUrl}</prop> 
+				<prop key="hibernate.connection.username">${user}</prop>
+				<prop key="hibernate.connection.password">${password}</prop>
+				<prop key="cache.provider_class">${cache.provider_class}</prop>
+				<prop key="hibernate.show_sql">${show_sql}</prop>
+				<prop key="hibernate.connection.provider_class">${connection.provider_class}</prop>
+				<prop key="hibernate.c3p0.min_size">${c3p0.min_size}</prop>
+				<prop key="hibernate.c3p0.max_size">${c3p0.max_size}</prop>
+				<prop key="hibernate.c3p0.timeout">${c3p0.timeout}</prop>
+				<prop key="hibernate.c3p0.max_statements">${c3p0.max_statements}</prop>
+				<prop key="hibernate.c3p0.idle_test_period">${c3p0.idle_test_period}</prop>
+				<prop key="hibernate.format_sql">${format_sql}</prop>
+		</props>
+		 
+    </property>
+    
+ 	</bean>
+ 		
+ 	<!-- Data Source -->
+ 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+ 		<property name="driverClass" value="${driverClass}"/>
+		<property name="jdbcUrl" value="${jdbcUrl}"/>
+		<property name="user" value="${user}"></property>
+		<property name="password" value="${password}"></property>
+		<property name="initialPoolSize"><value>3</value></property>
+        <property name="minPoolSize"><value>3</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+	</bean>	
+	
+ 	<bean id="localTestDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/test"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="root"></property>
+		<property name="initialPoolSize"><value>3</value></property>
+        <property name="minPoolSize"><value>3</value></property>
+        <property name="maxPoolSize"><value>50</value></property>
+	</bean>
+ 	
+ 	<!-- Hibernate Transaction manager -->
+ 	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<!-- the transactional semantics... -->
+		<tx:attributes>
+		  <tx:method name="*" propagation="REQUIRED" rollback-for="Throwable" />
+		</tx:attributes>
+	</tx:advice>
+  
+	<!-- Multiple AOP pointcuts for multiple DAOs -->
+	<aop:config proxy-target-class="true">
+	  <aop:pointcut id="transactionalServiceOperation" expression="execution(* device.SimpleDeviceDAO.*(..))"/>
+	  <aop:pointcut id="propertiesTransactionPointcut" expression="execution(* properties.SimplePropertiesDAO.*(..))"/>
+	  <aop:pointcut id="sideEffectReportTransactionPointcut" expression="execution(* report.SimpleSideeffectReportDAO.*(..))"/>
+	  <aop:pointcut id="safetyReportTransactionPointcut" expression="execution(* safety.SimpleSafetyReportDAO.*(..))"/>
+	  <aop:pointcut id="patientConditionTransactionPointcut" expression="execution(* properties.SimplePatientConditionDAO.*(..))"/>
+	  <aop:pointcut id="meb_itemTransactionPointcut" expression="execution(* foreign.SimpleMeb_itemDAO.*(..))"/>
+	  <aop:pointcut id="addressTransactionPointcut" expression="execution(* address.SimpleAddressDAO.*(..))"/>
+	  <aop:pointcut id="membersTransactionPointcut" expression="execution(* member.SimpleMemberDAO.*(..))"/>
+	  <aop:pointcut id="systemTransactionPointcut" expression="execution(* system.property.SimpleSystemPropertyDAO.*(..))"/>
+	  <aop:pointcut id="batchJobTransactionPointcut" expression="execution(* system.batch.SimpleBatchJobDAO.*(..))"/>
+	  <aop:pointcut id="simpleCRUDableTransactionPointcut" expression="execution(* abstraction.SimpleCRUDable.*(..))"/>
+	  <aop:pointcut id="simpleItemCategoryTransactionPointcut" expression="execution(* safety.renewal.sgi.category.SimpleItemCategoryDAO.*(..))"/>
+	  <aop:pointcut id="simpleItemTransactionPointcut" expression="execution(* safety.renewal.sgi.item.SimpleItemDAO.*(..))"/>
+	   <aop:pointcut id="simpleCompanyTransactionPointcut" expression="execution(* safety.renewal.company.SimpleCompanyDAO.*(..))"/>
+	   <aop:pointcut id="simpleSystemLogPointcut" expression="execution(* system.log.SimpleSystemLogDAO.*(..))"/>
+	   <aop:pointcut id="simpleItemCategoryGroupTransactionPointcut" expression="execution(* risk.category.SimpleItemCategoryGroupDAO.*(..))"/>
+	   <aop:pointcut id="simpleImportOutputTransactionPointcut" expression="execution(* risk.item.importoutput.SimpleImportOutputDAO.*(..))"/>
+	    <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleSystemLogPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleItemCategoryTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="addressTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="membersTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionalServiceOperation"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="propertiesTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="sideEffectReportTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="safetyReportTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="patientConditionTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="meb_itemTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="systemTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="batchJobTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleCRUDableTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleItemTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleCompanyTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleItemCategoryGroupTransactionPointcut"/>
+	  <aop:advisor advice-ref="txAdvice" pointcut-ref="simpleImportOutputTransactionPointcut"/>
+	</aop:config>
+    
+    <!-- Spring Multiaction support -->
+    
+	<!-- Simple Url Handler Mapping -->
+	<!-- SimpleUrlHandlerMapping implements HandlerMapping which itself is a representation of a mapping
+			between requests and handler objects. So it's not weird why it's called *HandlerMapping instead of
+			*Mapper. Simple(simplest implementation) url-handler (url to handler) mapping ( mapping representation
+			itself. It's not a mapper. It's a representation of mapping entries )
+			The DispatcherServlet seems to be reading this xml document and
+			sees a collection of mappings and maps them. 
+			Controllers seem to be regarded as handlers.
+	 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	   <property name="mappings">
+	      <map>
+	         <entry key="/device.do*" value-ref="simpleDeviceController"/><!-- 테스트 -->
+	         <entry key="/safetyReport.do*" value-ref="simpleSafetyReportController"/><!-- 안전성정보 -->
+	         <entry key="/patientCondition.do*" value-ref="simplePatientConditionController"/><!-- 환자문제코드 -->
+	         <entry key="/meb_item.do*" value-ref="meb_itemController"/>
+	         <entry key="/attachment.do*" value-ref="simpleAttachmentController"/><!-- 첨부파일 -->
+	         <entry key="/properties.do*" value-ref="simplePropertiesController"/>	<!-- 공통코드  -->	
+	         
+	         <entry key="/address.do*" value-ref="simpleAddressController"/>	<!-- 주소지 불러오기 -->
+	         <entry key="/sideEffectReport.do*" value-ref="simpleSideEffectReportController"/>	<!-- 부작용보고 DB 관리 -->
+	         
+	         <entry key="/members.do*" value-ref="simpleMemberController"/>	<!-- 회원관리  -->
+	         <entry key="/statistics.do*" value-ref="simpleStatisticsController"/>	<!-- 통계  -->
+	         <entry key="/authenticator.do*" value-ref="authenticator"/>	<!-- 로긴  -->
+	         <entry key="/system.do*" value-ref="simpleSystemController"/>	<!-- 시스템관리  -->
+	         	
+	         <entry key="/itemCategory.do*" value-ref="simpleItemCategoryController"/>	<!-- renewal 품목 코드 -->	
+	         <entry key="/safetyItem.do*" value-ref="simpleItemController"/>	<!-- renewal 제품 코드 -->
+	         <entry key="/safetyCompany.do*" value-ref="simpleCompanyController"/>	<!-- 코드관리 > 업체코드 -->	
+	         
+	         <entry key="/risk.do*" value-ref="simpleRiskController"/>	<!-- 위험평가 및 관리 -->		
+	         <entry key="/risk.category.do*" value-ref="simpleItemCategoryGroupController"/>	<!-- 위험평가 및 관리 -->
+	         <entry key="/importoutput.do*" value-ref="simpleImportOutputController"/>	<!-- 생산수입 실적 데이터 -->
+	      </map>
+	   </property>
+	</bean> 
+	
+	<bean 
+	    id="simpleCustomParamMethodNameResolver" 
+	    class="common.SimpleCustomParamMethodNameResolver">
+	   <property name="paramName" value="action"/>
+	   <property name="defaultMethodName" value="uList"/>
+	</bean>
+	<!-- Multiaction controllers -->
+	
+	<!-- system.io fileupload -->
+	<bean id="simpleAttachmentServiceProvider" class="system.io.SimpleAttachmentServiceProvider">
+	    <property name="attachmentDAO" ref="simpleAttachmentDAO"></property>
+	</bean>    
+	
+	<!-- abstraction -->
+	
+	<bean id="SimpleCRUDable" class="abstraction.SimpleCRUDable" abstract="true" >
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- SystemCOntroller -->
+	<bean id="simpleSystemController" class="system.SimpleSystemController">
+	    <property name="delegate" ref="simpleSystemDelegate"></property>
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver" ></property>
+	</bean>
+
+	<bean id="simpleSystemDelegate" class="system.SimpleSystemDelegate">
+	    <property name="systemPropertyServiceProvider" ref="simpleSystemPropertyServiceProvider"></property>
+	    <property name="batchJobServiceProvider" ref="batchJobServiceProvider"></property>
+	    <property name="systemLogServiceProvider" ref="simpleSystemLogService"></property>
+	</bean>
+	<!-- Batch Job  -->
+	<bean id = "batchJobServiceProvider" class="system.batch.SimpleBatchJobServiceProvider">
+	    <property name="batchJobDAO" ref="batchJobDAO"></property>
+	    <property name="hibernateTemplate" ref="hibernateTemplate"></property>
+	    <property name="batchAdapter" ref="simpleBatchAdapter"></property>
+	</bean>
+	<bean id="batchJobDAO" parent="SimpleCRUDable" 
+	    class="system.batch.SimpleBatchJobDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="simpleBatchAdapter" class="system.batch.SimpleBatchAdapter">
+	    
+	</bean>
+	
+	<!-- safety renewal safety info item category -->
+	<bean id="simpleItemCategoryController" class="safety.renewal.sgi.category.SimpleItemCategoryController">
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+	    <property name="delegate" ref="simpleItemCategoryDelegate"></property>	    
+	</bean>
+	
+	<bean id="simpleItemCategoryDelegate" class="safety.renewal.sgi.category.SimpleItemCategoryDelegate">
+	    <property name="itemCategoryServiceProvider" ref="simpleItemCategoryServiceProvider"></property>
+	</bean>
+	
+	<bean id="simpleItemCategoryServiceProvider" class="safety.renewal.sgi.category.SimpleItemCategoryServiceProvider">
+	    <property name="itemCategoryDAO" ref="simpleItemCategoryDAO"></property>
+	    <!--<property name="historyServiceProvider" ref="simpleHistoryServiceProvider"/>-->
+	</bean>
+	<bean id="simpleItemCategoryDAO" class="safety.renewal.sgi.category.SimpleItemCategoryDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- renewal 제품코드 -->
+	<bean id="simpleItemController" class="safety.renewal.sgi.item.SimpleItemController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+		<property name="delegate" ref="simpleItemDelegate"></property>	    
+	</bean>
+	<bean id="simpleItemDelegate" class="safety.renewal.sgi.item.SimpleItemDelegate" >
+	    <property name="ItemServiceProvider" ref="simpleItemServiceProvider"></property>
+	</bean>
+	<bean id="simpleItemServiceProvider" class="safety.renewal.sgi.item.SimpleItemServiceProvider">
+	    <property name="ItemDAO" ref="simpleItemDAO"></property>
+	</bean>
+	<bean id="simpleItemDAO" class="safety.renewal.sgi.item.SimpleItemDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- SystemProperties Controller -->
+	<bean id="simpleSystemPropertiesController" class="system.property.SimpleSystemPropertyController">
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+	    <property name="delegate" ref="simpleSystemPropertiesDelegate"></property>
+	</bean>
+	<bean id="simpleSystemPropertiesDelegate" class="system.property.SimpleSystemPropertyDelegate">
+	    <property name="systemPropertyServiceProvider" ref="simpleSystemPropertyServiceProvider"></property>
+	</bean>
+	<bean id="simpleSystemPropertyServiceProvider" class="system.property.SimpleSystemPropertyServiceProvider">
+		<property name="systemPropertyDAO" ref="simpleSystemPropertyDAO"></property>
+	</bean>
+	<bean id="simpleSystemPropertyDAO" class="system.property.SimpleSystemPropertyDAO">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- Service centric ordering -->
+	<!-- Device  -->
+	<bean id="simpleDeviceController" class="device.SimpleDeviceController">
+	    <property name="delegate" ref="simpleDeviceDelegate"/>
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	</bean>
+	
+	<bean 
+	    id="simpleDeviceDelegate" 
+	    class="device.SimpleDeviceDelegate">
+	    <property name="testDAO" ref="simpleDeviceDAO"/>
+	    <property name="propDAO" ref="simplePropertiesDAO"/>
+	    <property name="sreportDAO" ref="simpleSideeffectReportDAO"/>
+	</bean>
+	
+	<bean id="simpleDeviceDAO" class="device.SimpleDeviceDAO">
+	    	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="simplePropertiesDAO" class="properties.SimplePropertiesDAO">
+	    	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+    <bean id="simpleSideeffectReportDAO" class="report.SimpleSideeffectReportDAO">
+	    	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+    
+    <!-- safety안전성정보  -->
+    <bean id="simpleSafetyReportController" class="safety.SimpleSafetyReportController">
+        <property name="delegate" ref="simpleSafetyReportDelegate"/>
+        <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+    </bean>    
+    
+	<bean id="simpleSafetyReportDelegate" class="safety.SimpleSafetyReportDelegate">
+		<property name="safetyDAO" ref="simpleSafetyReportDAO"/>
+		<property name="propertiesDAO" ref="simplePropertiesDAO"/>
+		<property name="attachmentDAO" ref="simpleAttachmentDAO"/>
+    </bean>
+    	
+	<bean id="simpleSafetyReportDAO" class="safety.SimpleSafetyReportDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>	
+    
+    
+    <!-- 부작용보고 DB 관리  -->
+    <bean id="simpleSideEffectReportController" class="sideeffect.SimpleSideEffectReportController">
+        <property name="delegate" ref="simpleSideEffectReportDelegate"/>
+        <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+    </bean>    
+    
+	<bean id="simpleSideEffectReportDelegate" class="sideeffect.SimpleSideEffectReportDelegate">
+		<property name="sideEffectDAO" ref="simpleSideEffectReportDAO"/>
+		<property name="propertiesDAO" ref="simplePropertiesDAO"/>
+		<property name="attachmentDAO" ref="simpleAttachmentDAO"/>
+		<property name="attachmentServiceProvider" ref="simpleAttachmentServiceProvider"></property>
+		<property name="multipartResolver" ref="multipartResolver"></property>
+    </bean>
+    	
+	<bean id="simpleSideEffectReportDAO" class="report.SimpleSideeffectReportDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>	
+    
+    
+    
+	<!--  코드  -->
+    <bean id="simplePropertiesController" class="properties.SimplePropertiesController">
+        <property name="delegate" ref="simplePropertiesDelegate"/>
+        <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+    </bean>
+    <bean id="simplePropertiesDelegate" class="properties.SimplePropertiesDelegate">
+        <property name="propertiesDAO" ref="simplePropertiesDAO"/>
+        <property name="countryServiceProvider" ref="simpleCountryServiceProvider"/>
+        <property name="historyServiceProvider" ref="simpleHistoryServiceProvider"/>
+        <property name="matchServiceProvider" ref="simpleMatchServiceProvider"/>
+    </bean>
+    <bean id="simpleMatchServiceProvider" class="properties.match.SimpleMatchServiceProvider">
+        <property name="propertiesDAO" ref="simplePropertiesDAO"/>
+        <property name="historyServiceProvider" ref="simpleHistoryServiceProvider"/>
+	</bean>
+	<!-- 환자문제코드 -->
+	<bean id="simplePatientConditionController" class="properties.SimplePatientConditionController">
+	    <property name="delegate" ref="simplePatientConditionDelegate"/>
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	</bean>
+	<bean id="simplePatientConditionDelegate" class="properties.SimplePatientConditionDelegate">
+	   <property name="patientConditionDAO" ref="simplePatientConditionDAO"/>
+	</bean>
+	<bean id="simplePatientConditionDAO" class="properties.SimplePatientConditionDAO">
+	    	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	    		
+	<!-- 의료기기정보 / Meb_item-->
+	
+	<bean id="meb_itemController" class="foreign.Meb_itemController">
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="meb_itemDelegate"/>
+	</bean>			
+	
+	<bean id="meb_itemDelegate" class="foreign.SimpleMeb_itemDelegate">
+	    <property name="meb_itemDAO" ref="meb_itemDAO"/>
+	</bean>
+	
+	<bean id="meb_itemDAO" class="foreign.SimpleMeb_itemDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- Attachment / 첨부파일 -->
+	<bean id="simpleAttachmentController" class="system.io.SimpleAttachmentController">
+	    <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="simpleAttachmentDelegate"/>
+	</bean>
+	<bean id="simpleAttachmentDelegate" class="system.io.SimpleAttachmentDelegate">
+	    <property name="attachmentDAO" ref="simpleAttachmentDAO"/>
+	</bean>
+	<bean id="simpleAttachmentDAO" class="system.io.SimpleAttachmentDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 파일업로드 -->	
+    <bean id="multipartResolver" 
+         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="30720000" />
+    </bean>
+    
+    
+    
+    <!-- 주소지 불러오기  -->
+    <bean id="simpleAddressController" class="address.SimpleAddressController">
+        <property name="delegate" ref="simpleAddressDelegate"/>
+        <property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+    </bean>    
+    
+	<bean id="simpleAddressDelegate" class="address.SimpleAddressDelegate">
+		<property name="addressDAO" ref="simpleAddressDAO"/>
+    </bean>
+    	
+	<bean id="simpleAddressDAO" class="address.SimpleAddressDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+	<bean id="simpleCountryServiceProvider" class="properties.country.SimpleCountryServiceProvider"></bean>	
+	<bean id="simpleHistoryServiceProvider" class="properties.history.SimpleHistoryServiceProvider"></bean>
+    
+	<!-- 사용자 로긴 필터 -->
+    <bean id="securityFilter" class="system.security.SecurityFilter">
+        <property name="userTracer" ref="simpleUserTracer"></property>
+        <property name="memberDAO" ref="simpleMemberDAO"></property>
+    </bean>
+    <!-- 사용자 /회원관리 -->
+    <bean id="simpleMemberController" class="member.SimpleMemberController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="simpleMemberDelegate"/>
+	</bean>
+	<bean id="simpleMemberDelegate" class="member.SimpleMemberDelegate">
+		<property name="memberDAO" ref="simpleMemberDAO"></property>    
+	</bean>
+	<bean id="simpleMemberDAO" class="member.SimpleMemberDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 필터 bypass 하는 로긴용 컨트롤러 -->
+	<bean id="authenticator" class="system.security.Authenticator">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="authenticatorDelegator"/>
+	</bean>
+	<bean id="authenticatorDelegator" class="system.security.AuthenticatorDelegate">
+		<property name="memberDAO" ref="simpleMemberDAO"></property>    
+	</bean>
+	
+	<!-- 통계관리 및 리포트 -->
+	<bean id="simpleStatisticsController" class="statistics.SimpleStatisticsController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="simpleStatisticsDelegate"/>
+	</bean>
+	<bean id="simpleStatisticsDelegate" class="statistics.SimpleStatisticsDelegate">
+		<property name="memberDAO" ref="simpleMemberDAO"></property>
+		<property name="propertiesDAO" ref="simplePropertiesDAO"/>
+		<property name="itemCategoryDAO" ref="simpleItemCategoryDAO"/>
+		<property name="sideEffectDAO" ref="simpleSideEffectReportDAO"/>
+		<property name="safetyDAO" ref="simpleSafetyReportDAO"/>
+		<property name="itemDAO" ref="simpleItemDAO"/>
+	</bean>
+	
+	
+	<!-- 위험평가 및 관리 -->
+	<bean id="simpleRiskController" class="risk.SimpleRiskController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"/>
+	    <property name="delegate" ref="simpleRiskDelegate"/>
+	</bean>
+	<bean id="simpleRiskDelegate" class="risk.SimpleRiskDelegate">
+		<property name="propertiesDAO" ref="simplePropertiesDAO"/>
+		<property name="itemCategoryDAO" ref="simpleItemCategoryDAO"/>
+		<property name="sideEffectDAO" ref="simpleSideEffectReportDAO"/>
+		<property name="safetyDAO" ref="simpleSafetyReportDAO"/>
+		<property name="itemDAO" ref="simpleItemDAO"/>
+		<property name="itemCategoryGroupDAO" ref="simpleItemCategoryGroupDAO"/>
+	</bean>
+	
+	<!-- 사용자 추적 -->
+	<bean id="simpleUserTracer" class="system.security.SimpleUserTracer"/>
+	<!-- 시스템 로그 -->
+	<bean id="systemLogFilter" class="system.log.SimpleSystemLogFilter">
+	    <property name="systemLogService" ref="simpleSystemLogService"></property>
+	</bean>
+	<bean id="simpleSystemLogService" class="system.log.SimpleSystemLogServiceProvider">
+	    <property name="systemLogDAO" ref="simpleSystemLogDAO"></property>
+	</bean>
+	<bean id="simpleSystemLogDAO" class="system.log.SimpleSystemLogDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- HibernateTemplate -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 업체 코드 관리 -->
+	<bean id="simpleCompanyController" class="safety.renewal.company.SimpleCompanyController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+		<property name="delegate" ref="simpleCompanyDelegate"></property>	    
+	</bean>
+	<bean id="simpleCompanyDelegate" class="safety.renewal.company.SimpleCompanyDelegate" >
+	    <property name="CompanyServiceProvider" ref="simpleCompanyServiceProvider"></property>
+	</bean>
+	<bean id="simpleCompanyServiceProvider" class="safety.renewal.company.SimpleCompanyServiceProvider">
+	    <property name="CompanyDAO" ref="simpleCompanyDAO"></property>
+	</bean>
+	<bean id="simpleCompanyDAO" class="safety.renewal.company.SimpleCompanyDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 발생가능성과 위험도 점수범위/수준 -->
+	<bean id="simpleItemCategoryGroupController" class="risk.category.SimpleItemCategoryGroupController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+		<property name="delegate" ref="simpleItemCategoryGroupDelegate"></property>	    
+	</bean>
+	<bean id="simpleItemCategoryGroupDelegate" class="risk.category.SimpleItemCategoryGroupDelegate" >
+	    <property name="ItemCategoryGroupServiceProvider" ref="simpleItemCategoryGroupServiceProvider"></property>
+	</bean>
+	<bean id="simpleItemCategoryGroupServiceProvider" class="risk.category.SimpleItemCategoryGroupServiceProvider">
+	    <property name="ItemCategoryGroupDAO" ref="simpleItemCategoryGroupDAO"></property>
+	</bean>
+	<bean id="simpleItemCategoryGroupDAO" class="risk.category.SimpleItemCategoryGroupDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 생산수입 실적 데이터 -->
+	<bean id="simpleImportOutputController" class="risk.item.importoutput.SimpleImportOutputController">
+		<property name="methodNameResolver" ref="simpleCustomParamMethodNameResolver"></property>
+		<property name="delegate" ref="simpleImportOutputDelegate"></property>	    
+	</bean>
+	<bean id="simpleImportOutputDelegate" class="risk.item.importoutput.SimpleImportOutputDelegate" >
+	    <property name="ImportOutputServiceProvider" ref="simpleImportOutputServiceProvider"></property>
+	</bean>
+	<bean id="simpleImportOutputServiceProvider" class="risk.item.importoutput.SimpleImportOutputServiceProvider">
+	    <property name="ImportOutputDAO" ref="simpleImportOutputDAO"></property>
+	</bean>
+	<bean id="simpleImportOutputDAO" class="risk.item.importoutput.SimpleImportOutputDAO">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+</beans>

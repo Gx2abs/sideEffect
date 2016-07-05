@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="statisticsItem_sideEffect" classname="statisticsItem_sideEffect" inheritanceid="statisticsItem" position="absolute 0 0 1000 700" titletext="New Form" onload="statisticsItem_sideEffect_onload">
+    <Layouts>
+      <Layout/>
+    </Layouts>
+    <Script type="xscript4.0"><![CDATA[
+function statisticsItem_sideEffect_onload(obj:Form, e:LoadEventInfo)
+{
+	Static_gb.text = "부작용 보고 DB - 항목조합통계"
+}
+]]></Script>
+  </Form>
+</FDL>

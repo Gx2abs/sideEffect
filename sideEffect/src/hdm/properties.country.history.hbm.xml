@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="COUNTRY_HISTORY" name="properties.country.SimpleCountryHistory" 
+     dynamic-update="true"
+     mutable="true"
+     dynamic-insert="true"  
+     select-before-update="true"
+     >
+<id name="id" type="long"   >
+ <column name="id"   />
+ <generator class="sequence">
+     <param name="sequence">SEQ_PK_COUNTRY_HISTORY</param>
+ </generator>
+</id>
+<property name="manager" type="string">
+ <column name="manager" />
+</property>
+<property name="historyDescription" type="string">
+ <column name="HISTORY_DESCRIPTION" />
+</property>
+<property name="historyType"  >
+ <column name="HISTORY_TYPE" />
+</property>
+<property name="lastModified" type="timestamp">
+ <column name="LAST_MODIFIED" />
+</property>
+<property name="activeFrom" type="timestamp">
+ <column name="ACTIVE_FROM" />
+</property>
+<!--  
+<property name="countryId"  >
+ <column name="COUNTRY_ID" />
+</property>--> 
+</class>
+</hibernate-mapping>

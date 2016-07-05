@@ -1,0 +1,481 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="sgi_se_tmp_sideeffect_report" name="system.batch.SimpleTmpSideeffectReport"> 
+		<id name="id">
+			<column name="id"/>
+			<generator class="sequence"> 
+	  			<param name="sequence">SIDEEFFECT_REPORT_ID_SEQ</param> 
+  			</generator>
+		</id>
+		
+	<property name="batchGroupId">
+	    <column name="batch_group_id"></column>
+	</property>
+	
+		<property name="first_modified">
+		    <column name="first_modified"/>
+		</property>
+		
+		<property name="colCountryReportedIn">
+		    <column name="COUNTRY_REPORTED_ID"/>
+		</property>
+		
+		<many-to-one name="reportType1" class="properties.SimpleReportType2" 
+		    fetch="select" lazy="false" not-found="ignore">
+			<column name="report_type1"></column>
+		</many-to-one>
+		<many-to-one name="reportType2" class="properties.SimpleReportType2" 
+		    fetch="select" lazy="false" not-found="ignore">
+			<column name="report_type2"></column>
+		</many-to-one>
+		<many-to-one name="reportType3" class="properties.SimpleReportType2" 
+		    fetch="select" lazy="false" not-found="ignore">
+			<column name="report_type3"></column>
+		</many-to-one>
+		<many-to-one name="reportType4" class="properties.SimpleReportType2" 
+		    fetch="select" lazy="false" not-found="ignore">
+			<column name="report_type4"></column>
+		</many-to-one>
+		<many-to-one name="reportType5" class="properties.SimpleReportType2" 
+		    fetch="select" lazy="false" not-found="ignore">
+			<column name="report_type5"></column>
+		</many-to-one>
+		<property name="reportDate1" type="string">
+		    <column name="REPORT_DATE1"/>
+		</property>
+		<property name="reportDate2" type="string">
+		    <column name="REPORT_DATE2"/>
+		</property>
+		<property name="reportDate3" type="string">
+		    <column name="REPORT_DATE3"/>
+		</property>
+		<property name="reportDate4" type="string">
+		    <column name="REPORT_DATE4"/>
+		</property>
+		<property name="reportDate5" type="string">
+		    <column name="REPORT_DATE5"/>
+		</property>
+		<property name="company_name">
+		    <column name="COMPANY_NAME"/>
+		</property>
+		<property name="representatives">
+		    <column name="REPRESENTATIVES"/>
+		</property>
+		<property name="manager">
+		    <column name="MANAGER"/>
+		</property>
+		<property name="report_tel">
+		    <column name="REPORT_TEL"/>
+		</property>
+		<property name="fax">
+		    <column name="fax"/>
+		</property>
+		
+		<property name="meddev_item_no">
+		    <column name="meddev_item_no"/>
+		</property>
+		<property name="code_type">
+		    <column name="code_type"/>
+		</property>
+		
+		<property name="email">
+		    <column name="email"/>
+		</property>
+		<property name="report_address">
+		    <column name="report_address"/>
+		</property>
+		<property name="meb_item_id">
+		    <column name="meb_item_id"/>
+		</property>
+		<property name="country_manufactured_id">
+		    <column name="COUNTRY_MANUFACTURED_ID"/>
+		</property>
+		<property name="manufacturer">
+		    <column name="MANUFACTURER"/>
+		</property>
+
+
+		<property name="patient_name">
+		    <column name="patient_name"/>
+		</property>
+		
+		<property name="patient_gender">
+		    <column name="patient_gender"/>
+		</property>
+		
+		<property name="patient_age">
+		    <column name="patient_age"/>
+		</property>
+		
+		<property name="patient_extra_info">
+		    <column name="patient_extra_info"/>
+		</property>
+
+		<property name="side_effect_first_date">
+		    <column name="side_effect_first_date"/>
+		</property>
+		<property name="side_effect_generation_date">
+		    <column name="side_effect_generation_date"/>
+		</property>
+		<property name="side_effect_last_date">
+		    <column name="side_effect_last_date"/>
+		</property>
+		<property name="causality_id">
+		    <column name="causality_id"/>
+		</property>
+
+		<property name="followup">
+		    <column name="followup"/>
+		</property>
+		<property name="report_status">
+		    <column name="report_status"/>
+		</property>
+		<property name="organization">
+		    <column name="organization"/>
+		</property>
+		<property name="organization_tel">
+		    <column name="organization_tel"/>
+		</property>
+		<property name="organization_address">
+		    <column name="organization_address"/>
+		</property>
+
+		<property name="extra_info">
+		    <column name="EXTRA_INFO"/>
+		</property>
+
+		<property name="mreport_date">
+		    <column name="MREPORT_DATE"/>
+		</property>
+
+		<property name="document_number">
+		    <column name="document_number"/>
+		</property>
+		
+		<property name="report_year" >
+		 <column name="report_year"/>
+		</property>
+		
+		<property name="report_month" >
+		 <column name="report_month"/>
+		</property>
+		
+		<property name="reporter_etc" >
+		 <column name="report_etc"/>
+		</property>
+		
+		<property name="cause_etc" >
+		 <column name="cause_etc"/>
+		</property>
+		
+		<property name="result_etc" >
+		 <column name="result_etc"/>
+		</property>
+		
+		<property name="serial_number" >
+		 <column name="serial_number"/>
+		</property>
+		
+		<property name="extra_info2">
+		    <column name="extra_info2"/>
+		</property>
+		
+		<property name="follow_up_action">
+		    <column name="follow_up_action"/>
+		</property>
+		
+		<property name="followUpActionEtc">
+		    <column name="FOLLOW_UP_ACTION_ETC"/>
+		</property>
+		
+<many-to-one 
+    class="properties.SimpleReportFollowUpAction"
+    name="obj_follow_up_action"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="follow_up_action"/>
+</many-to-one>
+
+<many-to-one 
+    class="statistics.property.SimpleReportDate"
+    name="reportYM"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    property-ref="reportDateLink"
+    >
+    <column name="report_year"/>
+    <column name="report_month"/>
+</many-to-one>
+
+<bag name="sideeffectResult" lazy="false" fetch="select"  
+		table="junc_sideeffect_result"
+  >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="sideeffect.SimpleSideeffectResult">
+    	<column name="result_id"></column>
+    </many-to-many>    
+</bag>
+
+
+<bag name="sideeffectCause" lazy="false" fetch="select"  table="junc_sideeffect_cause" order-by="id"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="sideeffect.SimpleSideeffectCause">
+    	<column name="cause_id"></column>
+    </many-to-many>    
+</bag>
+
+
+
+<many-to-one 
+    class="properties.SimpleReportStatus"
+    name="reportStatus"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="report_status"/>
+</many-to-one>
+ 
+<list name="sideEffectReportTypeDate" 
+inverse="false"
+lazy="false"
+
+ >
+	<key 
+		update="false"
+	>
+		
+    	<column name="report_id"></column>
+    	 
+	</key>
+	<index column="junc_id" />
+	
+	<one-to-many class="sideeffect.SimpleSideEffectReportTypeDate"></one-to-many>
+</list>
+
+<bag name="reporterTypes" lazy="false" fetch="select"  table="JUNC_SIDEEFFECT_REPORT_TYPE"
+ 
+>
+    <key>
+        <column name="report_id"></column>
+    </key>
+    
+	<many-to-many  not-found="ignore" class="properties.SimpleReporterType">
+	
+	 
+	<!-- <many-to-many  not-found="ignore" class="properties.report.type.SimpleReportType"> -->
+	
+    	<column name="report_type_id"></column>
+    </many-to-many>    
+</bag>
+	 
+	 
+	 
+<bag name="reportType" lazy="false" fetch="select"  table="JUNC_SIDE_EFFECT_REPORT_TYPES2">
+    <key>
+        <column name="report_id"></column>
+    </key>
+    <many-to-many  not-found="ignore" class="properties.SimpleReportType2">
+		<column name="report_type_id"></column>
+    </many-to-many>    
+</bag>
+	 
+<many-to-one class="safety.renewal.sgi.item.SimpleItem1" name="meb_item" 
+    lazy="false"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    >
+	<column name="meb_item_id"></column>
+</many-to-one>
+		
+<many-to-one class="properties.SimpleComponentCode" name="componentCode"
+     lazy="false"  not-found="ignore" update="false" insert="false"  >
+    <column name="component_code"/>
+</many-to-one>
+		
+	<many-to-one class="properties.SimpleComponentCode" name="componentCode1"
+	    not-null="false" foreign-key="fda_code"
+     lazy="false"  not-found="ignore" update="false" insert="false" fetch="select" >
+    <column name="component_code1"/>
+</many-to-one>
+<many-to-one class="properties.SimpleComponentCode" name="componentCode2"
+    not-null="false" foreign-key="fda_code"
+     lazy="false"  not-found="ignore" update="false" insert="false" fetch="select" >
+    <column name="component_code2"/>
+</many-to-one>
+<many-to-one class="properties.SimpleComponentCode" name="componentCode3"
+    not-null="false" foreign-key="fda_code"
+     lazy="false"  not-found="ignore" update="false" insert="false" fetch="select" >
+    <column name="component_code3"/>
+</many-to-one>
+
+		<!-- 성별 -->
+		<many-to-one name="gender" class="properties.SimpleGender" 
+		    insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="patient_gender"/>
+		</many-to-one>
+		
+		<!-- 인과관계 -->
+		<many-to-one name="causality" class="properties.SimpleCausality"
+		    insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="causality_id"/>
+		</many-to-one>
+		
+		<!-- 제조국CountryOfManufacture  id  -->
+		<many-to-one name="countryManufacturedIn" class="properties.SimpleCountryManufacturedIn" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="COUNTRY_REPORTED_ID"/>
+		</many-to-one>
+		
+		<!-- 환자 문제 코드 -->
+		<many-to-one name="patientCondition" class="properties.SimplePatientCondition" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="patient_condition_id"/>
+		</many-to-one>
+		
+		<!-- 구분  -->
+
+		<many-to-one name="gubun" class="properties.SimpleCountryReportedIn" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+			<column name="COUNTRY_REPORTED_ID"/>
+		</many-to-one>
+		
+		<many-to-one name="country_manufactured" class="properties.country.SimpleCountry" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+			<column name="COUNTRY_MANUFACTURED_ID"/>
+		</many-to-one>
+		
+
+<!-- 환자문제코드 연결 테이블 -->
+<bag name="patientCodeCondition" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_PATIENT_CONDITION"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimplePatientCondition">
+    	<column name="patient_id"></column>
+    </many-to-many>    
+</bag>
+
+<!-- 의료기기문제코드 -->
+<bag name="medicalCode" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_MEDICAL_CODE"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimpleMedicalDeviceMalfunctionCode">
+    	<column name="medical_id"></column>
+    </many-to-many>    
+</bag>
+
+<!-- 구성요소코드 -->
+<bag name="juncComponentCode" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_COMPONENT_CODE"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimpleComponentCode">
+    	<column name="component_id"></column>
+    </many-to-many>    
+</bag>
+
+
+
+
+<!-- 파일 테이블 -->
+<bag name="attachments" table="JUNC_REPORT_ATTACHMENTS" lazy="false">
+    <key>
+        <column name="table_id"></column>
+    </key>
+    <many-to-many class="system.io.SimpleAttachment">
+        <column name="attachment_id"></column>
+    </many-to-many>
+</bag>
+
+
+<bag name="sideEffectReportMebTypeInfo" lazy="false" fetch="select"  
+		table="SIDE_EFFECT_REPORT_MEB_TYPE_INFO"
+  >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="safety.renewal.sgi.item.SimpleItemType">
+    	<column name="meddev_item_seq"></column>
+    </many-to-many>    
+</bag>
+
+<many-to-one name="sideeffectResult1" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result1"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult2" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result2"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult3" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result3"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult4" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result4"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult5" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result5"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult6" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result6"></column>
+</many-to-one>
+<many-to-one name="sideeffectResult7" class="sideeffect.SimpleSideeffectResult" lazy="false">
+    <column name="sideeffect_result7"></column>
+</many-to-one>
+
+	<many-to-one name="patientCondition1" class="properties.SimplePatientCondition" property-ref="fdaCode"
+			insert="false" update="false" lazy="false" not-found="ignore" >
+		    <column name="patient_code1"/>
+	</many-to-one>
+	<many-to-one name="patientCondition2" class="properties.SimplePatientCondition" property-ref="fdaCode"
+			insert="false" update="false" lazy="false" not-found="ignore"  >
+		    <column name="patient_code2"/>
+	</many-to-one>
+	<many-to-one name="patientCondition3" class="properties.SimplePatientCondition" property-ref="fdaCode"
+			insert="false" update="false" lazy="false" not-found="ignore"  >
+		    <column name="patient_code3"/>
+	</many-to-one>
+	
+	<many-to-one name="deviceCode1" class="properties.SimpleMedicalDeviceMalfunctionCode"
+	    lazy="false" fetch="select"  not-found="ignore" property-ref="fdaCode">
+    	<column name="device_code1"></column>
+    </many-to-one>    
+    <many-to-one name="deviceCode2" class="properties.SimpleMedicalDeviceMalfunctionCode"
+        lazy="false" fetch="select"  not-found="ignore" property-ref="fdaCode">
+    	<column name="device_code2"></column>
+    </many-to-one>
+    <many-to-one name="deviceCode3" class="properties.SimpleMedicalDeviceMalfunctionCode"
+        lazy="false" fetch="select"  not-found="ignore"  property-ref="fdaCode">
+    	<column name="device_code3"></column>
+    </many-to-one>
+	
+	</class> 
+ </hibernate-mapping>

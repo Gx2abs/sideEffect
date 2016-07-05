@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="JNC_MEB_ITEM_TYPE" name="properties.product.SimpleJuncProductType"
+      dynamic-insert="true" 
+     dynamic-update="true" 
+     mutable="true">
+<id name="id">
+ <column name="id"/>
+   <generator class="sequence">
+				<param name="sequence">JUNC_MEB_TYPE_NO_PK</param>
+			</generator> 
+</id>
+<property name="meddev_item_seq">
+ <column name="meddev_item_seq"/>
+</property>
+<property name="type_id">
+ <column name="type_id"/>
+</property>
+
+
+	 
+</class> 
+ </hibernate-mapping>

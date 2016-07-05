@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="Sample2" classname="Sample2" inheritanceid="" position="absolute 0 0 1024 768" titletext="New Form" onload="Sample2_onload">
+    <Layouts>
+      <Layout>
+        <ActiveX id="MSIE" position="absolute 5 6 1016 760" taborder="0" progid="shell.explorer.2" windowed="true" popupstyle="true"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript4.0"><![CDATA[
+function Sample2_onload(obj:Form, e:LoadEventInfo)
+{
+	var f_Html = system.convertRealPath("%MYDOCUMENT%") + "test.html";
+	MSIE.Navigate(f_Html);
+	
+}
+]]></Script>
+  </Form>
+</FDL>

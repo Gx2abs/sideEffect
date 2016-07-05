@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="popMedDM" classname="popMedDM" inheritanceid="popUp" position="absolute 0 0 800 650" titletext="유해사례보고 원인분류코드 조회" onload="popMedDM_onload" onkeydown="popMedDM_onkeydown">
+    <Layouts>
+      <Layout>
+        <Grid id="Grid_MedDM" taborder="0" useinputpanel="false" position2="absolute l:36 w:724 t:144 h:446" positiontype="position2" binddataset="ds_medicalDMC" treeusecheckbox="true" treeusebutton="use" oncellclick="Grid_MedDM_oncellclick" treeinitstatus="expand,null" treeuseimage="false">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="682"/>
+              </Columns>
+              <Rows>
+                <Row size="24"/>
+              </Rows>
+              <Band id="body">
+                <Cell displaytype="tree" edittype="tree" style="font:굴림체,9;selectfont:굴림체,9,bold;" text="expr:&quot;[&quot; + DEPTH_LEVEL + &quot;] &quot; + FDA_CODE + &quot;, &quot; + FDA_SOURCE_PT_KOR + &quot;, &quot; + NAME" treelevel="bind:DEPTH_LEVEL" treecheck="bind:CHECK_YN"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Static id="Static_total" text="   건 조회 되었습니다." position2="absolute l:41 w:152 t:127 h:19" positiontype="position2" style="font:굴림체,8,bold;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_medicalDMC" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="string" size="400"/>
+          <Column id="FDA_CODE" type="int" size="10"/>
+          <Column id="FDA_SOURCE_DEFINITION" type="string" size="600"/>
+          <Column id="FDA_SOURCE_DEFINITION_KOR" type="string" size="600"/>
+          <Column id="NCIT_DEFINITION" type="string" size="400"/>
+          <Column id="NCIT_DEFINITION_KOR" type="string" size="400"/>
+          <Column id="PARENT_ID" type="int" size="10"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="FDA_SOURCE_PT_KOR" type="string" size="500"/>
+          <Column id="NCI_CODE" type="string" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript4.0"><![CDATA[
+function popMedDM_onload(obj:Form, e:LoadEventInfo)
+{
+	div_from.Static_menu.text = "유해사례보고 원인분류코드 조회 - 의료기기문제코드";
+	
+	// 데이타 조회
+	transaction("tra_retrieve",
+			"siteURL::sideEffectReport.do?action=popMedical"
+			,"",
+			"ds_medicalDMC=ds_medicalDMC"
+			,""
+			,"fn_callback");
+			
+	// 조회버튼 
+	div_from.div_title.btn_search.onclick.setHandler(fn_search);
+	
+	// 엑셀내려받기버튼
+	btn_excel.onclick.setHandler(fn_excel);
+	
+	//선택버튼
+	btn_select.onclick.setHandler(fn_select);
+}
+
+
+// 조회결과 
+function fn_callback(trID, errCD, errMSG) 
+{
+	// transaction ID (=transaction 첫번째 인자), 에러코드, 에러메세지
+	if(trID == "tra_select") {
+		if(errCD < 0) {
+			alert("전송실패."+ errMSG);
+			return;
+		} 
+	} else if (trID == "tra_retrieve" || trID == "tra_search" ) {
+	
+		if(errCD < 0) {
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			// 영문검색 (대소문자 검색)을 위해 추가
+			var _row = ds_medicalDMC.rowcount;
+			var _str;
+			for(var i=0;i<_row;i++)
+			{
+				ds_medicalDMC.addColumn("NAME2","string",400);
+				_str = ds_medicalDMC.getColumn(i,"NAME").toString().toUpperCase();
+				ds_medicalDMC.setColumn(i,"NAME2",_str);
+			}
+			Static_total.text = ds_medicalDMC.rowcount + "건 조회되었습니다."
+		}
+	}
+}
+
+// 검색
+function fn_search() 
+{
+	var search = div_from.div_title.edit_search.value;
+	if (search == "" || search == null) {
+		search = "";
+	}
+	var filterStr1 ="String(FDA_CODE).indexOf('" + search + "') >= 0";
+	var filterStr2 ="String(NAME2).indexOf('" + search.toUpperCase() + "') >= 0";
+	var filterStr3 ="String(FDA_SOURCE_PT_KOR).indexOf('" + search + "') >= 0";
+
+	ds_medicalDMC.filter(filterStr1 + "||" + filterStr2 + "||" + filterStr3);
+}
+
+/*  엑셀내려받기*/
+function fn_excel(obj:Button,  e:ClickEventInfo)
+{
+	var nCnt = ExtObj0.clear();
+
+	ExtObj0.exporttype = ExportTypes.EXCEL;
+	
+	var sSheetName = "ExcelDown";
+	var sFileName = "구성요소코드.xlsx";
+	
+	ExtObj0.activepagename = sSheetName;	
+	ExtObj0.exportfilename = sFileName;
+	
+	ExtObj0.exportopenmode = "existopen";
+	var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Grid_MedDM, sSheetName+"!A1" );
+	
+	ExtObj0.export();
+}
+
+// 선택버튼
+function fn_select(obj:Button,  e:ClickEventInfo)
+{
+	
+	// dataSet filter  초기화 후 값 넘겨준다 
+	div_from.div_title.edit_search.value = "";
+	fn_search();
+	
+	var idArr = new Array();
+	var fdaCodeArr = new Array();
+	var nameArr = new Array();
+	var nCnt = 0;
+	var nSelect = 0;
+	var view = "";
+	for(var i=0; i< ds_medicalDMC.rowcount; i++ ) {
+		nSelect = parseInt(ds_medicalDMC.getColumn(i, "CHECK_YN"));
+		if (nSelect > 0 ) {
+			idArr.push(ds_medicalDMC.getColumn(i, "ID"));
+			fdaCodeArr.push(ds_medicalDMC.getColumn(i, "FDA_CODE"));
+			nameArr.push(ds_medicalDMC.getColumn(i, "FDA_SOURCE_PT_KOR"));
+			nCnt = nCnt + nSelect;
+			view += ds_medicalDMC.getColumn(i, "FDA_CODE") + "(" + ds_medicalDMC.getColumn(i, "FDA_SOURCE_PT_KOR") + "), ";
+		}	
+	}
+	
+	if (nCnt < 1 || nCnt > 3) {
+		alert("1개 이상, 3개 이하로 선택하여주십시오.");
+		return;
+	} else {
+		userNotify(1, idArr);
+		userNotify(2, fdaCodeArr);
+		userNotify(3, nameArr);
+		userNotify(4, view);
+		btn_close_onclick();
+	}
+
+}
+
+function Grid_MedDM_oncellclick(obj:Grid, e:GridClickEventInfo)
+{
+	var deptLevel = ds_medicalDMC.getColumn(e.row,"DEPTH_LEVEL");
+	var check_yn = ds_medicalDMC.getColumn(e.row, "CHECK_YN");
+
+	if (deptLevel == 1 && check_yn == 1) {
+		alert("1단계는 선택이 불가능합니다.");
+		ds_medicalDMC.setColumn(e.row, "CHECK_YN",0 );
+		return;
+	}
+}
+
+// Enter 키 누르면 조회 
+function popMedDM_onkeydown(obj:Form, e:KeyEventInfo)
+{
+	var vKeyCode = e.keycode;
+	if (vKeyCode == 13) {
+		fn_search();
+	} else {
+		return;
+	}
+}
+]]></Script>
+  </Form>
+</FDL>

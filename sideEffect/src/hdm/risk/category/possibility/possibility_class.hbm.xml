@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="POSSIBILITY_CLASS" name="risk.category.possibility.SimplePossibility" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">POSSIBILITY_CLASS_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="className">
+		 	<column name="class_name"/>
+		</property>
+		
+		<property name="likelihoodFm">
+		 	<column name="likelihood_fm"/>
+		</property>
+		
+		<property name="likelihoodTo">
+		 	<column name="likelihood_to"/>
+		</property>
+		
+		<property name="value">
+		 	<column name="value"/>
+		</property>
+		
+		<property name="revisionName">
+		 	<column name="revision_name"/>
+		</property>
+
+	</class> 
+</hibernate-mapping>

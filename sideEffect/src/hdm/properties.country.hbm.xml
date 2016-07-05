@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="COUNTRY_CODE" name="properties.country.SimpleCountry"
+     select-before-update="true"
+     >
+<id name="id" type="long">
+ <column name="id" />
+  <generator class="sequence">
+				<param name="sequence">SEQ_COUNTRY_PK</param>
+			</generator> 
+</id>
+ 
+<property name="activeFrom" type="timestamp">
+ <column name="active_from" />
+</property>
+<property name="lastModified" type="timestamp" >
+ <column name="last_modified" />
+</property>
+   
+	<property name="isInUse"  >
+	    <column name="default_in_use_id"></column>
+	</property>
+	<property name="propertyValue"  >
+	    <column name="property_value"></column>
+	</property>
+
+	<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+	</many-to-one>
+	
+	<set name="countryHistory"   table="JUNC_COUNTRY_HISTORY"
+	     lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+	     order-by="history_id"
+	    >
+	    <key   >
+	        <column  name="country_id" ></column>
+	    </key>
+	    <many-to-many   not-found="ignore" column="history_id"
+	        
+	         class="properties.country.SimpleCountryHistory" />
+	</set>
+</class>
+</hibernate-mapping>

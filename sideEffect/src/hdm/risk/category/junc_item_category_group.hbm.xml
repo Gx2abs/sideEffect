@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="JUNC_ITEM_CATEGORY_GROUP" name="risk.category.SimpleJuncItemCategoryGroup"> 
+	
+	<id name="category_id">
+ 		<column name="category_id"/>
+	</id>
+	
+	<property name="group_id" >
+	 <column name="group_id"/>
+	</property>
+ 
+	<property name="isFromExcel" >
+	 <column name="is_from_excel"/>
+	</property>
+
+<many-to-one 
+    class="risk.category.SimpleItemCategoryGroup"
+    name="itemCategoryGroup"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="group_id"/>
+</many-to-one>
+	
+</class> 
+</hibernate-mapping>

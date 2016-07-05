@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="USER_TRACE" name="system.security.SimpleUserTrace">
+    <composite-id class="system.security.UserTraceCompositeKey" name="key">
+        <key-property name="traceTime">
+            <column name="TRACE_TIME"></column>
+        </key-property>
+        <key-property name="userId">
+            <column name="USER_ID"></column>
+        </key-property>
+    </composite-id> 
+	<property name="remoteAddr">
+	 <column name="REMOTE_ADDR"/>
+	</property>
+	<property name="action">
+	 <column name="ACTION"/>
+	</property>
+	<property name="actionTarget">
+	 <column name="ACTION_TARGET"/>
+	</property>
+</class> 
+ </hibernate-mapping>

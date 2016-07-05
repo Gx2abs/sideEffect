@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="popUp" classname="popUp" inheritanceid="" position="absolute 0 0 800 650" titletext="조회" onkeydown="popUp_onkeydown">
+    <Layouts>
+      <Layout>
+        <Div id="div_from" taborder="0" position2="absolute l:16 w:764 t:16 h:588" positiontype="position2" text="유해사례보고 원인분류코드 조회">
+          <Layouts>
+            <Layout>
+              <Static id="Static_menu" text="Menu" position2="absolute l:16 w:444 t:8 h:16" positiontype="position2" style="font:굴림체,9;"/>
+              <Div id="div_title" taborder="1" position2="absolute l:14 w:738 t:40 h:63" text="title" positiontype="position2">
+                <Layouts>
+                  <Layout>
+                    <Static id="Static00" text="MFDA Soruce PT 조회(영문, 한글, 코드)" position2="absolute l:2 w:253 t:22 h:21" style="font:굴림체,8,bold;" positiontype="position2"/>
+                    <Edit id="edit_search" taborder="1" position2="absolute l:266 w:212 t:17 h:20" positiontype="position2"/>
+                    <Button id="btn_search" taborder="2" text="검색" position2="absolute l:486 w:72 t:14 h:27" style="font:굴림체,8,bold;" positiontype="position2"/>
+                    <Static id="Static01" text="※ 복수선택이 가능합니다." position2="absolute l:564 w:159 t:17 h:24" style="align:center middle;font:굴림체,8;" positiontype="position2"/>
+                  </Layout>
+                </Layouts>
+              </Div>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btn_excel" taborder="1" text="조회코드 엑셀다운" position2="absolute l:16 w:122 t:616 h:25" positiontype="position2" style="font:굴림체,8,bold;"/>
+        <Button id="btn_select" taborder="2" text="선택" position2="absolute l:648 w:50 t:619 h:22" positiontype="position2" onclick="btn_select_onclick" style="font:굴림체,8,bold;"/>
+        <Button id="btn_close" taborder="3" text="닫기" position2="absolute l:718 w:50 t:619 h:22" positiontype="position2" onclick="btn_close_onclick" style="font:굴림체,8,bold;"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+    </Objects>
+    <Script type="xscript4.0"><![CDATA[
+function btn_close_onclick(obj:Button,  e:ClickEventInfo)
+{
+	exit();
+}
+
+
+
+]]></Script>
+  </Form>
+</FDL>

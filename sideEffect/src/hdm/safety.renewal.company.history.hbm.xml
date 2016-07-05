@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="SGI_SE_COMPANY_HISTORY" name="safety.renewal.company.SimpleCompanyHistory1" 
+    dynamic-update="true"
+     mutable="true"
+     dynamic-insert="true"  
+     select-before-update="true"
+     >
+<id name="id" type="long"   >
+ <column name="id"   />
+ <generator class="sequence">
+     <param name="sequence">SEQ_PK_COMPANY_HISTORY</param>
+ </generator>
+</id>
+<property name="manager" type="string">
+ <column name="manager" />
+</property>
+<property name="historyDescription" type="string">
+ <column name="HISTORY_DESCRIPTION" />
+</property>
+<property name="historyType"  >
+ <column name="HISTORY_TYPE" />
+</property>
+<property name="lastModified" type="timestamp">
+ <column name="LAST_MODIFIED" />
+</property>
+<property name="activeFrom" type="timestamp">
+ <column name="ACTIVE_FROM" />
+</property>
+<!-- <property name="companyId"  >
+ <column name="COMPANY_ID" />
+</property>
+ -->
+</class>
+</hibernate-mapping>

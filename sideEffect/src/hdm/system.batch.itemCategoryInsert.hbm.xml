@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="sgi_se_tmp_item_category"  name="system.batch.SimpleItemCategoryInsert">
+    <id name="id">
+        <column name="id"></column>
+        <generator class="sequence">
+            <param name="sequence">seq_tmp_item_category</param>
+        </generator>
+    </id> 
+	<property name="grade"  type="string" insert="false" update="false">
+	 <column name="grade"/>
+	</property>
+	<property name="parentId"  type="long">
+	 <column name="parent_id"/>
+	</property>
+	 
+	<property name="class_level" insert="false" update="false">
+	 <column name="class_level"/>
+	</property>
+	<property name="mea_class_no">
+	 <column name="mea_class_no"/>
+	</property>
+	<property name="class_kor_name">
+	 <column name="class_kor_name"/>
+	</property>
+	<property name="class_eng_name">
+	 <column name="class_eng_name"/>
+	</property>
+	<property name="class_cont">
+	 <column name="class_cont"/>
+	</property>
+	<!-- regist_ts -->
+	<property name="update_ts" >
+	 <column name="update_ts"/>
+	</property>
+	<property name="regist_ts" >
+	 <column name="regist_ts"/>
+	</property>
+	
+	<property name="codeAge" insert="false" update="false">
+	 <column name="code_age"/>
+	</property>
+	
+	<!-- 고유식별코드(UDI code) --> 
+	<property name="udi_code" >
+	 <column name="udi_code"/>
+	</property>
+
+</class> 
+ 
+ </hibernate-mapping>

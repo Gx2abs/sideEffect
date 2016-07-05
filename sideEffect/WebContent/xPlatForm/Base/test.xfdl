@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="test" classname="test" inheritanceid="" position="absolute 0 0 1024 768" titletext="New Form">
+    <Layouts>
+      <Layout>
+        <Button id="Button00" taborder="0" text="Button00" position2="absolute l:135 w:241 t:24 h:139" positiontype="position2" onclick="Button00_onclick"/>
+        <Grid id="Grid00" taborder="1" useinputpanel="false" position2="absolute l:77 w:518 t:161 h:227" positiontype="position2" binddataset="Dataset00">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Col size="80"/>
+                <Col size="80"/>
+              </Columns>
+              <Rows>
+                <Row band="head" size="24"/>
+                <Row band="body" size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell col="0" disptype="normal" text="Column0"/>
+                <Cell col="1" disptype="normal" text="Column1"/>
+              </Band>
+              <Band id="body">
+                <Cell col="0" disptype="normal" text="bind:Column0"/>
+                <Cell col="1" disptype="normal" text="bind:Column1"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="Dataset00" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="Column0" type="STRING" size="256"/>
+          <Column id="Column1" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row/>
+          <Row/>
+          <Row/>
+          <Row/>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript4.0"><![CDATA[include "lib::COMHTML.xjs";
+function Button00_onclick(obj:Button,  e:ClickEventInfo)
+{
+		gf_print_mlreport( this );
+}
+]]></Script>
+  </Form>
+</FDL>

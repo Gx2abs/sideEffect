@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="match_master" name="properties.match.SimpleMatchMaster"> 
+<id name="id">
+    <generator class="sequence">
+        <param name="sequence">
+            seq_matching_item_codes_pk
+        </param>
+    </generator>
+</id>
+<property name="masterCode">
+ <column name="master_code"/>
+</property>
+ 
+	<property name="masterName">
+	    <column name="MASTER_NAME"/>
+    </property>
+    
+   <property name="master_category_id">
+	    <column name="master_category_id"/>
+    </property>
+    
+     <!-- 등급 -->
+	<property name="masterGrade">
+	    <column name="master_grade"/>
+    </property>
+    <many-to-one name="categoryGrade" class="safety.renewal.sgi.category.SimpleItemCategoryGrade"
+	    lazy="false" not-found="ignore" insert="false" update="false">
+	    <column name="master_grade"></column>
+	</many-to-one>
+    
+    
+   <property name="isInUse">
+		<column name="default_in_use_id"></column>
+	</property>
+	
+	<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+	</many-to-one>
+
+	<!-- <many-to-one name="masterObject" class="foreign.Mea_class_no"
+	    not-found="ignore" not-null="false" update="false" insert="false"
+	    fetch="select" lazy="false" 
+	    >
+	    <column name="master_code"></column>
+	    <column name="master_grade"></column>
+	</many-to-one> -->
+	<many-to-one name="masterObject" class="safety.renewal.sgi.category.SimpleItemCategory"
+	    not-found="ignore" not-null="false" update="false" insert="false"
+	    fetch="select" lazy="false" 
+	    >
+	    <column name="master_category_id"></column>
+	</many-to-one>
+	
+	<set name="matchSlaves"  table="jnc_match_master_slave"
+	    order-by="slave_id" 
+	    lazy="false" fetch="select" cascade="all, delete-orphan"    >
+	    <key column="master_id" ></key>
+	    <many-to-many class="properties.match.SimpleMatchSlave" not-found="ignore"
+	        fetch="select" >
+	        <column name="slave_id"></column>
+	    </many-to-many>
+	</set>
+	
+	<set name="matchHistory" table="jnc_match_history" 
+	    order-by="history_id" lazy="false" fetch="select" 
+	    cascade="all, delete-orphan, delete, persist" 
+	    >
+	    <key>
+	        <column name="master_id"></column>
+	    </key>
+	    <many-to-many class="properties.match.SimpleMatchHistory" 
+	        foreign-key="master_id" 
+	        >
+	        <column name="history_id"></column>
+	    </many-to-many>
+	</set>
+	
+	
+	
+</class> 
+ </hibernate-mapping>

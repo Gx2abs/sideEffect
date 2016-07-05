@@ -1,0 +1,858 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="report" classname="report" inheritanceid="" position="absolute 0 0 900 700" titletext="부작용 등 안전성정보  DB관리 시스템" onload="report_onload">
+    <Layouts>
+      <Layout>
+        <Div id="Div_condition" taborder="0" position2="absolute l:8 w:884 t:50 h:110" positiontype="position2" text="Div00">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" text="조회기간" position2="absolute l:13 w:91 t:10 h:16" positiontype="position2"/>
+              <Calendar id="Calendar_fm_y" taborder="1" position2="absolute l:84 w:85 t:11 h:22" dateformat="yyyy" value="null" editformat="yyyy" type="spin" positiontype="position2"/>
+              <Static id="static_year" text="년" position2="absolute l:178 w:21 t:11 h:22" onclick="Div00_Static02_onclick" positiontype="position2"/>
+              <Calendar id="Calendar_fm_m" taborder="2" position2="absolute l:199 w:64 t:11 h:22" type="spin" dateformat="MM" editformat="MM" value="null" displaynulltext="01" positiontype="position2"/>
+              <Static id="Static02" text="월 ~ " position2="absolute l:272 w:53 t:11 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_y" taborder="3" dateformat="yyyy" editformat="yyyy" position2="absolute l:316 w:85 t:11 h:22" type="spin" positiontype="position2"/>
+              <Static id="static_year00" text="년" onclick="Div00_Static02_onclick" position2="absolute l:410 w:21 t:11 h:22" positiontype="position2"/>
+              <Calendar id="Calendar_to_m" taborder="4" position2="absolute l:440 w:64 t:11 h:22" type="spin" dateformat="MM" editformat="MM" value="null" displaynulltext="12" positiontype="position2"/>
+              <Static id="Static03" text="월 " position2="absolute l:504 w:53 t:11 h:22" positiontype="position2"/>
+              <Button id="btn_search" taborder="0" text="조회" position2="absolute l:546 w:43 t:12 h:19" positiontype="position2"/>
+              <Button id="btn_reporterType" taborder="5" text="보고자 유형" position2="absolute l:21 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" onclick="Div_condition_btn_reporterType_onclick" bindgestureset="popReporterType"/>
+              <Button id="btn_meaCompany" taborder="6" text="업소명" position2="absolute l:162 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaCompany" onclick="Div_condition_btn_meaCompany_onclick"/>
+              <Button id="btn_country" taborder="7" text="제조국" position2="absolute l:303 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popContyryMI" onclick="Div_condition_btn_country_onclick"/>
+              <Button id="btn_meaClassNo" taborder="8" text="품목" position2="absolute l:444 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaClassNo" onclick="Div_condition_btn_meaClassNo_onclick"/>
+              <Button id="btn_itemGrade" taborder="9" text="등급" position2="absolute l:585 w:126 t:57 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popItemGrade" onclick="Div_condition_btn_itemGrade_onclick"/>
+              <Button id="Button06" taborder="11" text="결과 및 위해성 정도" position2="absolute l:703 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popSideeffectResult" onclick="Div_condition_Button06_onclick"/>
+              <Button id="btn_medicalDMC" taborder="13" text="의료기기문제코드" position2="absolute l:190 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMedical" onclick="Div_condition_btn_medicalDMC_onclick"/>
+              <Button id="btn_component" taborder="14" text="구성요소문제코드" position2="absolute l:361 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popComponent" onclick="Div_condition_btn_component_onclick"/>
+              <Button id="btn_causeOS" taborder="15" text="부작용 원인분류" position2="absolute l:532 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCauseOfSideeffect" onclick="Div_condition_btn_causeOS_onclick"/>
+              <Button id="btn_causality" taborder="16" text="인과관계" position2="absolute l:726 w:126 t:58 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCausality" onclick="Div_condition_btn_causality_onclick"/>
+              <Button id="btn_excel" taborder="18" text="E" position2="absolute l:708 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_excel_onclick"/>
+              <Button id="btn_csv" taborder="19" text="C" position2="absolute l:732 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_csv_onclick"/>
+              <Button id="btn_text" taborder="20" text="T" position2="absolute l:756 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_text_onclick"/>
+              <Button id="btn_print" taborder="21" text="P" position2="absolute l:780 w:21 t:6 h:17" positiontype="position2" onclick="Div_condition_btn_print_onclick"/>
+              <Button id="btn_char" taborder="22" text="Chart" position2="absolute l:822 w:47 t:6 h:19" positiontype="position2" onclick="Div_condition_btn_char_onclick"/>
+              <Button id="btn_patient" taborder="23" text="환자문제코드" position2="absolute l:19 w:151 t:83 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popPatient" onclick="Div_condition_btn_patient_onclick"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Static id="Static00" text="Static00" position2="absolute l:10 w:241 t:15 h:23" positiontype="position2"/>
+        <Grid id="Grid_info" taborder="1" useinputpanel="false" position2="absolute l:11 w:877 t:169 h:504" positiontype="position2" binddataset="ds_info" treeusecheckbox="false" cellclickbound="cell" autofittype="none" autosizebandtype="body" cellsizingtype="col" treeinitstatus="expand,null">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="199"/>
+                <Column size="80"/>
+                <Column size="80"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+                <Row size="24" band="summ"/>
+              </Rows>
+              <Band id="head">
+                <Cell text="NAME"/>
+                <Cell col="1" text="DATE"/>
+                <Cell col="2" text="COUNT"/>
+              </Band>
+              <Band id="body">
+                <Cell displaytype="tree" edittype="tree" text="bind:NAME" suppress="1" treestartlevel="1" treelevel="bind:DEPTH_LEVEL"/>
+                <Cell col="1" text="bind:DATE" subsumtext="합계"/>
+                <Cell col="2" text="bind:NCOUNT"/>
+              </Band>
+              <Band id="summary">
+                <Cell/>
+                <Cell col="1" text="총"/>
+                <Cell col="2" style="align:right;" text="expr:getSum(&quot;NCOUNT&quot;)"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <PopupDiv id="PopupDiv_code" text="PopupDiv_code" visible="false" position2="absolute l:128 w:564 t:169 h:435" positiontype="position2" tooltiptype="default" positionstep="0" style="background:whitesmoke;">
+          <Layouts>
+            <Layout>
+              <Button id="btn_all_select" taborder="0" text="전체선택" position2="absolute l:17 w:81 t:7 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_all_select_onclick"/>
+              <Button id="btn_all_cancel" taborder="1" text="전체취소" position2="absolute l:102 w:81 t:7 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_all_cancel_onclick"/>
+              <Grid id="grid_code" taborder="2" useinputpanel="false" position2="absolute l:8 w:545 t:53 h:342" positiontype="position2" binddataset="ds_codeList" cantreestatuschange="PopupDiv_code_grid_code_cantreestatuschange">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="531"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="body">
+                      <Cell displaytype="tree" edittype="tree" text="bind:NAME" treelevel="bind:DEPTH_LEVEL" treecheck="bind:CHECK_YN"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Edit id="Edit_searchWord" taborder="3" position2="absolute l:301 w:192 t:10 h:22" positiontype="position2"/>
+              <Button id="btn_code_search" taborder="4" text="검색" position2="absolute l:507 w:40 t:9 h:23" style="font:Verdana,8,bold;" positiontype="position2" onclick="PopupDiv_code_btn_code_search_onclick"/>
+              <Button id="btn_code_select" taborder="5" text="조회" position2="absolute l:136 w:57 t:401 h:22" positiontype="position2" onclick="PopupDiv_code_btn_code_select_onclick"/>
+              <Button id="btn_popClose" taborder="6" text="취소" position2="absolute l:357 w:57 t:401 h:22" positiontype="position2" onclick="PopupDiv_code_btn_popClose_onclick"/>
+              <Static id="Static_total" text="   건 조회 되었습니다." position2="absolute l:22 w:156 t:38 h:10" positiontype="position2" style="font:Verdana,8,bold;"/>
+            </Layout>
+          </Layouts>
+        </PopupDiv>
+        <Button id="Button00" taborder="3" text="Button00" position2="absolute l:291 w:88 t:17 h:21" positiontype="position2" onclick="Button00_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <ExportObject id="ExtObj0" exporttype="0" exporteventtype="itemrecord"/>
+      <Dataset id="ds_componentCode" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="10"/>
+          <Column id="NAME" type="string" size="400"/>
+          <Column id="FDA_CODE" type="int" size="10"/>
+          <Column id="FDA_SOURCE_DEFINITION" type="string" size="600"/>
+          <Column id="FDA_SOURCE_DEFINITION_KOR" type="string" size="600"/>
+          <Column id="NCIT_DEFINITION" type="string" size="400"/>
+          <Column id="NCIT_DEFINITION_KOR" type="string" size="400"/>
+          <Column id="PARENT_ID" type="int" size="10"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="FDA_SOURCE_PT_KOR" type="string" size="500"/>
+          <Column id="NCI_CODE" type="string" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="NAME">Absorber</Col>
+            <Col id="FDA_CODE">3028</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A device or material designed to take in or attenuate a force or substance.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">힘 또는 물질을 줄이거나 빨아들일 수 있도록 설계된 기기 또는 재료.</Col>
+            <Col id="NCIT_DEFINITION">
+A device or material designed to take in or attenuate a force or substance.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">힘 또는 물질을 줄이거나 빨아들일 수 있도록 설계된 기기 또는 재료.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">흡수장치</Col>
+            <Col id="NCI_CODE">C50372</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">4</Col>
+            <Col id="NAME">Accumulator</Col>
+            <Col id="FDA_CODE">548</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A device or material designed to collect a force or substance.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">힘 또는 물질을 수집할 수 있도록 설계된 기기 또는 재료.</Col>
+            <Col id="NCIT_DEFINITION">
+A device or material designed to collect a force or substance.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">힘 또는 물질을 수집할 수 있도록 설계된 기기 또는 재료.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">집적장치</Col>
+            <Col id="NCI_CODE">C49806</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">5</Col>
+            <Col id="NAME">Actuator</Col>
+            <Col id="FDA_CODE">402</Col>
+            <Col id="FDA_SOURCE_DEFINITION">A device designed to automate an action.</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">작동을 자동화할 수 있도록 설계된 기기.</Col>
+            <Col id="NCIT_DEFINITION">A device designed to automate an action.</Col>
+            <Col id="NCIT_DEFINITION_KOR">작동을 자동화할 수 있도록 설계된 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">구동장치</Col>
+            <Col id="NCI_CODE">C49807</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">6</Col>
+            <Col id="NAME">Adapter (Adaptor)</Col>
+            <Col id="FDA_CODE">431</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A device designed to make different pieces of apparatus compatible.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">다른 기기와 호환이 가능하도록 설계된 기기.</Col>
+            <Col id="NCIT_DEFINITION">
+A device designed to make different pieces of apparatus compatible.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">다른 기기와 호환이 가능하도록 설계된 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">어댑터</Col>
+            <Col id="NCI_CODE">C49808</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">8</Col>
+            <Col id="NAME">Adhesive</Col>
+            <Col id="FDA_CODE">3194</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+Any substance that affixes 2 or more parts or tissues together.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">2개 이상의 부품 또는 조직을 부착시키는 물질.</Col>
+            <Col id="NCIT_DEFINITION">
+Any substance that affixes 2 or more parts or tissues together.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">2개 이상의 부품 또는 조직을 부착시키는 물질.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">접착제</Col>
+            <Col id="NCI_CODE">C89528</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">9</Col>
+            <Col id="NAME">Air cleaner</Col>
+            <Col id="FDA_CODE">552</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A filtering device designed to remove particles from air.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">공기에서 입자를 제거할 수 있도록 설계된 여과 기기.</Col>
+            <Col id="NCIT_DEFINITION">
+A filtering device designed to remove particles from air.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">공기에서 입자를 제거할 수 있도록 설계된 여과 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">공기청정기</Col>
+            <Col id="NCI_CODE">C49810</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">10</Col>
+            <Col id="NAME">Air Eliminator</Col>
+            <Col id="FDA_CODE">3029</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A device designed to remove air from a space or fluid.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">공간 또는 액체에서 공기를 제거할 수 있도록 설계된 기기.</Col>
+            <Col id="NCIT_DEFINITION">
+A device designed to remove air from a space or fluid.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">공간 또는 액체에서 공기를 제거할 수 있도록 설계된 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">공기제거기</Col>
+            <Col id="NCI_CODE">C50339</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">11</Col>
+            <Col id="NAME">Air pump assembly</Col>
+            <Col id="FDA_CODE">549</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A composite part of an air pump or a larger device that includes an air pump.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">공기 펌프 또는 공기 펌프를 포함하는 보다 큰 기기의 복합적인 부품.</Col>
+            <Col id="NCIT_DEFINITION">
+A composite part of an air pump or a larger device that includes an air pump.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">공기 펌프 또는 공기 펌프를 포함하는 보다 큰 기기의 복합적인 부품.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">공기 펌프 어셈블리</Col>
+            <Col id="NCI_CODE">C49811</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">12</Col>
+            <Col id="NAME">Alarm</Col>
+            <Col id="FDA_CODE">403</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A device designed to signal the occurrence of a particular event.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">특정 반응의 발생을 신호로 전달할 수 있도록 설계된 기기.</Col>
+            <Col id="NCIT_DEFINITION">
+A device designed to signal the occurrence of a particular event.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">특정 반응의 발생을 신호로 전달할 수 있도록 설계된 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">경보장치</Col>
+            <Col id="NCI_CODE">C49813</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">23</Col>
+            <Col id="NAME">Alarm, assembly</Col>
+            <Col id="FDA_CODE">404</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+A composite part of an alarm or a larger device that includes an alarm.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">경보기기 또는 경보기기를 포함하는 보다 큰 기기의 복합적인 부품.</Col>
+            <Col id="NCIT_DEFINITION">
+A composite part of an alarm or a larger device that includes an alarm.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">경보기기 또는 경보기기를 포함하는 보다 큰 기기의 복합적인 부품.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">경보장치, 어셈블리</Col>
+            <Col id="NCI_CODE">C49812</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">24</Col>
+            <Col id="NAME">Alternator</Col>
+            <Col id="FDA_CODE">590</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+An electric generator designed to produce an alternating current.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">교류를 발생시킬 수 있도록 설계된 전기 발전기.</Col>
+            <Col id="NCIT_DEFINITION">
+An electric generator designed to produce an alternating current.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">교류를 발생시킬 수 있도록 설계된 전기 발전기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">교류발전기</Col>
+            <Col id="NCI_CODE">C49824</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">25</Col>
+            <Col id="NAME">Amplifier</Col>
+            <Col id="FDA_CODE">592</Col>
+            <Col id="FDA_SOURCE_DEFINITION">
+An electronic device designed to take an input signal and output an increased signal strength.
+</Col>
+            <Col id="FDA_SOURCE_DEFINITION_KOR">입력 신호가 증가된 신호 세기의 출력을 발휘하도록 설계된 전자 기기.</Col>
+            <Col id="NCIT_DEFINITION">
+An electronic device designed to take an input signal and output an increased signal strength.
+</Col>
+            <Col id="NCIT_DEFINITION_KOR">입력 신호가 증가된 신호 세기의 출력을 발휘하도록 설계된 전자 기기.</Col>
+            <Col id="PARENT_ID">0</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="FDA_SOURCE_PT_KOR">증폭장치</Col>
+            <Col id="NCI_CODE">C49825</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_codeList" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="false">
+        <ColumnInfo>
+          <Column id="ID" type="int" size="19"/>
+          <Column id="NAME" type="string" size="255"/>
+          <Column id="DEPTH_LEVEL" type="int" size="10"/>
+          <Column id="CHECK_YN" type="string" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="ID">1</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">4</Col>
+            <Col id="NAME">의료기기판매업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+          <Row>
+            <Col id="ID">5</Col>
+            <Col id="NAME">의료기기대임업자</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+            <Col id="CHECK_YN">0</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+      <Dataset id="ds_info" firefirstcount="0" firenextcount="0" useclientlayout="false" updatecontrol="true" enableevent="true" loadkeymode="keep" loadfiltermode="keep" reversesubsum="true" keystring="YEARMM">
+        <ColumnInfo>
+          <Column id="ID" type="INT" size="10"/>
+          <Column id="CODE" type="INT" size="10"/>
+          <Column id="NAME" type="STRING" size="900"/>
+          <Column id="DATE" type="DATE" size="256"/>
+          <Column id="NCOUNT" type="INT" size="10"/>
+          <Column id="YEAR" type="STRING" size="4"/>
+          <Column id="YEARMM" type="STRING" size="6"/>
+          <Column id="DEPTH_LEVEL" type="STRING" size="10"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="ID">1</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130105</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201301</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">2</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130110</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201301</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">3</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130205</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201302</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">4</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130222</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201302</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">5</Col>
+            <Col id="NAME">의료기기제조업자</Col>
+            <Col id="CODE">1</Col>
+            <Col id="DATE">20130301</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201303</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">6</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130501</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201305</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">7</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130601</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">8</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130607</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">9</Col>
+            <Col id="NAME">의료기기수입업자</Col>
+            <Col id="CODE">2</Col>
+            <Col id="DATE">20130708</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201307</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">10</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="CODE">3</Col>
+            <Col id="DATE">20130506</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201305</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">11</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130606</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">12</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130630</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201306</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">13</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130801</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201308</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">14</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130901</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201309</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+          <Row>
+            <Col id="ID">15</Col>
+            <Col id="CODE">3</Col>
+            <Col id="NAME">의료기기수리업자</Col>
+            <Col id="DATE">20130905</Col>
+            <Col id="NCOUNT">1</Col>
+            <Col id="YEAR">2013</Col>
+            <Col id="YEARMM">201309</Col>
+            <Col id="DEPTH_LEVEL">1</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Script type="xscript4.0"><![CDATA[
+// 당일날짜 계산
+function Today()
+{
+	var sToday = "";
+	var objDate = new Date();
+	var sToday  = objDate.getFullYear().toString();
+	sToday += Right("0" + (objDate.getMonth() + 1), 2);
+	sToday += Right("0" + objDate.getDate(), 2);
+
+	return sToday;
+}
+
+function Right(sOrg, nSize)
+{
+	if( sOrg == null )
+		return "";
+	if( sOrg.length < nSize )
+		return sOrg;
+	else
+		return sOrg.substr(sOrg.length-nSize, nSize);
+}
+
+function report_onload(obj:Form, e:LoadEventInfo)
+{
+	// 초기날짜셋팅
+	var year = Today();
+	Div_condition.Calendar_fm_y.displaynulltext = year.substring(0,4);
+	Div_condition.Calendar_to_y.displaynulltext = year.substring(0,4);
+}
+// 엑셀저장
+function Div_condition_btn_excel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var nCnt = ExtObj0.clear();
+
+	ExtObj0.exporttype = ExportTypes.EXCEL;
+	
+	var sSheetName = "ExcelDown";
+	var sFileName = "조회코드.xlsx";
+	
+	ExtObj0.activepagename = sSheetName;	
+	ExtObj0.exportfilename = sFileName;
+	
+	ExtObj0.exportopenmode = "existopen";
+	var nRet = ExtObj0.addExportItem(ExportItemTypes.GRID, Grid_info, sSheetName+"!A1" );
+	
+	ExtObj0.export();
+}
+
+// csv 저장
+function Div_condition_btn_csv_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var objFdg = new FileDialog();
+	    
+	//파일확장자지정
+	objFdg.filter = "Worksheet Files(*.csv)|*.csv|"; 
+	//확장자를 입력하지 않았을 때 자동으로 확장자를 붙일지 여부를 설정
+	objFdg.defaultextention = true; 
+	//저장위치
+	var objFile = objFdg.open("파일 저장", FileDialog.SAVE, "%MYDOCUMENT%");
+	
+	var read_data = objFile.open(VirtualFile.openWrite|VirtualFile.openText);
+	
+	var sCSV;
+	sCSV = Grid_info.getCsvData();
+	// 엔터 특수문자변환 방지
+	//sCSV = sCSV.replace(String.fromCharCode(10),String.fromCharCode(13)+String.fromCharCode(10)); 
+	var strCSVText;
+
+	strCSVText = objFile.write(sCSV, "utf_8");
+
+	trace(strCSVText);
+	objFile.close();
+}
+
+
+
+// 텍스트파일저장
+function Div_condition_btn_text_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var objFdg = new FileDialog();
+	//파일확장자지정
+	objFdg.filter = "Data Files (*.txt)|*.txt|"; 
+	//확장자를 입력하지 않았을 때 자동으로 확장자를 붙일지 여부를 설정
+	objFdg.defaultextention = true; 
+
+	var objFile = objFdg.open("파일 저장", FileDialog.SAVE, "%MYDOCUMENT%");
+
+	var read_data = objFile.open(VirtualFile.openWrite|VirtualFile.openBinary);
+	
+	var sCSV;
+	sCSV = Grid_info.getCsvData();
+	// 엔터 특수문자변환 방지
+	 sCSV = sCSV.replace(String.fromCharCode(10),String.fromCharCode(13)+String.fromCharCode(10)); 
+	
+	var strCSVText;
+
+	strCSVText = objFile.write(sCSV, "utf-8");
+
+	trace(strCSVText);
+	objFile.close();
+	
+}
+
+
+// 출력
+function Div_condition_btn_print_onclick(obj:Button,  e:ClickEventInfo)
+{
+	Grid_info.print(false);
+}
+
+//차트
+function Div_condition_btn_char_onclick(obj:Button,  e:ClickEventInfo)
+{
+	
+}
+
+// 코드팝업
+function fn_popupDivPosition(obj)
+{
+	var nx = system.clientToScreenX(obj, 0) ;
+	var ny = system.clientToScreenY(obj, obj.position.height);
+	PopupDiv_code.trackPopup(nx, ny);
+	//alert(PopupDiv_code.bindgestureset);
+}
+
+// 코드조회
+function fn_popupRetrieve(actionCode, searchWord, tra)
+{
+	var vURL = "siteURL::statistics.do?action="+actionCode;
+	if (searchWord != "") {
+		vURL = vURL + "&search="+searchWord;
+	}
+	
+	// 데이타 조회
+	transaction(tra,
+			vURL
+			,"",
+			"ds_codeList=ds_codeList"
+			,""
+			,"fn_pop_callback");
+	PopupDiv_code.bindgestureset=actionCode;
+}
+
+// 조회결과 
+var vObj = "";	// 팝업오픈시 사용
+function fn_pop_callback(trID, errCD, errMSG) 
+{
+	// transaction ID (=transaction 첫번째 인자), 에러코드, 에러메세지
+	if(trID == "tra_select") {
+		if(errCD < 0) {
+			alert("전송실패."+ errMSG);
+			return;
+		} 
+	} else if (trID == "tra_retrieve" ) {
+		if(errCD < 0) {
+			PopupDiv_code_btn_popClose_onclick();
+			alert("조회실패."+ errMSG);
+			return;
+		} else {
+			PopupDiv_code.Static_total.text = ds_codeList.rowcount + "건 조회되었습니다."
+			fn_popupDivPosition(vObj);
+		}
+	} else if (trID == "tra_search" ) {
+		if(errCD < 0) {
+			PopupDiv_code_btn_popClose_onclick();
+			alert("검색실패."+ errMSG);
+			return;
+		} else {
+			PopupDiv_code.Static_total.text = ds_codeList.rowcount + "건 조회되었습니다."
+		}
+	}
+}
+
+//팝업닫기
+function PopupDiv_code_btn_popClose_onclick(obj:Button,  e:ClickEventInfo)
+{
+	PopupDiv_code.closePopup();
+}
+
+//보고자유형
+function Div_condition_btn_reporterType_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//업소명
+function Div_condition_btn_meaCompany_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//제조국
+function Div_condition_btn_country_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//품목
+function Div_condition_btn_meaClassNo_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//등급
+function Div_condition_btn_itemGrade_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//인과관계
+function Div_condition_btn_causality_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//환자문제
+function Div_condition_btn_patient_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//의료기기코드
+function Div_condition_btn_medicalDMC_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//구성요소문제
+function Div_condition_btn_component_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//부작용원인분류
+function Div_condition_btn_causeOS_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//결과 및 위해성정도
+function Div_condition_Button06_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//전체선택
+function PopupDiv_code_btn_all_select_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		ds_codeList.setColumn(i, "CHECK_YN",1 );
+	}
+}
+
+//전체취소
+function PopupDiv_code_btn_all_cancel_onclick(obj:Button,  e:ClickEventInfo)
+{
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		ds_codeList.setColumn(i, "CHECK_YN",0 );
+	}
+}
+
+//검색
+function PopupDiv_code_btn_code_search_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var searchWord = PopupDiv_code.Edit_searchWord.value;
+	
+	if (searchWord == null) {
+		searchWord = ""
+	} else {
+		searchWord.trim();
+	}
+	var actionCode = PopupDiv_code.bindgestureset;
+	fn_popupRetrieve(actionCode, searchWord,"tra_search");
+}
+
+// 코드선택
+function PopupDiv_code_btn_code_select_onclick(obj:Button,  e:ClickEventInfo)
+{
+	var popGB = "sideEffect";
+	var popName = PopupDiv_code.bindgestureset;
+	
+	var nCnt = 0;
+	for(var i=0; i< ds_codeList.rowcount; i++ ) {
+		nSelect = parseInt(ds_codeList.getColumn(i, "CHECK_YN"));
+		if (nSelect > 0 ) {
+			nCnt = nCnt + 1;
+		}	
+	}
+	
+	if (nCnt < 1 ) {
+		//alert("1개 이상 선택해야합니다.");
+		//return;
+	} else {
+
+		
+		// 데이타 선택
+		transaction("tra_select",
+			"siteURL::statistics.do?action=selectCode"
+			,"ds_codeList=ds_codeList:u"
+			,""
+			,"varCodeName='"+popName+"' varGubun='"+popGB+"'"
+			,"fn_pop_callback");
+	}
+	
+}
+]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="SIDEEFFECT_RESULT" name="sideeffect.SimpleSideeffectResult" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">SIDEEFFECT_RESULT_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="propertyValue">
+		 	<column name="property_value"/>
+		</property>
+		
+		<property name="severityName">
+		 	<column name="severity_name"/>
+		</property>
+		
+		<property name="value">
+		 	<column name="value"/>
+		</property>
+		
+		<property name="startDate">
+		 	<column name="start_date"/>
+		</property>
+		
+		<property name="lastModified">
+		 	<column name="last_modified"/>
+		</property>
+		
+		<property name="isInUse">
+		 	<column name="default_in_use_id"/>
+		</property>
+		
+		<property name="parentId">
+			<column name="parent_Id" default="0"/>
+		</property>
+		
+		<property name="depthLevel">
+			<column name="depth_level"/>
+		</property> 
+		
+		<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    	<column name="default_in_use_id"></column>
+		</many-to-one>
+		
+		<property name="isFromExcel">
+		 	<column name="is_from_excel"/>
+		</property>
+		
+		<set name="severityHistory"   table="JUNC_SIDEEFFECT_RESULT_HISTORY"
+	     lazy="false" fetch="select"  cascade="delete, delete-orphan, persist"
+	     order-by="history_id">
+	    <key>
+	        <column  name="severity_id" ></column>
+	    </key>
+	    <many-to-many not-found="ignore" column="history_id"
+	        class="sideeffect.SimpleSideeffectResultHistory" />
+	</set>
+	</class> 
+</hibernate-mapping>

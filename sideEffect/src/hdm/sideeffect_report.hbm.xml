@@ -1,0 +1,445 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="SIDE_EFFECCT_REPORT" name="report.SimpleSideeffectReport"> 
+		<id name="id">
+			<column name="id"/>
+			<generator class="sequence"> 
+	  			<param name="sequence">SIDEEFFECT_REPORT_ID_SEQ</param> 
+  			</generator>
+		</id>
+		
+	
+	
+		<property name="first_modified">
+		    <column name="first_modified"/>
+		</property>
+		
+		<property name="colCountryReportedIn">
+		    <column name="COUNTRY_REPORTED_ID"/>
+		</property>
+		<property name="colReportType">
+		    <column name="report_type"/>
+		</property>
+		<property name="reportDate">
+		    <column name="REPORT_DATE"/>
+		</property>
+		<property name="company_name">
+		    <column name="COMPANY_NAME"/>
+		</property>
+		<property name="representatives">
+		    <column name="REPRESENTATIVES"/>
+		</property>
+		<property name="manager">
+		    <column name="MANAGER"/>
+		</property>
+		<property name="report_tel">
+		    <column name="REPORT_TEL"/>
+		</property>
+		<property name="fax">
+		    <column name="fax"/>
+		</property>
+		
+		
+		<property name="email">
+		    <column name="email"/>
+		</property>
+		<property name="report_address">
+		    <column name="report_address"/>
+		</property>
+		<property name="meb_item_id">
+		    <column name="meb_item_id"/>
+		</property>
+		<property name="country_manufactured_id">
+		    <column name="COUNTRY_MANUFACTURED_ID"/>
+		</property>
+		<property name="manufacturer">
+		    <column name="MANUFACTURER"/>
+		</property>
+
+
+		<property name="patient_name">
+		    <column name="patient_name"/>
+		</property>
+		
+		<property name="patient_gender">
+		    <column name="patient_gender"/>
+		</property>
+		
+		<property name="patient_age">
+		    <column name="patient_age"/>
+		</property>
+		
+		<property name="patient_extra_info">
+		    <column name="patient_extra_info"/>
+		</property>
+
+		<property name="side_effect_first_date">
+		    <column name="side_effect_first_date"/>
+		</property>
+		<property name="side_effect_generation_date">
+		    <column name="side_effect_generation_date"/>
+		</property>
+		<property name="side_effect_last_date">
+		    <column name="side_effect_last_date"/>
+		</property>
+		<property name="causality_id">
+		    <column name="causality_id"/>
+		</property>
+
+		<property name="followup">
+		    <column name="followup"/>
+		</property>
+		<property name="report_status">
+		    <column name="report_status"/>
+		</property>
+		<property name="organization">
+		    <column name="organization"/>
+		</property>
+		<property name="organization_tel">
+		    <column name="organization_tel"/>
+		</property>
+		<property name="organization_address">
+		    <column name="organization_address"/>
+		</property>
+
+		<property name="extra_info">
+		    <column name="EXTA_INFO"/>
+		</property>
+
+		<property name="mreport_date">
+		    <column name="MREPORT_DATE"/>
+		</property>
+
+
+		<property name="document_number">
+		    <column name="document_number"/>
+		</property>
+		
+		<property name="report_year" >
+		 <column name="report_year"/>
+		</property>
+		
+		<property name="report_month" >
+		 <column name="report_month"/>
+		</property>
+		
+		<property name="reporter_etc" >
+		 <column name="reporter_etc"/>
+		</property>
+		
+		<property name="cause_etc" >
+		 <column name="cause_etc"/>
+		</property>
+		
+		<property name="result_etc" >
+		 <column name="result_etc"/>
+		</property>
+		
+		<property name="serial_number" >
+		 <column name="serial_number"/>
+		</property>
+		
+		<property name="extra_info2">
+		    <column name="exta_info2"/>
+		</property>
+		
+		<property name="follow_up_action">
+		    <column name="follow_up_action"/>
+		</property>
+		
+		<property name="followUpActionEtc">
+		    <column name="FOLLOW_UP_ACTION_ETC"/>
+		</property>
+		
+		<property name="side_result_from_reporter">
+		    <column name="SIDEEFFECT_RESULT_FROM_REPORTER"/>
+		</property>
+		<property name="side_cause_from_reporter">
+		    <column name="SIDEEFFECT_CAUSE_FROM_REPORTER"/>
+		</property>
+		<property name="patient_condition_from_reporter">
+		    <column name="PATIENT_CONDITION_FROM_REPORTER"/>
+		</property>
+		<property name="meddev_code_from_reporter">
+		    <column name="MEDDEV_CODE_FROM_REPORTER"/>
+		</property>
+		<property name="omponent_code_from_reporter">
+		    <column name="COMPONENT_CODE_FROM_REPORTER"/>
+		</property>
+		<property name="causality_from_reporter">
+		    <column name="CAUSALITY_FROM_REPORTER"/>
+		</property>
+		
+		<property name="kfda_followup">
+		    <column name="KFDA_FOLLOWUP"/>
+		</property>
+
+
+
+
+
+<many-to-one 
+    class="properties.SimpleReportFollowUpAction"
+    name="obj_follow_up_action"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="follow_up_action"/>
+</many-to-one>
+
+
+		
+<many-to-one 
+    class="statistics.property.SimpleReportDate"
+    name="reportYM"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    property-ref="reportDateLink"
+    >
+    <column name="report_year"/>
+    <column name="report_month"/>
+</many-to-one>
+
+<bag name="sideeffectResult" lazy="false" fetch="select"  
+		table="junc_sideeffect_result" outer-join="true" 
+  >
+    <key not-null="false" >
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="sideeffect.SimpleSideeffectResult" not-found="ignore" >
+    	<column name="result_id"></column>
+    </many-to-many>    
+</bag>
+
+
+<bag name="sideeffectCause" lazy="false" fetch="select"  table="junc_sideeffect_cause" order-by="id"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="sideeffect.SimpleSideeffectCause">
+    	<column name="cause_id"></column>
+    </many-to-many>    
+</bag>
+
+
+
+<many-to-one 
+    class="properties.SimpleReportStatus"
+    name="reportStatus"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    lazy="false"
+    >
+    <column name="report_status"/>
+</many-to-one>
+
+ 
+<list name="sideEffectReportTypeDate" 
+inverse="false"
+lazy="false"
+where="junc_id is not null AND REPORT_TYPE_ID > 0"
+ >
+	<key 
+		update="false"
+		not-null="false"
+	>
+	
+		
+    	<column name="report_id" ></column>
+    	 
+	</key>
+	<index column="junc_id"/>
+	
+	<one-to-many class="sideeffect.SimpleSideEffectReportTypeDate"></one-to-many>
+</list>
+<!-- 
+<properties name="sideEffectReportDateLink" insert="false" update="false" unique="false" >
+    <property 
+        name="id" column="id" generated="never"
+        insert="false" unique="false" update="false"
+        >
+    </property>
+</properties>
+ -->
+
+<bag name="reporterTypes" lazy="false" fetch="select"  table="JUNC_SIDEEFFECT_REPORT_TYPE"
+ 
+>
+    <key>
+        <column name="report_id"></column>
+    </key>
+    
+	<many-to-many  not-found="ignore" class="properties.SimpleReporterType">
+	
+	 
+	<!-- <many-to-many  not-found="ignore" class="properties.report.type.SimpleReportType"> -->
+	
+    	<column name="report_type_id"></column>
+    </many-to-many>    
+</bag>
+	 
+	 
+	 
+<bag name="reportType" lazy="false" fetch="select"  table="JUNC_SIDE_EFFECT_REPORT_TYPES2">
+    <key>
+        <column name="report_id"></column>
+    </key>
+    <many-to-many  not-found="ignore" class="properties.SimpleReportType2">
+		<column name="report_type_id"></column>
+    </many-to-many>    
+</bag>
+	 
+		 
+		
+<many-to-one class="safety.renewal.sgi.item.SimpleItem1" name="meb_item" 
+    lazy="false"
+    insert="false"
+    update="false"
+    not-found="ignore"
+    >
+	<column name="meb_item_id"></column>
+</many-to-one>
+		
+<many-to-one class="properties.SimpleComponentCode" name="componentCode"
+     lazy="false"
+    not-found="ignore"
+    update="false"
+    insert="false"
+ >
+    <column name="component_code"/>
+</many-to-one>
+		
+		<!-- 성별 -->
+		<many-to-one name="gender" class="properties.SimpleGender" 
+		    insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="patient_gender"/>
+		</many-to-one>
+		
+		<!-- 인과관계 -->
+		<many-to-one name="causality" class="properties.SimpleCausality"
+		    insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="causality_id"/>
+		</many-to-one>
+		
+		<!-- 보고구분 -->
+		<!-- 
+		<many-to-one name="reportType" class="properties.report.type.SimpleReportType"
+		 --> 
+		 <!-- 
+		 <many-to-one name="reportType" class="properties.SimpleReportType2"
+			insert="false" update="false" lazy="false" not-found="ignore">
+			<column name="report_type"/>
+		</many-to-one>
+	 	-->
+	 	
+	 	
+		
+		<!--  
+		<many-to-one name="countryManufacturedIn" class="properties.SimpleCountryManufacturedIn" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="COUNTRY_REPORTED_ID"/>
+		</many-to-one>
+		-->
+		
+		
+		<!-- 환자 문제 코드 -->
+		<many-to-one name="patientCondition" class="properties.SimplePatientCondition" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+		    <column name="patient_condition_id"/>
+		</many-to-one>
+		
+		<!-- 지역  -->
+		<many-to-one name="gubun" class="properties.SimpleCountryReportedIn" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+			<column name="COUNTRY_REPORTED_ID"/>
+		</many-to-one>
+		
+		<!-- 제조국CountryOfManufacture  id  -->
+		<many-to-one name="country_manufactured" class="properties.country.SimpleCountry" 
+			insert="false" update="false" lazy="false" not-found="ignore">
+			<column name="COUNTRY_MANUFACTURED_ID"/>
+		</many-to-one>
+		
+		
+
+
+<!-- 환자문제코드 연결 테이블 -->
+<bag where="id != 0" name="patientCodeCondition" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_PATIENT_CONDITION"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimplePatientCondition">
+    	<column name="patient_id"></column>
+    </many-to-many>    
+</bag>
+
+<!-- 의료기기문제코드 -->
+<bag where="id != 0" name="medicalCode" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_MEDICAL_CODE"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimpleMedicalDeviceMalfunctionCode">
+    	<column name="medical_id"></column>
+    </many-to-many>    
+</bag>
+
+<!-- 구성요소코드 -->
+<bag where="id != 0" name="juncComponentCode" 
+	 lazy="false"
+	 fetch="select"
+	 table="JUNC_SIDE_EFFECT_COMPONENT_CODE"
+ >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="properties.SimpleComponentCode">
+    	<column name="component_id"></column>
+    </many-to-many>    
+</bag>
+
+
+
+
+<!-- 파일 테이블 -->
+<bag name="attachments" table="JUNC_REPORT_ATTACHMENTS" lazy="false">
+    <key>
+        <column name="table_id"></column>
+    </key>
+    <many-to-many class="system.io.SimpleAttachment">
+        <column name="attachment_id"></column>
+    </many-to-many>
+</bag>
+
+
+<bag name="sideEffectReportMebTypeInfo" lazy="false" fetch="select"  
+		table="SIDE_EFFECT_REPORT_MEB_TYPE_INFO"
+  >
+    <key>
+        <column name="report_id"></column>
+    </key>
+	<many-to-many  class="safety.renewal.sgi.item.SimpleItemType">
+    	<column name="meddev_item_seq"></column>
+    </many-to-many>    
+</bag>
+
+
+	</class> 
+ </hibernate-mapping>

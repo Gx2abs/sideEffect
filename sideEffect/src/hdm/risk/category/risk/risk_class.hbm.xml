@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="RISK_CLASS" name="risk.category.risk.SimpleRisk" > 
+	
+		<id name="id" column="id" >
+			<generator class="sequence">
+				<param name="sequence">RISK_CLASS_SEQ</param>
+			</generator> 
+		</id>
+		
+		<property name="className">
+		 	<column name="class_name"/>
+		</property>
+		
+		<property name="riskGradeFm">
+		 	<column name="risk_grade_fm"/>
+		</property>
+		
+		<property name="riskGradeTo">
+		 	<column name="risk_grade_to"/>
+		</property>
+		
+		<property name="correctiveMeasure">
+		 	<column name="corrective_measure"/>
+		</property>
+		
+		<property name="value">
+		 	<column name="value"/>
+		</property>
+		
+		<property name="revisionName">
+		 	<column name="revision_name"/>
+		</property>
+		
+		<property name="color">
+		 	<column name="color"/>
+		</property>
+		
+	</class> 
+</hibernate-mapping>

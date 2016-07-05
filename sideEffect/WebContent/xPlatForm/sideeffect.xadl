@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ADL version="1.1">
+  <TypeDefinition url="default_typedef.xml"/>
+  <GlobalVariables url="globalvars.xml"/>
+  <Application id="sideeffect" codepage="utf-8" language="Korean" loginformurl="" loginformstyle="" windowopeneffect="" windowcloseeffect="" version="" tracemode="" themeid="css::Common.xtheme" licenseurl="/sideEffect/xPlatForm/XPLATFORM_Client_License.xml" proxytimeout="180" httptimeout="180" filesecurelevel="all" networksecurelevel="all">
+    <Layout>
+      <MainFrame id="mainframe" title="maintitle" defaultfont="" resizable="true" showtitlebar="true" showstatusbar="true" position="absolute 0 0 800 800" style="border:0 none white ;">
+        <ChildFrame id="childframe" formurl="" showtitlebar="false" showstatusbar="false" openeffect="" closeeffect="" style="color:white;"/>
+      </MainFrame>
+    </Layout>
+    <ScreenInfo/>
+  </Application>
+  <Script type="xscript4.0"><![CDATA[
+// 일반 팝업
+function gfn_callscript(strUrl) {
+	//alert(strUrl);
+	var arrArgument = gfn_callscript.arguments;
+
+	if ((arrArgument != null) && (arrArgument.length == 1)) {
+		mainframe.childframe.formurl = arrArgument[0];
+	}
+} 
+
+// 통계관리
+function gfn_statistics_callscript(strUrl, gvPopGB) {
+	addVariable("gvPopGB", gvPopGB);
+	var arrArgument = gfn_statistics_callscript.arguments;
+	if ((arrArgument != null) && (arrArgument.length >= 1)) {
+		mainframe.childframe.formurl = arrArgument[0];
+	}
+}  
+
+// DB 관리 
+function gfn_list_callscript(strUrl, gvPopYN) {
+	addVariable("gvPopYN", gvPopYN);
+	var arrArgument = gfn_list_callscript.arguments;
+	if ((arrArgument != null) && (arrArgument.length >= 1)) {
+		mainframe.childframe.formurl = arrArgument[0];
+	}
+}
+]]></Script>
+</ADL>

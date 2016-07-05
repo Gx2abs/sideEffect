@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class where="id != 0" table="patient_condition" name="properties.SimplePatientCondition"> 
+<id name="id">
+ <column name="id"/>
+ 	<generator class="sequence">
+		<param name="sequence">SEQ_PATIENT_CONDITION_PK</param>
+	</generator> 
+</id>
+<property name="fdaCode">
+ <column name="fda_code"/>
+</property>
+<property name="fdaSourcePtKor">
+ <column name="fda_source_pt_kor"/>
+</property>
+<property name="fdaSourceDefinition">
+ <column name="fda_source_definition"/>
+</property>
+<property name="fdaSourceDefinitionKor">
+ <column name="fda_source_definition_kor"/>
+</property>
+<property name="ncitDefinition">
+ <column name="ncit_definition"/>
+</property>
+<property name="ncitDefinitionKor">
+ <column name="ncit_definition_kor"/>
+</property>
+<property name="depthLevel">
+ <column name="depth_level"/>
+</property> 
+<property name="nciCode">
+ <column name="nci_code"/>
+</property>
+<property name="parentId">
+ <column name="parent_Id" default="0"/>
+</property>
+<property name="name">
+ <column name="name"/>
+</property>
+
+<property name="activeFrom" type="timestamp">
+ <column name="active_from" />
+</property>
+<property name="lastModified" type="timestamp" >
+ <column name="last_modified" />
+</property>
+ <property name="isInUse"  >
+  <column name="default_in_use_id"></column>
+ </property>
+
+<many-to-one name="useStatus" class="properties.SimpleIsInUse" fetch="select"
+	    insert="false" update="false" lazy="false" not-null="false" not-found="ignore">
+	    <column name="default_in_use_id"></column>
+	</many-to-one>
+	
+	<!--cascade="delete, delete-orphan, persist"-->
+	<set name="patientConditionHistory"   table="JUNC_PATIENT_CONDITION_HISTORY"
+	     lazy="false" fetch="select"  
+	     
+	     order-by="history_id" 
+	    >
+	    <key  not-null="false" >
+	        <column  name="patient_condition_id" not-null="false" default="0"></column>
+	    </key>
+	    <many-to-many   not-found="ignore" column="history_id"
+	        
+	         class="properties.patient.condition.SimplePatientConditionHistory" />
+	</set>
+
+</class> 
+ </hibernate-mapping>

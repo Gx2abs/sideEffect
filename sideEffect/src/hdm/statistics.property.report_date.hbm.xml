@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class table="REPORT_DATE" name="statistics.property.SimpleReportDate"> 
+<id name="id">
+ <column name="id"/>
+ 	<generator class="sequence">
+		<param name="sequence">SEQ_REPORT_DATE_PK</param>
+	</generator> 
+</id>
+<property name="report_year">
+ <column name="report_year"/>
+</property>
+
+<property name="report_month">
+ <column name="report_month"/>
+</property>
+
+
+<properties name="reportDateLink" insert="false" update="false" unique="false" >
+    <property 
+        name="report_year" column="report_year" generated="never"
+        insert="false" unique="false" update="false"
+        >
+    </property>
+    <property 
+        name="report_month" column="report_month" generated="never"
+        insert="false" unique="false" update="false"
+        >
+    </property>
+</properties>
+
+</class> 
+ </hibernate-mapping>

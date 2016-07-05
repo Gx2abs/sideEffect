@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.4">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="report_sideEffect2" classname="report_sideEffect2" inheritanceid="report" position="absolute 0 0 900 700" titletext="New Form">
+    <Layouts>
+      <Layout>
+        <Button id="btn_reporterType" taborder="5" text="보고자 유형" position2="absolute l:35 w:126 t:97 h:20" positiontype="position2" style="font:Verdana,8,bold;" onclick="btn_reporterType_onclick" bindgestureset="popReporterType"/>
+        <Button id="btn_meaCompany" taborder="6" text="업소명" position2="absolute l:176 w:126 t:97 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaCompany" onclick="btn_meaCompany_onclick"/>
+        <Button id="btn_country" taborder="7" text="제조국" position2="absolute l:317 w:126 t:97 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popContyryMI" onclick="btn_country_onclick"/>
+        <Button id="btn_meaClassNo" taborder="8" text="품목" position2="absolute l:458 w:126 t:97 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMeaClassNo" onclick="btn_meaClassNo_onclick"/>
+        <Button id="btn_itemGrade" taborder="9" text="등급" position2="absolute l:599 w:126 t:97 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popItemGrade" onclick="btn_itemGrade_onclick"/>
+        <Button id="btn_sideeffctResult" taborder="11" text="결과 및 위해성 정도" position2="absolute l:717 w:151 t:123 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popSideeffectResult" onclick="btn_sideeffctResult_onclick"/>
+        <Button id="btn_medicalDMC" taborder="13" text="의료기기문제코드" position2="absolute l:204 w:151 t:123 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popMedical" onclick="btn_medicalDMC_onclick"/>
+        <Button id="btn_component" taborder="14" text="구성요소문제코드" position2="absolute l:375 w:151 t:123 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popComponent" onclick="btn_component_onclick"/>
+        <Button id="btn_causeOS" taborder="15" text="부작용 원인분류" position2="absolute l:546 w:151 t:123 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCauseOfSideeffect" onclick="btn_causeOS_onclick"/>
+        <Button id="btn_causality" taborder="16" text="인과관계" position2="absolute l:740 w:126 t:98 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popCausality" onclick="btn_causality_onclick"/>
+        <Button id="btn_patient" taborder="23" text="환자문제코드" position2="absolute l:33 w:151 t:123 h:20" positiontype="position2" style="font:Verdana,8,bold;" bindgestureset="popPatient" onclick="btn_patient_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript4.0"><![CDATA[
+vAction = "selectSideEffect";
+
+//보고자유형
+function btn_reporterType_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//업소명
+function btn_meaCompany_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//제조국
+function btn_country_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//품목
+function btn_meaClassNo_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//등급
+function btn_itemGrade_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//인과관계
+function btn_causality_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//환자문제
+function btn_patient_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//의료기기코드
+function btn_medicalDMC_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//구성요소문제
+function btn_component_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//부작용원인분류
+function btn_causeOS_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+
+//결과 및 위해성정도
+function btn_sideeffctResult_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve");
+	vObj = obj;
+}
+]]></Script>
+  </Form>
+</FDL>

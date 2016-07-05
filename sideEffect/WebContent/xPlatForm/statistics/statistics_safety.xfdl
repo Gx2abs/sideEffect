@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="1.5">
+  <TypeDefinition url="..\default_typedef.xml"/>
+  <Form id="statistics_safety" classname="statistics_safety" inheritanceid="statistics" position="absolute 0 0 1000 1000" titletext="New Form" onload="statistics_safety_onload">
+    <Layouts>
+      <Layout>
+        <Button id="btn_ReporterType" taborder="5" text="보고자 유형" position2="absolute l:551 w:97 t:128 h:23" positiontype="position2" style="font:굴림체,8,bold;" onclick="btn_ReporterType_onclick" bindgestureset="popReporterType"/>
+        <Button id="btn_MeaCompany" taborder="6" text="대상 업체명" position2="absolute l:667 w:97 t:128 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popMeaCompany" onclick="btn_MeaCompany_onclick"/>
+        <Button id="btn_Country" taborder="7" text="제조국" position2="absolute l:785 w:97 t:128 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popCountry" onclick="btn_Country_onclick"/>
+        <Button id="btn_MeaClassNo" taborder="8" text="품목" position2="absolute l:31 w:97 t:129 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popMeaClassNo" onclick="btn_MeaClassNo_onclick"/>
+        <Button id="btn_ItemGrade" taborder="9" text="등급" position2="absolute l:289 w:97 t:129 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popItemGrade" onclick="btn_ItemGrade_onclick"/>
+        <Button id="btn_Medical" taborder="13" text="의료기기문제" position2="absolute l:32 w:100 t:98 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popMedical" onclick="btn_Medical_onclick"/>
+        <Button id="btn_Component" taborder="14" text="구성요소문제" position2="absolute l:266 w:100 t:98 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popComponent" onclick="btn_Component_onclick"/>
+        <Button id="btn_Patient" taborder="23" text="환자문제" position2="absolute l:149 w:100 t:98 h:23" positiontype="position2" style="font:굴림체,8,bold;" bindgestureset="popPatient" onclick="btn_Patient_onclick"/>
+        <Button id="btn_SideEffectReportType" taborder="24" text="안전성 정보보고" position2="absolute l:405 w:127 t:129 h:23" positiontype="position2" bindgestureset="popSideEffectReportType" style="font:굴림체,8,bold;" onclick="btn_SideEffectReportType_onclick"/>
+        <Button id="btn_Medical_level" taborder="25" text="의료기기문제 (Level별)" onclick="btn_Medical_level_onclick" position2="absolute l:383 w:166 t:98 h:23" positiontype="position2" bindgestureset="popMedicalLevel" style="font:굴림체,8,bold;"/>
+        <Button id="btn_Patient_level" taborder="26" text="환자문제 (Level별)" onclick="btn_Patient_level_onclick" position2="absolute l:566 w:150 t:98 h:23" positiontype="position2" bindgestureset="popPatientLevel" style="font:굴림체,8,bold;"/>
+        <Button id="btn_Component_level" taborder="27" text="구성요소문제 (Level별)" onclick="btn_Component_level_onclick" position2="absolute l:734 w:150 t:98 h:23" positiontype="position2" bindgestureset="popComponentLevel" style="font:굴림체,8,bold;"/>
+        <Button id="btn_MeddevItem" taborder="28" text="품목허가번호" position2="absolute l:147 w:123 t:129 h:23" positiontype="position2" bindgestureset="popMeddevItem" style="font:굴림체,8,bold;" onclick="btn_MeddevItem_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript4.0"><![CDATA[vAction = "selectSafety";
+
+//보고자유형
+function btn_ReporterType_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+}
+
+//업소명
+function btn_MeaCompany_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+}
+
+//제조국
+function btn_Country_onclick(obj:Button,  e:ClickEventInfo)
+{
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+}
+
+//품목
+function btn_MeaClassNo_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+//등급
+function btn_ItemGrade_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+//환자문제
+function btn_Patient_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+//의료기기코드
+function btn_Medical_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+//구성요소문제
+function btn_Component_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+
+// 안전성 정보보고
+function btn_SideEffectReportType_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+
+function statistics_safety_onload(obj:Form, e:LoadEventInfo)
+{
+	vChildYN = "N";
+	Static_gb.text = "항목별·월별통계"
+}
+
+
+// 의료기기문제 (Level별)
+function btn_Medical_level_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "Y";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+// 구성요소문제 (Level별)
+function btn_Component_level_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "Y";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+// 환자문제 (Level별)
+function btn_Patient_level_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "Y";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve", "safety");
+}
+
+//품목허가번호
+function btn_MeddevItem_onclick(obj:Button,  e:ClickEventInfo)
+{
+	vObj = obj;
+	vChildYN = "N";
+	Static_gb_code.text = "[" + obj.text + "]";
+	fn_popupRetrieve(obj.bindgestureset,"", "tra_retrieve","safety");
+}
+]]></Script>
+  </Form>
+</FDL>

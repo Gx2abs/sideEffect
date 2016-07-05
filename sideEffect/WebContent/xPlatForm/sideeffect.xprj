@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project active_adl="sideeffect" version="1.1">
+  <TypeDefinition url="default_typedef.xml"/>
+  <GlobalVariables url="globalvars.xml"/>
+  <ADL id="sideeffect" url="sideeffect.xadl"/>
+  <Options positiontype="position2"/>
+  <ComponentInfoGroup>
+    <ComponentInfo name="popUp" defaultwidth="" defaultheight="" image="31"/>
+    <ComponentInfo name="report" defaultwidth="" defaultheight="" image="31"/>
+    <ComponentInfo name="statistics" defaultwidth="" defaultheight="" image="18"/>
+    <ComponentInfo name="statisticsItem" defaultwidth="" defaultheight="" image="31"/>
+    <ComponentInfo name="statisticsItemView" defaultwidth="" defaultheight="" image="31"/>
+  </ComponentInfoGroup>
+  <Services>
+    <Service id="css" file_ext="" include_subdir="false"/>
+  </Services>
+  <Themes>
+    <RecentlyUsed>
+      <Theme url="CSS\Common.xtheme" extern="false"/>
+    </RecentlyUsed>
+  </Themes>
+</Project>

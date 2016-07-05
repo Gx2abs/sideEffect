@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class table="SAFETY_REPORT_VIEW" name="safety.SimpleSafetyReportView" > 
+
+		<id name="id" column="id" >
+	 	</id>
+	 	
+	 	<property name="document_number">
+			<column name="document_number"/>
+		</property>
+
+		<property name="company_name">
+			<column name="company_name"/>
+		</property>
+
+		<property name="reporter_type">
+			<column name="reporter_type"/>
+		</property>
+
+		<property name="entp_name">
+			<column name="entp_name"/>
+		</property>
+
+		<property name="grade">
+			<column name="grade"/>
+		</property>
+
+		<property name="class_kor_name">
+			<column name="class_kor_name"/>
+		</property>
+
+		<property name="product_cob_code">
+			<column name="product_cob_code"/>
+		</property>
+
+		<property name="medicalcode">
+			<column name="medicalcode"/>
+		</property>
+
+		<property name="patientcode">
+			<column name="patientcode"/>
+		</property>
+
+		<property name="componentcode">
+			<column name="componentcode"/>
+		</property>
+
+		<property name="report_type">
+			<column name="report_type"/>
+		</property>
+
+		<property name="safety_cause_content">
+			<column name="safety_cause_content"/>
+		</property>
+
+		
+		
+		<property name="report_year">
+			<column name="report_year"/>
+		</property>
+		
+		<property name="report_month">
+			<column name="report_month"/>
+		</property>
+
+		<property name="first_modified">
+			<column name="first_modified"/>
+		</property>
+		
+		
+		
+		
+		<property name="gubun">
+			<column name="gubun"/>
+		</property>
+		<property name="report_type2">
+			<column name="report_type2"/>
+		</property>
+		<property name="report_date">
+			<column name="report_date"/>
+		</property>
+		<property name="mreport_date">
+			<column name="mreport_date"/>
+		</property>
+		<property name="representative">
+			<column name="representative"/>
+		</property>
+		<property name="manager">
+			<column name="manager"/>
+		</property>
+		<property name="telephone">
+			<column name="telephone"/>
+		</property>
+		<property name="fax">
+			<column name="fax"/>
+		</property>
+		<property name="email">
+			<column name="email"/>
+		</property>
+		<property name="address">
+			<column name="address"/>
+		</property>
+		<property name="meddev_entp_no">
+			<column name="meddev_entp_no"/>
+		</property>
+		<property name="mea_class_no">
+			<column name="mea_class_no"/>
+		</property>
+		<property name="country_manufactured">
+			<column name="country_manufactured"/>
+		</property>
+		<property name="manufacturer">
+			<column name="manufacturer"/>
+		</property>
+		<property name="meb_type">
+			<column name="meb_type"/>
+		</property>
+		<property name="serial_number">
+			<column name="serial_number"/>
+		</property>
+		<property name="followup">
+			<column name="followup"/>
+		</property>
+		<property name="follow_up_action">
+			<column name="follow_up_action"/>
+		</property>
+		<property name="report_status">
+			<column name="report_status"/>
+		</property>
+		
+		<property name="extra_info">
+			<column name="extra_info"/>
+		</property>
+		
+		<property name="attachment">
+			<column name="attachment"/>
+		</property>
+		
+		<property name="meddev_item_no">
+			<column name="meddev_item_no"/>
+		</property>
+		
+		<property name="meddev_item_no1" >
+		 <column name="meddev_item_no1"/>
+		</property>
+		<property name="meddev_item_no2" >
+		 <column name="meddev_item_no2"/>
+		</property>
+		<property name="product_value" >
+		 <column name="product_value"/>
+		</property>
+		
+		<property name="Kfda_followup" >
+		 <column name="Kfda_followup"/>
+		</property>
+	
+	</class> 
+</hibernate-mapping>

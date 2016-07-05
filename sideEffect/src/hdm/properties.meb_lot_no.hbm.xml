@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class table="MEB_LOT_NO" name="properties.product.SimpleProductLot"
+      dynamic-insert="true" 
+     dynamic-update="true" 
+     mutable="true">
+<id name="id">
+ <column name="id"/>
+   <generator class="sequence">
+				<param name="sequence">SEQ_MEB_LOT_NO_PK</param>
+			</generator> 
+</id>
+<property name="meddev_item_seq">
+ <column name="meddev_item_seq"/>
+</property>
+<property name="lot_no">
+ <column name="lot_no"/>
+</property>
+
+</class> 
+ </hibernate-mapping>
